@@ -1,12 +1,8 @@
-# Kickstart Basic
+# Cell Master
 
-Next.js template with the typical dependencies that I prefer.
-
-I use it to kickstart toy projects and ideas.
+A dynamic AI-powered memory-based classical text-based RPG.
 
 ![Preview](README.png)
-
-For a 3D project, see [Kickstart Three.js](https://github.com/feremabraz/kickstart-threejs).
 
 ## Content
 
@@ -14,5 +10,5 @@ For a 3D project, see [Kickstart Three.js](https://github.com/feremabraz/kicksta
 - Motion
 - Zod
 - Biome
-- Shadcn lint fixes according to Biome.
+- Shadcn with lint fixes according to Biome.
 
