@@ -7,7 +7,6 @@ import { CommandInput } from './command-input';
 import { gameHistoryAtom, locationAtom, inventoryAtom, isLoadingAtom } from '@/store/game-store';
 import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
-import AsciiImage from './ascii-image';
 
 export function TextAdventure() {
   // Use Jotai atoms instead of React useState
