@@ -8,18 +8,12 @@ import { Input } from '@/components/ui/input';
 import { ChevronRight } from 'lucide-react';
 import { useAtomValue } from 'jotai';
 import { isLoadingAtom } from '@/store/game-store';
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-} from '@/components/ui/form';
+import { Form, FormControl, FormField, FormItem } from '@/components/ui/form';
 
 interface CommandInputProps {
   onSubmitCommand: (command: string) => void;
 }
 
-// Define the command schema with Zod
 const commandSchema = z.object({
   command: z.string().min(1, { message: 'Command cannot be empty' }),
 });
@@ -29,7 +23,6 @@ type CommandFormValues = z.infer<typeof commandSchema>;
 export function CommandInput({ onSubmitCommand }: CommandInputProps) {
   const isLoading = useAtomValue(isLoadingAtom);
 
-  // Initialize React Hook Form with Zod validation
   const form = useForm<CommandFormValues>({
     resolver: zodResolver(commandSchema),
     defaultValues: {
@@ -39,13 +32,8 @@ export function CommandInput({ onSubmitCommand }: CommandInputProps) {
 
   const handleCommand = async (values: CommandFormValues) => {
     if (isLoading) return;
-    
     const command = values.command.toLowerCase().trim();
-    
-    // Call the onSubmitCommand prop with the command
     onSubmitCommand(command);
-    
-    // Reset the form after submission
     form.reset();
   };
 
@@ -64,7 +52,7 @@ export function CommandInput({ onSubmitCommand }: CommandInputProps) {
                 <Input
                   {...field}
                   className="flex-1 bg-black text-green-500 border-green-500 border-2 rounded-none font-mono h-10 placeholder:text-gray-300"
-                  placeholder="Enter command (type 'help' for commands)"
+                  placeholder="What would you like to do?"
                   disabled={isLoading}
                 />
               </FormControl>

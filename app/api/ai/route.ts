@@ -8,7 +8,6 @@ export async function POST(req: Request) {
     const { prompt, body } = await req.json();
     const { command, gameHistory } = body || {};
 
-    // Create a system prompt for the text adventure game
     const systemPrompt = `You are the Game Master for a text adventure game called "Cell Master". 
 The player is the protagonist who has awakened in a mysterious facility.
 
@@ -45,17 +44,17 @@ IMPORTANT: Never break character or acknowledge that you are an AI. Always respo
       temperature: 0.7,
       maxTokens: 500,
     });
-    
+
     // Create a TransformStream to clean the response
     const { readable, writable } = new TransformStream();
-    
+
     // Start streaming the response
     const textStream = result.textStream;
-    
+
     // Process the stream to remove metadata
     (async () => {
       const writer = writable.getWriter();
-      
+
       try {
         for await (const chunk of textStream) {
           // Write only the text content to the output stream
@@ -67,7 +66,7 @@ IMPORTANT: Never break character or acknowledge that you are an AI. Always respo
         await writer.close();
       }
     })();
-    
+
     // Return the cleaned response
     return new Response(readable, {
       headers: {
@@ -76,9 +75,9 @@ IMPORTANT: Never break character or acknowledge that you are an AI. Always respo
     });
   } catch (error) {
     console.error('AI API error:', error);
-    return new Response(
-      JSON.stringify({ error: 'Failed to generate AI response' }),
-      { status: 500, headers: { 'Content-Type': 'application/json' } }
-    );
+    return new Response(JSON.stringify({ error: 'Failed to generate AI response' }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' },
+    });
   }
 }

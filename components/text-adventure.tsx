@@ -7,6 +7,7 @@ import { CommandInput } from './command-input';
 import { gameHistoryAtom, locationAtom, inventoryAtom, isLoadingAtom } from '@/store/game-store';
 import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
+import AsciiImage from './ascii-image';
 
 export function TextAdventure() {
   // Use Jotai atoms instead of React useState
@@ -44,39 +45,15 @@ export function TextAdventure() {
         }
 
         // Get the response text and clean it if needed
-        let initialGreeting = await response.text();
-
-        // Remove any metadata or formatting that might be in the response
-        // This regex looks for JSON-like content or numbered chunks and removes them
-        initialGreeting = initialGreeting
-          .replace(/[\w]+:\{.*?\}/g, '') // Remove JSON objects
-          .replace(/\d+:"/g, '') // Remove numbered chunks
-          .replace(/"\s*\d+:/g, '') // Remove trailing numbers
-          .replace(/[\w]+:\{.*$/g, '') // Remove incomplete JSON
-          .replace(/^f:|^e:|^d:/g, '') // Remove prefixes
-          .trim(); // Remove extra whitespace
+        const initialGreeting = await response.text();
 
         return {
           location: 'start',
           inventory: [],
-          gameHistory: [
-            'Welcome to Cell Master, a text-based adventure game!',
-            initialGreeting,
-            'What would you like to do?',
-          ],
+          gameHistory: ['Welcome to Cell Master, a text-based adventure game!', initialGreeting],
         };
       } catch (error) {
         console.error('Failed to initialize game:', error);
-        // Fallback to a default response if AI call fails
-        return {
-          location: 'start',
-          inventory: [],
-          gameHistory: [
-            'Welcome to Cell Master, a text-based adventure game!',
-            'You awaken in a dimly lit room, disoriented. As your eyes adjust, you notice a strange device on a nearby table, its surface glowing with an eerie blue light. A heavy metal door stands to the north, your only apparent exit.',
-            'What would you like to do?',
-          ],
-        };
       }
     },
     staleTime: Number.POSITIVE_INFINITY,
@@ -153,11 +130,12 @@ export function TextAdventure() {
   return (
     <Card className="w-full max-w-3xl h-[80vh] flex flex-col bg-black border-2 border-green-500 p-4 rounded-none">
       {/* Display game history */}
-      <GameHistory />
+      <div className="flex-1 overflow-y-auto">
+        <GameHistory />
+      </div>
 
       {/* Command input form */}
       <CommandInput onSubmitCommand={handleCommand} />
     </Card>
   );
 }
-
