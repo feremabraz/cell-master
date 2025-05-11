@@ -1,4 +1,6 @@
-# Game Design Document for "Cell Master", a Dynamic AI-Powered Classic Text-Based RPG
+# Game Design Document 
+
+Game Document for "Cell Master", a Dynamic AI-Powered Classic Text-Based RPG.
 
 ## 1. Game Overview & Scope
 

@@ -1,4 +1,4 @@
-## AI GM Rulebook for "Cell Master", a Dynamic AI-Powered Classic Text-Based RPG
+## Game Master Rulebook
 
 This document provides detailed guidance and rules for the AI Game Master to maintain a coherent world, manage narrative flow, adjudicate mechanics, and drive immersive player-NPC interactions within the Cell Master text-based RPG.
 
