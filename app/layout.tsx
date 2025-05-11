@@ -12,8 +12,8 @@ const vt323 = VT323({
 });
 
 export const metadata: Metadata = {
-  title: 'Kickstart Basic',
-  description: 'Template for kickstarting toy projects and ideas.',
+  title: 'Cell Master',
+  description: 'A classic text adventure game.',
 };
 
 export default function RootLayout({
