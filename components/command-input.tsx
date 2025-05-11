@@ -52,7 +52,7 @@ export function CommandInput({ onSubmitCommand }: CommandInputProps) {
                 <Input
                   {...field}
                   className="flex-1 bg-black text-green-500 border-green-500 border-2 rounded-none font-mono h-10 placeholder:text-gray-300"
-                  placeholder="What would you like to do?"
+                  placeholder="What will you do?"
                   disabled={isLoading}
                 />
               </FormControl>
