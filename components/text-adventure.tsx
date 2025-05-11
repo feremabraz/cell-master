@@ -6,24 +6,68 @@ import { GameHistory } from './game-story';
 import { CommandInput } from './command-input';
 import { gameHistoryAtom, locationAtom, inventoryAtom, isLoadingAtom } from '@/store/game-store';
 import { useQuery } from '@tanstack/react-query';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 export function TextAdventure() {
   // Use Jotai atoms instead of React useState
-  // biome-ignore lint/correctness/noUnusedVariables: <explanation>
   const [gameHistory, setGameHistory] = useAtom(gameHistoryAtom);
   const [, setLocation] = useAtom(locationAtom);
   const [, setInventory] = useAtom(inventoryAtom);
-  // biome-ignore lint/correctness/noUnusedVariables: <explanation>
+  // biome-ignore lint/correctness/noUnusedVariables: Used in the GameHistory component
   const [isLoading, setIsLoading] = useAtom(isLoadingAtom);
+  const [isInitialized, setIsInitialized] = useState(false);
+
+  // We're handling streaming responses directly with fetch in the handleCommand function
 
   // Initialize game state
   const { data: initialState } = useQuery({
     queryKey: ['gameInit'],
     queryFn: async () => {
       try {
-        // This would normally call the API, but since it's not implemented yet,
-        // we'll return a mock response
+        // Call the AI to generate an initial greeting/scene
+        const response = await fetch('/api/ai', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            prompt: 'start game',
+            body: {
+              command: 'start game',
+              gameHistory: ['Welcome to Cell Master, a text-based adventure game!'],
+            },
+          }),
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to initialize game with AI');
+        }
+
+        // Get the response text and clean it if needed
+        let initialGreeting = await response.text();
+
+        // Remove any metadata or formatting that might be in the response
+        // This regex looks for JSON-like content or numbered chunks and removes them
+        initialGreeting = initialGreeting
+          .replace(/[\w]+:\{.*?\}/g, '') // Remove JSON objects
+          .replace(/\d+:"/g, '') // Remove numbered chunks
+          .replace(/"\s*\d+:/g, '') // Remove trailing numbers
+          .replace(/[\w]+:\{.*$/g, '') // Remove incomplete JSON
+          .replace(/^f:|^e:|^d:/g, '') // Remove prefixes
+          .trim(); // Remove extra whitespace
+
+        return {
+          location: 'start',
+          inventory: [],
+          gameHistory: [
+            'Welcome to Cell Master, a text-based adventure game!',
+            initialGreeting,
+            'What would you like to do?',
+          ],
+        };
+      } catch (error) {
+        console.error('Failed to initialize game:', error);
+        // Fallback to a default response if AI call fails
         return {
           location: 'start',
           inventory: [],
@@ -33,9 +77,6 @@ export function TextAdventure() {
             'What would you like to do?',
           ],
         };
-      } catch (error) {
-        console.error('Failed to initialize game:', error);
-        return null;
       }
     },
     staleTime: Number.POSITIVE_INFINITY,
@@ -43,13 +84,14 @@ export function TextAdventure() {
 
   // Update atoms when initial state is loaded
   useEffect(() => {
-    if (initialState) {
+    if (initialState && !isInitialized) {
       setLocation(initialState.location);
       setInventory(initialState.inventory);
       setGameHistory(initialState.gameHistory);
       setIsLoading(false);
+      setIsInitialized(true);
     }
-  }, [initialState, setLocation, setInventory, setGameHistory, setIsLoading]);
+  }, [initialState, isInitialized, setLocation, setInventory, setGameHistory, setIsLoading]);
 
   // Function to handle user commands
   const handleCommand = async (command: string) => {
@@ -58,30 +100,52 @@ export function TextAdventure() {
     setIsLoading(true);
 
     try {
-      // This would normally call the API, but since it's not implemented yet,
-      // we'll simulate a response
-      const response = {
-        message: `You entered: ${command}. API integration coming soon!`,
-        newLocation: undefined,
-        inventoryChange: undefined,
-      };
+      // Instead of using the complete function, we'll use fetch directly for more control
+      const response = await fetch('/api/ai', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          prompt: command,
+          body: {
+            command,
+            gameHistory,
+          },
+        }),
+      });
 
-      // Update game history with response
-      setGameHistory((prev) => [...prev, response.message]);
-
-      // Update location if changed
-      if (response.newLocation) {
-        setLocation(response.newLocation);
+      if (!response.ok) {
+        throw new Error('Failed to get AI response');
       }
 
-      // Update inventory if changed
-      if (response.inventoryChange) {
-        // TODO: Update inventory
+      // Process the response as a stream to show text as it arrives
+      const reader = response.body?.getReader();
+      if (!reader) throw new Error('Response body is null');
+
+      let accumulatedText = '';
+
+      // Create a temporary array to hold the updated history
+      const newHistory = [...gameHistory, `> ${command}`];
+
+      // Read the stream chunk by chunk
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        // Convert the chunk to text
+        const chunk = new TextDecoder().decode(value);
+        accumulatedText += chunk;
+
+        // Update the game history with the accumulated text so far
+        // This creates the streaming effect in the UI
+        setGameHistory([...newHistory, accumulatedText]);
       }
+
+      setIsLoading(false);
     } catch (error) {
       console.error('Error processing command:', error);
       setGameHistory((prev) => [...prev, 'Something went wrong. Please try again.']);
-    } finally {
       setIsLoading(false);
     }
   };
@@ -96,3 +160,4 @@ export function TextAdventure() {
     </Card>
   );
 }
+
