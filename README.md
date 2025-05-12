@@ -7,6 +7,7 @@ A dynamic AI-powered memory-based classical text-based RPG with persistent memor
 ## Features
 
 - Text-based adventure game with a retro terminal aesthetic
+- Based on OSRIC as a mechanical engine
 - AI-powered game master that remembers the entire story
 - Persistent memory using Mem0 with the Vercel AI SDK
 - Unique user identification for personalized game experiences
@@ -55,3 +56,6 @@ Key features of the Mem0 integration:
 - The memory is stored securely in the Mem0 cloud
 - The integration is seamless with the Vercel AI SDK
 
+## License
+
+This product contains Open Game Content derived from the OSRIC System Reference Document, used under the Open Game License 1.0a. OSRIC is copyright Stuart Marshall and Matt Finch.
