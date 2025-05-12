@@ -4,9 +4,16 @@ import { useAtom } from 'jotai';
 import { Card } from '@/components/ui/card';
 import { GameHistory } from './game-story';
 import { CommandInput } from './command-input';
-import { gameHistoryAtom, locationAtom, inventoryAtom, isLoadingAtom, userIdAtom } from '@/store/game-store';
+import { 
+  gameHistoryAtom, 
+  locationAtom, 
+  inventoryAtom, 
+  isLoadingAtom, 
+  userIdAtom,
+  isInitializedAtom
+} from '@/store/game-store';
 import { useQuery } from '@tanstack/react-query';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 export function TextAdventure() {
   // Use Jotai atoms instead of React useState
@@ -16,7 +23,7 @@ export function TextAdventure() {
   // biome-ignore lint/correctness/noUnusedVariables: Used in the GameHistory component
   const [isLoading, setIsLoading] = useAtom(isLoadingAtom);
   const [userId] = useAtom(userIdAtom);
-  const [isInitialized, setIsInitialized] = useState(false);
+  const [isInitialized, setIsInitialized] = useAtom(isInitializedAtom);
 
   // We're handling streaming responses directly with fetch in the handleCommand function
 
@@ -69,7 +76,7 @@ export function TextAdventure() {
       setIsLoading(false);
       setIsInitialized(true);
     }
-  }, [initialState, isInitialized, setLocation, setInventory, setGameHistory, setIsLoading]);
+  }, [initialState, isInitialized, setLocation, setInventory, setGameHistory, setIsLoading, setIsInitialized]);
 
   // Function to handle user commands
   const handleCommand = async (command: string) => {

@@ -1,5 +1,6 @@
 import { atom } from 'jotai';
 import { clientGameMap } from '@/lib/client/game-data';
+import { QueryClient } from '@tanstack/react-query';
 
 // Helper function to generate a UUID for user identification
 function generateUserId() {
@@ -30,3 +31,11 @@ export const roomItemsAtom = atom((get) => {
   const currentRoom = get(currentRoomAtom);
   return currentRoom?.items || [];
 });
+
+// New atoms to replace useState instances
+export const queryClientAtom = atom(() => new QueryClient());
+
+export const isInitializedAtom = atom(false);
+
+// Mobile detection atom for responsive UI
+export const isMobileAtom = atom<boolean | undefined>(undefined);
