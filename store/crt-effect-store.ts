@@ -1,5 +1,8 @@
 import { atom } from 'jotai';
 
+// Scene image atom
+export const sceneImageUrlAtom = atom<string>('');
+
 // CRT effect settings atoms
 export const scanlineOpacityAtom = atom(0.18);
 export const scanlineSpacingAtom = atom(2); // in pixels
