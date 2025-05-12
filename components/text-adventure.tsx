@@ -12,11 +12,72 @@ import {
   userIdAtom,
   isInitializedAtom
 } from '@/store/game-store';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useMutation } from '@tanstack/react-query';
 import { useEffect } from 'react';
 
+interface GameState {
+  location: string;
+  inventory: string[];
+  gameHistory: string[];
+}
+
+async function initializeGame(userId: string): Promise<GameState> {
+  const response = await fetch('/api/ai', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      prompt: 'start game',
+      body: {
+        command: 'start game',
+        gameHistory: ['Welcome to Cell Master, a text-based adventure game!'],
+        userId,
+      },
+    }),
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to initialize game with AI');
+  }
+
+  const initialGreeting = await response.text();
+
+  return {
+    location: 'start',
+    inventory: [],
+    gameHistory: ['Welcome to Cell Master, a text-based adventure game!', initialGreeting],
+  };
+}
+
+async function processCommand({ command, gameHistory, userId }: { 
+  command: string; 
+  gameHistory: string[]; 
+  userId: string;
+}): Promise<Response> {
+  const response = await fetch('/api/ai', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      prompt: command,
+      body: {
+        command,
+        gameHistory,
+        userId,
+      },
+    }),
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to get AI response');
+  }
+
+  return response;
+}
+
 export function TextAdventure() {
-  // Use Jotai atoms instead of React useState
   const [gameHistory, setGameHistory] = useAtom(gameHistoryAtom);
   const [, setLocation] = useAtom(locationAtom);
   const [, setInventory] = useAtom(inventoryAtom);
@@ -25,46 +86,47 @@ export function TextAdventure() {
   const [userId] = useAtom(userIdAtom);
   const [isInitialized, setIsInitialized] = useAtom(isInitializedAtom);
 
-  // We're handling streaming responses directly with fetch in the handleCommand function
-
-  // Initialize game state
-  const { data: initialState } = useQuery({
-    queryKey: ['gameInit'],
-    queryFn: async () => {
-      try {
-        // Call the AI to generate an initial greeting/scene
-        const response = await fetch('/api/ai', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            prompt: 'start game',
-            body: {
-              command: 'start game',
-              gameHistory: ['Welcome to Cell Master, a text-based adventure game!'],
-              userId,
-            },
-          }),
-        });
-
-        if (!response.ok) {
-          throw new Error('Failed to initialize game with AI');
-        }
-
-        // Get the response text and clean it if needed
-        const initialGreeting = await response.text();
-
-        return {
-          location: 'start',
-          inventory: [],
-          gameHistory: ['Welcome to Cell Master, a text-based adventure game!', initialGreeting],
-        };
-      } catch (error) {
-        console.error('Failed to initialize game:', error);
-      }
-    },
+  // Initialize game state with React Query
+  const { data } = useQuery<GameState>({
+    queryKey: ['gameInit', userId],
+    queryFn: () => initializeGame(userId),
     staleTime: Number.POSITIVE_INFINITY,
+    retry: 1,
+  });
+
+  // Extract initialState with proper typing
+  const initialState = data as GameState | undefined;
+
+  // Handle initialization errors
+  useEffect(() => {
+    const handleError = (event: ErrorEvent) => {
+      if (event.message.includes('game')) {
+        console.error('Failed to initialize game:', event.error);
+        setGameHistory(['Failed to initialize game. Please refresh to try again.']);
+      }
+    };
+    
+    window.addEventListener('error', handleError);
+    return () => window.removeEventListener('error', handleError);
+  }, [setGameHistory]);
+
+  // React Query mutation for command processing
+  const { mutateAsync: processCommandMutation } = useMutation<
+    Response, 
+    Error,
+    { command: string; gameHistory: string[]; userId: string }
+  >({
+    mutationFn: processCommand,
+    onMutate: (variables) => {
+      // Update history optimistically
+      setGameHistory((prev) => [...prev, `> ${variables.command}`]);
+      setIsLoading(true);
+    },
+    onError: (error) => {
+      console.error('Error processing command:', error);
+      setGameHistory((prev) => [...prev, 'Something went wrong. Please try again.']);
+      setIsLoading(false);
+    },
   });
 
   // Update atoms when initial state is loaded
@@ -78,33 +140,11 @@ export function TextAdventure() {
     }
   }, [initialState, isInitialized, setLocation, setInventory, setGameHistory, setIsLoading, setIsInitialized]);
 
-  // Function to handle user commands
+  // Function to handle user commands using React Query mutation
   const handleCommand = async (command: string) => {
-    // Add the command to history
-    setGameHistory((prev) => [...prev, `> ${command}`]);
-    setIsLoading(true);
-
     try {
-      // Instead of using the complete function, we'll use fetch directly for more control
-      const response = await fetch('/api/ai', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          prompt: command,
-          body: {
-            command,
-            gameHistory,
-            userId,
-          },
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to get AI response');
-      }
-
+      const response = await processCommandMutation({ command, gameHistory, userId });
+      
       // Process the response as a stream to show text as it arrives
       const reader = response.body?.getReader();
       if (!reader) throw new Error('Response body is null');
@@ -129,10 +169,8 @@ export function TextAdventure() {
       }
 
       setIsLoading(false);
-    } catch (error) {
-      console.error('Error processing command:', error);
-      setGameHistory((prev) => [...prev, 'Something went wrong. Please try again.']);
-      setIsLoading(false);
+    } catch {
+      // Error handling is already in the mutation's onError
     }
   };
 
