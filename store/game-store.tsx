@@ -1,8 +1,13 @@
 import { atom } from 'jotai';
 import { clientGameMap } from '@/lib/client/game-data';
 
+// Helper function to generate a UUID for user identification
+function generateUserId() {
+  return crypto.randomUUID();
+}
+
 // Game state atoms
-export const userIdAtom = atom('');
+export const userIdAtom = atom(generateUserId());
 export const locationAtom = atom('start');
 export const inventoryAtom = atom<string[]>([]);
 export const gameHistoryAtom = atom<string[]>(['Loading game state...']);

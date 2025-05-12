@@ -1,12 +1,25 @@
 import { streamText } from 'ai';
-import { openai } from '@ai-sdk/openai';
-
-export const runtime = 'edge';
+import { createMem0 } from '@mem0/vercel-ai-provider';
 
 export async function POST(req: Request) {
   try {
     const { prompt, body } = await req.json();
-    const { command, gameHistory } = body || {};
+    const { command, gameHistory, userId } = body || {};
+
+    // Create Mem0 instance with OpenAI provider
+    const mem0 = createMem0({
+      provider: 'openai',
+      mem0ApiKey: process.env.MEM0_API_KEY,
+      apiKey: process.env.OPENAI_API_KEY,
+      config: {
+        compatibility: 'strict',
+      },
+      mem0Config: {
+        user_id: userId || 'default-user',
+        project_id: process.env.MEM0_PROJECT_ID,
+        org_id: process.env.MEM0_ORG_ID,
+      },
+    });
 
     const systemPrompt = `You are the Game Master for a text adventure game called "Cell Master". 
 The player is the protagonist who has awakened in a mysterious facility.
@@ -38,14 +51,20 @@ IMPORTANT: Never break character or acknowledge that you are an AI. Always respo
         .join('\n');
     }
 
-    // Use the streamText function to generate a streaming response
+    // The memory will be automatically handled by the Mem0 provider
+
+    // Use the streamText function with Mem0 to generate a streaming response with memory
     const result = streamText({
-      model: openai('gpt-4o'),
+      model: mem0('gpt-4o', {
+        user_id: userId || 'default-user',
+      }),
       system: systemPrompt,
       prompt: `${context ? `${context}\n` : ''}Player: ${command || prompt}`,
       temperature: 0.7,
       maxTokens: 500,
     });
+
+    // The memory is automatically stored by the Mem0 provider
 
     // Create a TransformStream to clean the response
     const { readable, writable } = new TransformStream();
