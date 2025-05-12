@@ -127,3 +127,178 @@ body {
   content: "█";
   animation: blink 1s step-end infinite;
 }
+
+/* CRT screen effects */
+
+/* Scanlines */
+@keyframes scanline {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(100%);
+  }
+}
+
+.crt-scanlines {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none; /* IMPORTANT: Allow interaction with elements beneath */
+  z-index: 15;
+  opacity: 0.5;
+}
+
+.crt-scanlines::before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(34, 197, 94, 0.2) 0.5%,
+    transparent 1%
+  );
+  pointer-events: none; /* IMPORTANT: Allow interaction with elements beneath */
+}
+
+.crt-scanlines::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 20px;
+  background: rgba(34, 197, 94, 0.25);
+  top: 0;
+  left: 0;
+  animation: scanline 6s linear infinite;
+  pointer-events: none; /* IMPORTANT: Allow interaction with elements beneath */
+}
+
+/* CRT flicker effect */
+@keyframes flicker {
+  0% {
+    opacity: 0.95;
+  }
+  5% {
+    opacity: 0.85;
+  }
+  10% {
+    opacity: 0.95;
+  }
+  15% {
+    opacity: 0.9;
+  }
+  20% {
+    opacity: 0.95;
+  }
+  50% {
+    opacity: 0.85;
+  }
+  80% {
+    opacity: 0.95;
+  }
+  85% {
+    opacity: 0.8;
+  }
+  90% {
+    opacity: 0.95;
+  }
+  100% {
+    opacity: 0.9;
+  }
+}
+
+.crt-flicker {
+  animation: flicker 0.2s infinite alternate-reverse;
+}
+
+/* CRT screen glow */
+.crt-glow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  box-shadow: 0 0 15px rgba(34, 197, 94, 0.2), 0 0 30px rgba(34, 197, 94, 0.15), 0 0 45px
+    rgba(34, 197, 94, 0.1), inset 0 0 45px rgba(34, 197, 94, 0.25);
+  pointer-events: none; /* IMPORTANT: Allow interaction with elements beneath */
+  z-index: 10;
+}
+
+/* CRT vignette effect */
+.crt-vignette {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at center, transparent 50%, rgba(0, 0, 0, 0.9) 100%);
+  pointer-events: none; /* IMPORTANT: Allow interaction with elements beneath */
+  z-index: 12;
+}
+
+/* CRT curvature effect */
+.crt-container {
+  position: relative;
+  overflow: hidden;
+  border-radius: 10px;
+}
+
+.crt-screen {
+  position: relative;
+  z-index: 5;
+  transform-style: preserve-3d;
+  overflow: hidden;
+}
+
+.crt-curvature {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  box-shadow: inset 0 0 70px rgba(0, 0, 0, 0.7);
+  border-radius: 10px;
+  pointer-events: none; /* IMPORTANT: Allow interaction with elements beneath */
+  z-index: 20;
+}
+
+/* CRT on/off animation */
+@keyframes crt-on {
+  0% {
+    transform: scale(0.8, 0.1);
+    opacity: 0;
+  }
+  10% {
+    transform: scale(1, 0.1);
+    opacity: 0.3;
+  }
+  30% {
+    transform: scale(1, 0.4);
+    opacity: 0.6;
+  }
+  50% {
+    transform: scale(1, 0.7);
+    opacity: 0.8;
+  }
+  70% {
+    transform: scale(1, 0.9);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(1, 1);
+    opacity: 1;
+  }
+}
+
+.crt-on {
+  animation: crt-on 0.5s ease-in-out;
+}
