@@ -7,6 +7,10 @@ import { NoiseEffect } from './noise-effect';
 import {
   scanlineOpacityAtom,
   scanlineSpacingAtom,
+  scanlineAngleAtom,
+  scanlineColorAtom,
+  scanlineBlendModeAtom,
+  scanlineAnimationSpeedAtom,
   flickerIntensityAtom,
   flickerSpeedAtom,
   glowIntensityAtom,
@@ -22,6 +26,10 @@ export function EnhancedCRTEffect() {
   // Get settings from store
   const scanlineOpacity = useAtomValue(scanlineOpacityAtom);
   const scanlineSpacing = useAtomValue(scanlineSpacingAtom);
+  const scanlineAngle = useAtomValue(scanlineAngleAtom);
+  const scanlineColor = useAtomValue(scanlineColorAtom);
+  const scanlineBlendMode = useAtomValue(scanlineBlendModeAtom);
+  const scanlineAnimationSpeed = useAtomValue(scanlineAnimationSpeedAtom);
   const flickerIntensity = useAtomValue(flickerIntensityAtom);
   const flickerSpeed = useAtomValue(flickerSpeedAtom);
   const glowIntensity = useAtomValue(glowIntensityAtom);
@@ -44,10 +52,10 @@ export function EnhancedCRTEffect() {
   useEffect(() => {
     const scanlineInterval = setInterval(() => {
       setScanlineOffset((prev) => (prev + 1) % 100);
-    }, 50);
+    }, scanlineAnimationSpeed);
 
     return () => clearInterval(scanlineInterval);
-  }, []);
+  }, [scanlineAnimationSpeed]);
 
   return (
     <>
@@ -59,15 +67,15 @@ export function EnhancedCRTEffect() {
         className="pointer-events-none fixed inset-0 z-[5] overflow-hidden"
         style={{
           backgroundImage: `repeating-linear-gradient(
-            0deg,
-            rgba(0, 0, 0, ${scanlineOpacity}) 0px,
-            rgba(0, 0, 0, ${scanlineOpacity}) ${scanlineSpacing / 2}px,
+            ${scanlineAngle}deg,
+            rgba(${scanlineColor}, ${scanlineOpacity}) 0px,
+            rgba(${scanlineColor}, ${scanlineOpacity}) ${scanlineSpacing / 2}px,
             transparent ${scanlineSpacing / 2}px,
             transparent ${scanlineSpacing}px
           )`,
           backgroundSize: `100% ${scanlineSpacing}px`,
           transform: `translateY(${scanlineOffset}%)`,
-          mixBlendMode: 'multiply',
+          mixBlendMode: scanlineBlendMode,
         }}
       />
 

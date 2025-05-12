@@ -5,10 +5,15 @@ import { useAtom } from 'jotai';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Slider } from '@/components/ui/slider';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import { ChevronUp, ChevronDown, Settings } from 'lucide-react';
 import {
   scanlineOpacityAtom,
   scanlineSpacingAtom,
+  scanlineAngleAtom,
+  scanlineColorAtom,
+  scanlineBlendModeAtom,
+  scanlineAnimationSpeedAtom,
   flickerIntensityAtom,
   flickerSpeedAtom,
   glowIntensityAtom,
@@ -27,6 +32,10 @@ export function CRTControls() {
   // CRT effect settings
   const [scanlineOpacity, setScanlineOpacity] = useAtom(scanlineOpacityAtom);
   const [scanlineSpacing, setScanlineSpacing] = useAtom(scanlineSpacingAtom);
+  const [scanlineAngle, setScanlineAngle] = useAtom(scanlineAngleAtom);
+  const [scanlineColor, setScanlineColor] = useAtom(scanlineColorAtom);
+  const [scanlineBlendMode, setScanlineBlendMode] = useAtom(scanlineBlendModeAtom);
+  const [scanlineAnimationSpeed, setScanlineAnimationSpeed] = useAtom(scanlineAnimationSpeedAtom);
   const [flickerIntensity, setFlickerIntensity] = useAtom(flickerIntensityAtom);
   const [flickerSpeed, setFlickerSpeed] = useAtom(flickerSpeedAtom);
   const [glowIntensity, setGlowIntensity] = useAtom(glowIntensityAtom);
@@ -49,10 +58,10 @@ export function CRTControls() {
   }
 
   return (
-    <Card className="fixed right-4 bottom-4 z-50 w-80 bg-black border-2 border-green-500 text-green-500 shadow-lg shadow-green-900/20">
+    <Card className="fixed right-4 bottom-4 z-50 w-80 bg-black border-2 border-green-500 text-green-500 rounded-none">
       <div className="p-4">
         <div className="flex justify-between items-center mb-4">
-          <h3 className="text-lg font-bold ">CRT Effect Controls</h3>
+          <h3 className="text-lg font-bold">CRT Effect Controls</h3>
           <div className="flex gap-2">
             <Button
               variant="outline"
@@ -72,10 +81,9 @@ export function CRTControls() {
             </Button>
           </div>
         </div>
-
         {isOpen && (
-          <div className="space-y-4">
-            <div className="space-y-2">
+          <ScrollArea className="h-[60vh] pr-4">
+            <div className="space-y-4 pt-6">
               <div className="flex justify-between">
                 {/* biome-ignore lint/a11y/noLabelWithoutControl: <explanation> */}
                 <label className="text-sm">Scanline Opacity: {scanlineOpacity.toFixed(2)}</label>
@@ -97,7 +105,7 @@ export function CRTControls() {
               />
             </div>
 
-            <div className="space-y-2">
+            <div className="space-y-4 pt-6">
               <div className="flex justify-between">
                 {/* biome-ignore lint/a11y/noLabelWithoutControl: <explanation> */}
                 <label className="text-sm">Scanline Spacing: {scanlineSpacing}px</label>
@@ -119,7 +127,128 @@ export function CRTControls() {
               />
             </div>
 
-            <div className="space-y-2">
+            <div className="space-y-4 pt-6">
+              <div className="flex justify-between">
+                {/* biome-ignore lint/a11y/noLabelWithoutControl: <explanation> */}
+                <label className="text-sm">Scanline Angle: {scanlineAngle}°</label>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="h-6 text-xs border-green-500 text-green-500 rounded-none hover:bg-green-900 hover:text-black"
+                  onClick={() => setScanlineAngle(0)}
+                >
+                  Reset
+                </Button>
+              </div>
+              <Slider
+                value={[scanlineAngle]}
+                min={0}
+                max={180}
+                step={1}
+                onValueChange={(value) => setScanlineAngle(value[0])}
+              />
+            </div>
+
+            <div className="space-y-4 pt-6">
+              <div className="flex justify-between">
+                {/* biome-ignore lint/a11y/noLabelWithoutControl: <explanation> */}
+                <label className="text-sm">
+                  Scanline Animation Speed: {scanlineAnimationSpeed}ms
+                </label>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="h-6 text-xs border-green-500 text-green-500 rounded-none hover:bg-green-900 hover:text-black"
+                  onClick={() => setScanlineAnimationSpeed(50)}
+                >
+                  Reset
+                </Button>
+              </div>
+              <Slider
+                value={[scanlineAnimationSpeed]}
+                min={10}
+                max={200}
+                step={1}
+                onValueChange={(value) => setScanlineAnimationSpeed(value[0])}
+              />
+            </div>
+
+            <div className="space-y-4 pt-6">
+              <div className="flex justify-between">
+                {/* biome-ignore lint/a11y/noLabelWithoutControl: <explanation> */}
+                <label className="text-sm">Scanline Color</label>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="h-6 text-xs border-green-500 text-green-500 rounded-none hover:bg-green-900 hover:text-black"
+                  onClick={() => setScanlineColor('0, 0, 0')}
+                >
+                  Reset
+                </Button>
+              </div>
+              <div className="grid grid-cols-3 gap-2">
+                {[
+                  { name: 'Black', value: '0, 0, 0' },
+                  { name: 'Dark Green', value: '0, 50, 0' },
+                  { name: 'Green', value: '0, 100, 0' },
+                  { name: 'Blue', value: '0, 0, 100' },
+                  { name: 'Red', value: '100, 0, 0' },
+                  { name: 'Purple', value: '50, 0, 50' },
+                ].map((color) => (
+                  <Button
+                    key={color.value}
+                    variant={scanlineColor === color.value ? 'default' : 'outline'}
+                    size="sm"
+                    className={`text-xs ${scanlineColor === color.value ? 'bg-green-500 text-black' : 'border-green-500 text-green-500'} rounded-none hover:bg-green-900 hover:text-black`}
+                    onClick={() => setScanlineColor(color.value)}
+                  >
+                    {color.name}
+                  </Button>
+                ))}
+              </div>
+            </div>
+
+            <div className="space-y-4 pt-6">
+              <div className="flex justify-between">
+                {/* biome-ignore lint/a11y/noLabelWithoutControl: <explanation> */}
+                <label className="text-sm">Blend Mode</label>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="h-6 text-xs border-green-500 text-green-500 rounded-none hover:bg-green-900 hover:text-black"
+                  onClick={() => setScanlineBlendMode('multiply' as const)}
+                >
+                  Reset
+                </Button>
+              </div>
+              <div className="grid grid-cols-2 gap-2">
+                {(
+                  [
+                    'multiply',
+                    'screen',
+                    'overlay',
+                    'darken',
+                    'lighten',
+                    'color-dodge',
+                    'color-burn',
+                    'hard-light',
+                    'soft-light',
+                  ] as const
+                ).map((mode) => (
+                  <Button
+                    key={mode}
+                    variant={scanlineBlendMode === mode ? 'default' : 'outline'}
+                    size="sm"
+                    className={`text-xs ${scanlineBlendMode === mode ? 'bg-green-500 text-black' : 'border-green-500 text-green-500'} rounded-none hover:bg-green-900 hover:text-black`}
+                    onClick={() => setScanlineBlendMode(mode)}
+                  >
+                    {mode}
+                  </Button>
+                ))}
+              </div>
+            </div>
+
+            <div className="space-y-4 pt-6">
               <div className="flex justify-between">
                 {/* biome-ignore lint/a11y/noLabelWithoutControl: <explanation> */}
                 <label className="text-sm">Flicker Intensity: {flickerIntensity.toFixed(2)}</label>
@@ -141,7 +270,7 @@ export function CRTControls() {
               />
             </div>
 
-            <div className="space-y-2">
+            <div className="space-y-4 pt-6">
               <div className="flex justify-between">
                 {/* biome-ignore lint/a11y/noLabelWithoutControl: <explanation> */}
                 <label className="text-sm">Flicker Speed: {flickerSpeed}ms</label>
@@ -163,7 +292,7 @@ export function CRTControls() {
               />
             </div>
 
-            <div className="space-y-2">
+            <div className="space-y-4 pt-6">
               <div className="flex justify-between">
                 {/* biome-ignore lint/a11y/noLabelWithoutControl: <explanation> */}
                 <label className="text-sm">Glow Intensity: {glowIntensity.toFixed(2)}</label>
@@ -185,7 +314,7 @@ export function CRTControls() {
               />
             </div>
 
-            <div className="space-y-2">
+            <div className="space-y-4 pt-6">
               <div className="flex justify-between">
                 {/* biome-ignore lint/a11y/noLabelWithoutControl: <explanation> */}
                 <label className="text-sm">Glow Size: {glowSize}px</label>
@@ -207,7 +336,7 @@ export function CRTControls() {
               />
             </div>
 
-            <div className="space-y-2">
+            <div className="space-y-4 pt-6">
               <div className="flex justify-between">
                 {/* biome-ignore lint/a11y/noLabelWithoutControl: <explanation> */}
                 <label className="text-sm">Curvature: {curvatureIntensity}%</label>
@@ -229,7 +358,7 @@ export function CRTControls() {
               />
             </div>
 
-            <div className="space-y-2">
+            <div className="space-y-4 pt-6">
               <div className="flex justify-between">
                 {/* biome-ignore lint/a11y/noLabelWithoutControl: <explanation> */}
                 <label className="text-sm">Vignette: {vignetteIntensity.toFixed(2)}</label>
@@ -251,7 +380,7 @@ export function CRTControls() {
               />
             </div>
 
-            <div className="space-y-2">
+            <div className="space-y-4 pt-6">
               <div className="flex justify-between">
                 {/* biome-ignore lint/a11y/noLabelWithoutControl: <explanation> */}
                 <label className="text-sm">Noise Opacity: {noiseOpacity.toFixed(2)}</label>
@@ -273,7 +402,7 @@ export function CRTControls() {
               />
             </div>
 
-            <div className="space-y-2">
+            <div className="space-y-4 pt-6">
               <div className="flex justify-between">
                 {/* biome-ignore lint/a11y/noLabelWithoutControl: <explanation> */}
                 <label className="text-sm">Noise Speed: {noiseSpeed}</label>
@@ -295,7 +424,7 @@ export function CRTControls() {
               />
             </div>
 
-            <div className="pt-2 flex justify-between">
+            <div className="pt-4 flex justify-between">
               <Button
                 variant="outline"
                 className="border-green-500 text-green-500"
@@ -338,7 +467,7 @@ export function CRTControls() {
                 Log Settings
               </Button>
             </div>
-          </div>
+          </ScrollArea>
         )}
       </div>
     </Card>
