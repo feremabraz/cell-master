@@ -14,7 +14,7 @@ Ordered by Dependencies:
    - Long-term time tracking (seasons, years)
    - Spell duration tracking
 
-3. **Random Tables**
+3. **Random Tables** (implemented)
    - Random name generators
    - Weather generation
    - Random encounter tables by terrain/level

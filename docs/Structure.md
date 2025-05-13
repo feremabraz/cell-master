@@ -12,7 +12,7 @@ cell-master/
 │   ├── random.ts                   # Random tables/utilities
 │   ├── narrative.ts                # Narration formatter and stylizer
 │   └── logger.ts                   # Optional debug/logger
-├── state/                          # 
+├── store/                          # 
 │   ├── playerAtoms.ts              # Player state (stats, location, etc.)
 │   ├── worldAtoms.ts               # World state (encounters, areas, time)
 │   ├── aiAtoms.ts                  # Memory session, Vercel AI state, mem0

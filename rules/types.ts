@@ -35,6 +35,9 @@ export const CharacterRaces = [
 
 export type CharacterRace = typeof CharacterRaces[number];
 
+export const CharacterSexes = ['male', 'female'] as const;
+export type CharacterSex = typeof CharacterSexes[number];
+
 export const Alignments = [
   'Lawful Good', 
   'Lawful Neutral', 
