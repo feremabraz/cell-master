@@ -4,11 +4,11 @@ Ordered by Dependencies:
 
 ### Phase 1: Core Foundations
 
-1. **Dice System** (already implemented)
+1. **Dice System** (implemented)
    - Add advantage/disadvantage mechanics
    - Dice pool systems for complex checks
 
-2. **Time System**
+2. **Time System** (implemented)
    - Turn tracking (exploration/combat)
    - Day/night cycle effects
    - Long-term time tracking (seasons, years)
