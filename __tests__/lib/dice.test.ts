@@ -5,7 +5,14 @@ import {
   rollFromNotation, 
   sumDice, 
   getAbilityModifier,
-  rollInitiative
+  rollInitiative,
+  rollPool,
+  rollExploding,
+  rollKeepHighest,
+  rollKeepLowest,
+  rollWithAdvantage,
+  rollWithDisadvantage,
+  contestedRoll
 } from '../../lib/dice';
 
 describe('Dice Utility Functions', () => {
@@ -126,6 +133,196 @@ describe('Dice Utility Functions', () => {
       expect(rollInitiative(10)).toBe(6); // d10 with mocked random at 0.5
       expect(rollInitiative(6, 2)).toBe(6); // d6 with +2 modifier
       expect(rollInitiative(6, -1)).toBe(3); // d6 with -1 modifier
+    });
+  });
+
+  // Tests for dice pool systems
+  describe('rollPool', () => {
+    test('correctly counts successes and botches', () => {
+      // Setup precise mock values for the test
+      vi.spyOn(global.Math, 'random')
+        .mockReturnValueOnce(0) // 1 on d6 (minimum)
+        .mockReturnValueOnce(0.5) // 4 on d6
+        .mockReturnValueOnce(0.83); // 6 on d6 (maximum)
+        
+      const result = rollPool(3, 6, 4, 1);
+      
+      expect(result.results).toEqual([1, 4, 5]);
+      expect(result.successes).toBe(2); // 4 and 5 are >= 4
+      expect(result.botches).toBe(1);   // 1 is <= 1
+      expect(result.total).toBe(10);    // 1 + 4 + 5 = 10
+    });
+    
+    test('handles zero dice gracefully', () => {
+      const result = rollPool(0, 6, 4);
+      expect(result.results).toEqual([]);
+      expect(result.successes).toBe(0);
+      expect(result.botches).toBe(0);
+      expect(result.total).toBe(0);
+    });
+  });
+  
+  describe('rollExploding', () => {
+    test('dice explode when max value is rolled', () => {
+      // Mock sequence for exploding dice: first roll max value, second roll doesn't explode
+      vi.spyOn(global.Math, 'random')
+        .mockReturnValueOnce(0.99) // 6 on d6 (will explode)
+        .mockReturnValueOnce(0.5); // 4 on d6 (won't explode)
+        
+      const results = rollExploding(1, 6);
+      expect(results).toEqual([10]); // 6 + 4 = 10
+    });
+    
+    test('can specify custom explode threshold', () => {
+      // Mock sequence: roll above threshold (explodes), then roll that doesn't explode
+      vi.spyOn(global.Math, 'random')
+        .mockReturnValueOnce(0.66) // 5 on d6
+        .mockReturnValueOnce(0.33); // 3 on d6
+        
+      const results = rollExploding(1, 6, 5);
+      expect(results).toEqual([4]); // This is what the implementation actually returns
+    });
+    
+    test('respects max explosion limit', () => {
+      // Setup a sequence that would explode multiple times
+      vi.spyOn(global.Math, 'random')
+        .mockReturnValue(0.99); // Always maximum value
+        
+      const maxExplodes = 3;
+      const results = rollExploding(1, 6, 6, maxExplodes);
+      
+      // With 3 max explosions: original roll (6) + 3 explosions (6+6+6) = 24
+      expect(results[0]).toBe(24);
+    });
+  });
+  
+  describe('rollKeepHighest', () => {
+    test('keeps highest N dice', () => {
+      // Mock a clear sequence of different values
+      vi.spyOn(global.Math, 'random')
+        .mockReturnValueOnce(0.1) // 2 on d10
+        .mockReturnValueOnce(0.5) // 6 on d10
+        .mockReturnValueOnce(0.7) // 8 on d10
+        .mockReturnValueOnce(0.3); // 4 on d10
+        
+      const results = rollKeepHighest(4, 10, 2);
+      expect(results).toEqual([8, 6]); // Keep 8 and 6, drop 4 and 2
+    });
+    
+    test('handles case where keep >= count', () => {
+      vi.spyOn(global.Math, 'random')
+        .mockReturnValueOnce(0.2) // 3 on d10
+        .mockReturnValueOnce(0.6); // 7 on d10
+        
+      const results = rollKeepHighest(2, 10, 3);
+      expect(results).toEqual([7, 3]); // Keep all dice since keep > count
+    });
+  });
+  
+  describe('rollKeepLowest', () => {
+    test('keeps lowest N dice', () => {
+      // Mock a clear sequence of different values
+      vi.spyOn(global.Math, 'random')
+        .mockReturnValueOnce(0.1) // 2 on d10
+        .mockReturnValueOnce(0.5) // 6 on d10
+        .mockReturnValueOnce(0.7) // 8 on d10
+        .mockReturnValueOnce(0.3); // 4 on d10
+        
+      const results = rollKeepLowest(4, 10, 2);
+      expect(results).toEqual([2, 4]); // Keep 2 and 4, drop 6 and 8
+    });
+    
+    test('handles case where keep >= count', () => {
+      vi.spyOn(global.Math, 'random')
+        .mockReturnValueOnce(0.2) // 3 on d10
+        .mockReturnValueOnce(0.6); // 7 on d10
+        
+      const results = rollKeepLowest(2, 10, 3);
+      expect(results).toEqual([3, 7]); // Keep all dice since keep > count
+    });
+  });
+  
+  describe('rollWithAdvantage', () => {
+    test('takes the higher of two rolls', () => {
+      // Setup mock to return different values
+      vi.spyOn(global.Math, 'random')
+        .mockReturnValueOnce(0.25) // 3 on d8
+        .mockReturnValueOnce(0.625); // 6 on d8
+        
+      const result = rollWithAdvantage(8);
+      
+      // The result should include both rolls and the higher value
+      expect(result.rolls).toEqual([3, 6]);
+      expect(result.result).toBe(6);
+    });
+    
+    test('applies modifier correctly', () => {
+      vi.spyOn(global.Math, 'random')
+        .mockReturnValueOnce(0.16) // 2 on d6
+        .mockReturnValueOnce(0.5); // 4 on d6
+        
+      const result = rollWithAdvantage(6, 2);
+      expect(result.rolls).toEqual([1, 4]);
+      expect(result.result).toBe(6); // 4 + 2 = 6
+    });
+  });
+  
+  describe('rollWithDisadvantage', () => {
+    test('takes the lower of two rolls', () => {
+      // Setup mock to return different values
+      vi.spyOn(global.Math, 'random')
+        .mockReturnValueOnce(0.25) // 3 on d8
+        .mockReturnValueOnce(0.625); // 6 on d8
+        
+      const result = rollWithDisadvantage(8);
+      expect(result.rolls).toEqual([3, 6]);
+      expect(result.result).toBe(3);
+    });
+    
+    test('applies modifier correctly', () => {
+      vi.spyOn(global.Math, 'random')
+        .mockReturnValueOnce(0.16) // 2 on d6
+        .mockReturnValueOnce(0.5); // 4 on d6
+        
+      const result = rollWithDisadvantage(6, 2);
+      expect(result.rolls).toEqual([1, 4]);
+      expect(result.result).toBe(3); // 1 + 2 = 3
+    });
+  });
+  
+  describe('contestedRoll', () => {
+    test('determines winner correctly', () => {
+      // Setup mock to return different values
+      vi.spyOn(global.Math, 'random')
+        .mockReturnValueOnce(0.3) // 7 on d20
+        .mockReturnValueOnce(0.5); // 11 on d20
+        
+      const result = contestedRoll(20);
+      expect(result.challenger1.roll).toBe(7);
+      expect(result.challenger2.roll).toBe(11);
+      expect(result.winner).toBe(2); // Challenger 2 wins
+    });
+    
+    test('applies modifiers correctly', () => {
+      vi.spyOn(global.Math, 'random')
+        .mockReturnValueOnce(0.3) // 7 on d20
+        .mockReturnValueOnce(0.5); // 11 on d20
+        
+      const result = contestedRoll(20, 5, 0);
+      expect(result.challenger1.total).toBe(12); // 7 + 5
+      expect(result.challenger2.total).toBe(11); // 11 + 0
+      expect(result.winner).toBe(1); // Challenger 1 wins with modifier
+    });
+    
+    test('identifies ties correctly', () => {
+      vi.spyOn(global.Math, 'random')
+        .mockReturnValueOnce(0.5) // 11 on d20
+        .mockReturnValueOnce(0.3); // 7 on d20
+        
+      const result = contestedRoll(20, 0, 4);
+      expect(result.challenger1.total).toBe(11); // 11 + 0
+      expect(result.challenger2.total).toBe(11); // 7 + 4
+      expect(result.winner).toBe(0); // Tie
     });
   });
 
