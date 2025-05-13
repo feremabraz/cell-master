@@ -85,4 +85,187 @@ export const getAbilityModifier = (score: number): number => {
  */
 export const rollInitiative = (sides = 6, modifier = 0): number => {
   return roll(sides, modifier);
+};
+
+/**
+ * DICE POOL SYSTEMS
+ * The following functions implement more advanced dice rolling mechanics
+ */
+
+/**
+ * Represents the result of a dice pool roll
+ */
+export interface DicePoolResult {
+  results: number[];      // Individual die results
+  successes: number;      // Number of successes
+  botches: number;        // Number of botches/critical failures
+  total: number;          // Sum of all dice
+}
+
+/**
+ * Roll a pool of dice and count successes based on a target number
+ * @param count Number of dice to roll
+ * @param sides Number of sides on each die
+ * @param target Target number for success (roll >= target)
+ * @param botchThreshold Value at or below which a die counts as a botch/critical failure
+ * @returns DicePoolResult containing roll information
+ */
+export const rollPool = (
+  count: number, 
+  sides: number, 
+  target: number, 
+  botchThreshold = 1
+): DicePoolResult => {
+  const results = rollMultiple(count, sides);
+  const successes = results.filter(r => r >= target).length;
+  const botches = results.filter(r => r <= botchThreshold).length;
+  const total = sumDice(results);
+  
+  return {
+    results,
+    successes,
+    botches,
+    total
+  };
+};
+
+/**
+ * Roll dice with the "exploding" mechanic (reroll and add when max value is rolled)
+ * @param count Number of dice to roll
+ * @param sides Number of sides on each die
+ * @param explodeOn Value at which dice "explode" (usually the max value)
+ * @param maxExplodes Maximum number of times a single die can explode
+ * @returns Array of individual die results, including explosions
+ */
+export const rollExploding = (
+  count: number, 
+  sides: number, 
+  explodeOn = sides, 
+  maxExplodes = 10
+): number[] => {
+  const results: number[] = [];
+  
+  for (let i = 0; i < count; i++) {
+    let dieValue = roll(sides);
+    let explosions = 0;
+    let dieTotal = dieValue;
+    
+    results.push(dieTotal);
+    
+    // Handle explosions
+    while (dieValue >= explodeOn && explosions < maxExplodes) {
+      dieValue = roll(sides);
+      dieTotal += dieValue;
+      
+      // Replace the previous value with the total
+      results[results.length - 1] = dieTotal;
+      explosions++;
+    }
+  }
+  
+  return results;
+};
+
+/**
+ * Roll multiple dice and keep only the highest N results
+ * @param count Number of dice to roll
+ * @param sides Number of sides on each die
+ * @param keep Number of highest dice to keep
+ * @returns Array of the highest kept die results
+ */
+export const rollKeepHighest = (
+  count: number, 
+  sides: number, 
+  keep: number
+): number[] => {
+  const keepCount = Math.min(keep, count);
+  
+  const results = rollMultiple(count, sides);
+  return results.sort((a, b) => b - a).slice(0, keepCount);
+};
+
+/**
+ * Roll multiple dice and keep only the lowest N results
+ * @param count Number of dice to roll
+ * @param sides Number of sides on each die
+ * @param keep Number of lowest dice to keep
+ * @returns Array of the lowest kept die results
+ */
+export const rollKeepLowest = (
+  count: number, 
+  sides: number, 
+  keep: number
+): number[] => {
+  const keepCount = Math.min(keep, count);
+  
+  const results = rollMultiple(count, sides);
+  return results.sort((a, b) => a - b).slice(0, keepCount);
+};
+
+/**
+ * Roll with advantage (roll twice, take higher result)
+ * @param sides Number of sides on the die
+ * @param modifier Optional modifier to add to the result
+ * @returns Object with both rolls and the final result
+ */
+export const rollWithAdvantage = (sides: number, modifier = 0): { rolls: number[], result: number } => {
+  const rolls = rollMultiple(2, sides);
+  const highestRoll = Math.max(...rolls);
+  
+  return {
+    rolls,
+    result: highestRoll + modifier
+  };
+};
+
+/**
+ * Roll with disadvantage (roll twice, take lower result)
+ * @param sides Number of sides on the die
+ * @param modifier Optional modifier to add to the result
+ * @returns Object with both rolls and the final result
+ */
+export const rollWithDisadvantage = (sides: number, modifier = 0): { rolls: number[], result: number } => {
+  const rolls = rollMultiple(2, sides);
+  const lowestRoll = Math.min(...rolls);
+  
+  return {
+    rolls,
+    result: lowestRoll + modifier
+  };
+};
+
+/**
+ * Contested roll between two characters
+ * @param sides Number of sides on the die
+ * @param challenger1Modifier Modifier for the first challenger
+ * @param challenger2Modifier Modifier for the second challenger
+ * @returns Object with both rolls, modified values, and the winner (1, 2, or 0 for tie)
+ */
+export const contestedRoll = (
+  sides: number, 
+  challenger1Modifier = 0, 
+  challenger2Modifier = 0
+): { 
+  challenger1: { roll: number, total: number }, 
+  challenger2: { roll: number, total: number }, 
+  winner: number 
+} => {
+  const roll1 = roll(sides);
+  const roll2 = roll(sides);
+  
+  const total1 = roll1 + challenger1Modifier;
+  const total2 = roll2 + challenger2Modifier;
+  
+  let winner = 0;
+  if (total1 > total2) {
+    winner = 1;
+  } else if (total2 > total1) {
+    winner = 2;
+  }
+  
+  return {
+    challenger1: { roll: roll1, total: total1 },
+    challenger2: { roll: roll2, total: total2 },
+    winner
+  };
 }; 
