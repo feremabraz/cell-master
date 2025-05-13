@@ -1,4 +1,4 @@
-// Game data types
+// Additional game data types beyond OSRIC
 
 export interface Room {
   id: string;
@@ -11,19 +11,7 @@ export interface GameMap {
   [locationId: string]: Room;
 }
 
-export interface InventoryChange {
-  add?: string[];
-  remove?: string[];
-}
-
-export interface CommandResponse {
-  message: string;
-  newLocation?: string;
-  inventoryChange?: InventoryChange;
-}
-
 export interface GameState {
-  userId: string;
   location: string;
   inventory: string[];
   gameHistory: string[];
