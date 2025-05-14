@@ -1,6 +1,6 @@
 import type { Character, Monster, Weapon, CombatResult, StatusEffect } from '../types';
-import { rollFromNotation, sumDice } from '../../lib/dice';
 import { rollDiceDamage } from './attackRoll';
+import { processDeath } from './death';
 
 /**
  * Calculate the damage of an attack
@@ -91,15 +91,14 @@ export const applyDamage = (
       savingThrow: null,
       endCondition: 'When hit points rise above 0'
     });
-  }
-  
-  if (isDead) {
+    
+    // Add bleeding status effect (will lose 1 hp per round)
     statusEffects.push({
-      name: 'Dead',
-      duration: 0, // Permanent until raised
-      effect: 'Character is dead',
+      name: 'Bleeding',
+      duration: 0, // Until healed
+      effect: 'Losing 1 hp per round',
       savingThrow: null,
-      endCondition: 'When raised from the dead'
+      endCondition: 'When healed above 0 hp or dies'
     });
   }
   
@@ -110,8 +109,14 @@ export const applyDamage = (
     message += ` ${target.name} is unconscious and bleeding!`;
   }
   
+  // Handle death separately using our death system
   if (isDead) {
-    message += ` ${target.name} is dead!`;
+    // Process death with our death module
+    const deathResult = processDeath(target);
+    message += ` ${deathResult.message}`;
+    
+    // Add death status effects
+    statusEffects.push(...deathResult.statusEffects);
   }
   
   return {

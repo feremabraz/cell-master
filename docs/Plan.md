@@ -1,6 +1,6 @@
 # OSRIC Implementation Plan 
 
-Ordered by Dependencies:
+Ordered by conceptual dependencies:
 
 ### Phase 1: Core Foundations
 
@@ -44,7 +44,7 @@ Ordered by Dependencies:
    - Weapon vs. armor adjustments
    - Weapon proficiency bonuses
 
-8. **Damage & Death Basics**
+8. **Damage & Death Basics** (implemented)
    - Basic damage resolution
    - System shock survival
    - Resurrection survival chance

@@ -138,8 +138,11 @@ describe('Combat Damage Mechanics', () => {
       
       expect(targetGoblin.hitPoints.current).toBe(0);
       expect(result.specialEffects).not.toBeNull();
-      expect(result.specialEffects?.length).toBe(1);
-      expect(result.specialEffects?.[0].name).toBe('Unconscious');
+      expect(result.specialEffects?.length).toBe(2); // Now expecting 2 effects
+      // Check for the Unconscious effect
+      expect(result.specialEffects?.some(effect => effect.name === 'Unconscious')).toBe(true);
+      // Check for the Bleeding effect
+      expect(result.specialEffects?.some(effect => effect.name === 'Bleeding')).toBe(true);
       expect(result.message).toContain('unconscious');
     });
     
