@@ -40,13 +40,13 @@ cell-master/
 │   │   ├── goblin.ts
 │   │   └── orc.ts
 │   └── rulesEngine.ts              # Rules used by the AI interpreter
-├── ai/                             #
+├── ai/                             
 │   ├── interpreter.ts              # Translates player intent into rules
 │   ├── planner.ts                  # AI pre-plans possible responses
 │   ├── output.ts                   # Generates narrative responses
 │   ├── themes.ts                   # Reskinning (fantasy, sci-fi, modern)
 │   └── memory.ts                   # mem0 story persistence
-└── __tests__/                          # 
+└── __tests__/                       
     ├── rules/                      # e.g. test attackRoll, savingThrows
     └── ai/                         # e.g. interpreter intent mapping tests
 ```

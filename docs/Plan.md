@@ -32,7 +32,7 @@ Ordered by Dependencies:
    - Multi-class handling
    - Secondary skills
    
-6. **Basic Movement & Exploration**
+6. **Basic Movement & Exploration** (implemented)
    - Encumbrance calculator
    - Movement rate by terrain
    - Light source duration
