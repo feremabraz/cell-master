@@ -22,7 +22,7 @@ Ordered by Dependencies:
 
 ### Phase 2: Character Basics
 
-4. **Character Creation Fundamentals**
+4. **Character Creation Fundamentals** (implemented)
    - Ability score generation methods
    - Race selection and racial bonuses
    - Alignment system
