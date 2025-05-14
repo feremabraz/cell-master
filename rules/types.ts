@@ -1,4 +1,6 @@
-// OSRIC-specific types for game mechanics
+// OSRIC-specific types
+
+import type { CharacterSecondarySkill } from './character/secondarySkills';
 
 export interface AbilityScores {
   strength: number;
@@ -105,6 +107,7 @@ export interface Character extends BaseCharacter {
   racialAbilities: RacialAbility[];
   classAbilities: ClassAbility[];
   proficiencies: WeaponProficiency[];
+  secondarySkills: CharacterSecondarySkill[]; // Secondary skills from non-class background
 }
 
 export interface Monster extends BaseCharacter {

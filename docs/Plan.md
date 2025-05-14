@@ -27,7 +27,7 @@ Ordered by Dependencies:
    - Race selection and racial bonuses
    - Alignment system
 
-5. **Basic Character Class Framework**
+5. **Basic Character Class Framework** (implemented)
    - Class requirements checker
    - Multi-class handling
    - Secondary skills
