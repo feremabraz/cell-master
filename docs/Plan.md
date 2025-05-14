@@ -39,7 +39,7 @@ Ordered by Dependencies:
 
 ### Phase 3: Combat Core
 
-7. **Combat Resolution**
+7. **Combat Resolution** (implemented)
    - THAC0/attack matrices
    - Weapon vs. armor adjustments
    - Weapon proficiency bonuses
