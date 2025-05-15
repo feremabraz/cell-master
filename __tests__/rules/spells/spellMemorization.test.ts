@@ -178,10 +178,19 @@ describe('Spell Memorization', () => {
       expect(result.message).toContain('not found');
     });
     
-    it.skip('should respect slot limits when enforced', () => {
-      // TODO: Fix this test to properly mock the module functions
-      // The issue is that we need to properly mock getTotalSpellSlots and countMemorizedSpellsByLevel
-      // but we're encountering issues with the module loading in the test environment
+    it('should respect slot limits when enforced', () => {
+      // Create a character with already full spell slots      
+      // First fill up all the slots by directly setting the memorizedSpells property
+      clericCharacter.memorizedSpells = {
+        1: [cureLightWounds, cureLightWounds, cureLightWounds, cureLightWounds]
+      };
+      
+      // Try to memorize another spell
+      const result = memorizeSpell(clericCharacter, 'Bless');
+      
+      // Verify the error message matches exactly what's in the implementation
+      expect(result.success).toBe(false);
+      expect(result.message).toBe(`${clericCharacter.name} has no available spell slots for level 1 spells.`);
     });
   });
   
@@ -226,7 +235,7 @@ describe('Spell Memorization', () => {
     it('should combine base slots with bonus slots from wisdom', () => {
       const slots = getTotalSpellSlots(clericCharacter);
       
-      // Base slots: { 1: 2, 2: 1 }
+      // Base slots from our mock: { 1: 2, 2: 1 }
       // Bonus from Wisdom 16: { 1: 2, 2: 1 }
       // Combined should be: { 1: 4, 2: 2 }
       expect(slots[1]).toBe(4);
@@ -239,9 +248,9 @@ describe('Spell Memorization', () => {
       
       const slots = getTotalSpellSlots(clericCharacter);
       
-      // Base slots: { 1: 1 }
+      // Base slots from our mock for level 1: { 1: 1 }
       // Bonus from Wisdom 16: { 1: 2, 2: 1 }
-      // Combined should be: { 1: 3 } (no level 2 slots yet)
+      // But level 2 slots aren't available yet, so only level 1 bonus applies
       expect(slots[1]).toBe(3);
       expect(slots[2]).toBeUndefined();
     });
