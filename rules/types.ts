@@ -129,7 +129,7 @@ export interface Monster extends BaseCharacter {
 export interface Item {
   id: string;
   name: string;
-  weight: number; // in coins (10 coins = 1 pound)
+  weight: number; // in coins (10 coins = 0.5 kg, converted from 1 pound)
   description: string;
   value: number; // in gold pieces
   equipped: boolean;

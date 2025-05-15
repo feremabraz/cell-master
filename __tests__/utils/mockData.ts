@@ -1,4 +1,9 @@
-import type { Character, Item, CharacterRace, AbilityScoreModifiers } from '../../rules/types';
+import type { Character, Item, CharacterRace, AbilityScoreModifiers, AbilityScores } from '../../rules/types';
+import type { 
+  SwimmingDifficulty, 
+  TemperatureRange,
+  SurvivalNeedStatus 
+} from '../../rules/environment/types';
 
 /**
  * Creates a mock character for testing
@@ -11,12 +16,14 @@ export const createMockCharacter = (options: {
   race?: CharacterRace;
   inventory?: Item[];
   equipLightSource?: boolean;
+  customizeCharacter?: Partial<Character>;
 } = {}): Character => {
   const {
     strength = 10,
     race = 'Human',
     inventory = [],
     equipLightSource = false,
+    customizeCharacter = {},
   } = options;
 
   // If equipLightSource is true, add a torch to the inventory
@@ -76,7 +83,7 @@ export const createMockCharacter = (options: {
     charismaMaxHenchmen: null
   };
 
-  return {
+  const baseCharacter: Character = {
     id: 'test-char',
     name: 'Test Character',
     level: 1,
@@ -126,6 +133,9 @@ export const createMockCharacter = (options: {
     proficiencies: [],
     secondarySkills: []
   };
+
+  // Apply any custom character properties
+  return { ...baseCharacter, ...customizeCharacter };
 };
 
 /**
@@ -143,4 +153,145 @@ export const createMockItem = (weight: number): Item => ({
   equipped: false,
   magicBonus: null,
   charges: null
-}); 
+});
+
+// Standard ability scores for testing
+export const standardAbilityScores: AbilityScores = {
+  strength: 16,
+  dexterity: 14,
+  constitution: 15,
+  intelligence: 12,
+  wisdom: 10,
+  charisma: 13
+};
+
+// Standard ability modifiers corresponding to standard scores
+export const standardAbilityModifiers: AbilityScoreModifiers = {
+  // Strength
+  strengthHitAdj: 1,
+  strengthDamageAdj: 1,
+  strengthEncumbrance: 35,
+  strengthOpenDoors: 1,
+  strengthBendBars: 10,
+  
+  // Dexterity
+  dexterityReaction: -1,
+  dexterityMissile: 1,
+  dexterityDefense: -1,
+  dexterityPickPockets: 0,
+  dexterityOpenLocks: 0,
+  dexterityFindTraps: 0,
+  dexterityMoveSilently: 0,
+  dexterityHideInShadows: 0,
+  
+  // Constitution
+  constitutionHitPoints: 1,
+  constitutionSystemShock: 90,
+  constitutionResurrectionSurvival: 92,
+  constitutionPoisonSave: 0,
+  
+  // Intelligence
+  intelligenceLanguages: 3,
+  intelligenceLearnSpells: 55,
+  intelligenceMaxSpellLevel: 7,
+  intelligenceIllusionImmunity: false,
+  
+  // Wisdom
+  wisdomMentalSave: 0,
+  wisdomBonusSpells: null,
+  wisdomSpellFailure: 0,
+  
+  // Charisma
+  charismaReactionAdj: 1,
+  charismaLoyaltyBase: 55,
+  charismaMaxHenchmen: 5
+};
+
+// Environment testing specific mock data
+export const mockSurvivalStatus: SurvivalNeedStatus = {
+  daysSinceLastFood: 0,
+  daysSinceLastWater: 0,
+  currentEffects: []
+};
+
+export const mockTerrains = [
+  'Forest',
+  'Desert',
+  'Mountains',
+  'Plains',
+  'Swamp',
+  'Arctic',
+  'Dungeon'
+];
+
+export const mockSwimmingDifficulties: SwimmingDifficulty[] = [
+  'Calm',
+  'Choppy',
+  'Rough',
+  'Stormy',
+  'Treacherous'
+];
+
+export const mockTemperatures: TemperatureRange[] = [
+  'Frigid',
+  'Cold',
+  'Cool',
+  'Moderate',
+  'Warm',
+  'Hot',
+  'Extreme'
+]; 
+
+export const mockAdventurer = createMockCharacter({
+  strength: 16,
+  customizeCharacter: {
+    id: 'char_adventurer',
+    name: 'Thorn the Explorer',
+    level: 3,
+    hitPoints: { current: 24, maximum: 24 },
+    class: 'Ranger',
+    abilities: standardAbilityScores,
+    abilityModifiers: standardAbilityModifiers,
+    languages: ['Common', 'Elvish', 'Dwarvish'],
+    encumbrance: 80,
+    movementRate: 12,
+    armorClass: 7, // Lower is better in OSRIC
+    thac0: 18,
+    classes: { Ranger: 3 },
+    primaryClass: 'Ranger',
+  }
+});
+
+export const mockWeakAdventurer = createMockCharacter({
+  strength: 10,
+  customizeCharacter: {
+    id: 'char_weak_adventurer',
+    name: 'Frail Finn',
+    hitPoints: { current: 12, maximum: 12 },
+    abilities: {
+      ...standardAbilityScores,
+      constitution: 6 // Very low constitution
+    },
+    abilityModifiers: {
+      ...standardAbilityModifiers,
+      constitutionHitPoints: -1,
+      constitutionSystemShock: 40,
+      constitutionResurrectionSurvival: 50,
+      constitutionPoisonSave: -1
+    }
+  }
+});
+
+export const mockArmoredAdventurer = createMockCharacter({
+  strength: 16,
+  customizeCharacter: {
+    id: 'char_armored_adventurer',
+    name: 'Armored Albert',
+    armorClass: 3, // Plate mail
+    movementRate: 9, // Reduced due to heavy armor
+    encumbrance: 220, // Heavy encumbrance
+    hitPoints: { current: 24, maximum: 24 },
+    abilities: standardAbilityScores,
+    abilityModifiers: standardAbilityModifiers
+  }
+});

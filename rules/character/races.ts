@@ -154,32 +154,32 @@ export const getRaceLevelLimits = (race: CharacterRace, characterClass: Characte
  * Gets infravision distance for a race
  */
 export const getInfravisionDistance = (race: CharacterRace): number | null => {
-  // Most demi-human races have 60-foot infravision
+  // Most demi-human races have 18-meter infravision (converted from 60 feet)
   const distances: Record<CharacterRace, number | null> = {
     'Human': null,
-    'Dwarf': 60,
-    'Elf': 60,
-    'Gnome': 60,
-    'Half-Elf': 60,
-    'Halfling': 60,
-    'Half-Orc': 60
+    'Dwarf': 18,
+    'Elf': 18,
+    'Gnome': 18,
+    'Half-Elf': 18,
+    'Halfling': 18,
+    'Half-Orc': 18
   };
   
   return distances[race];
 };
 
 /**
- * Gets base movement rate for a race in feet
+ * Gets base movement rate for a race in meters
  */
 export const getBaseMovementRate = (race: CharacterRace): number => {
   const movementRates: Record<CharacterRace, number> = {
-    'Human': 120,
-    'Dwarf': 90,
-    'Elf': 120,
-    'Gnome': 90,
-    'Half-Elf': 120,
-    'Halfling': 90,
-    'Half-Orc': 120
+    'Human': 36, // Converted from 120 feet
+    'Dwarf': 27, // Converted from 90 feet
+    'Elf': 36,
+    'Gnome': 27,
+    'Half-Elf': 36,
+    'Halfling': 27,
+    'Half-Orc': 36
   };
   
   return movementRates[race];

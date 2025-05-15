@@ -49,7 +49,7 @@ Ordered by conceptual dependencies:
    - System shock survival
    - Resurrection survival chance
 
-9. **Basic Environment Handling**
+9. **Basic Environment Handling** (implemented)
    - Falling damage
    - Swimming/drowning rules
    - Starvation/thirst effects

@@ -74,22 +74,22 @@ describe('Character Races', () => {
       expect(getInfravisionDistance('Human')).toBeNull();
     });
 
-    it('should return 60 feet for most non-human races', () => {
-      expect(getInfravisionDistance('Dwarf')).toBe(60);
-      expect(getInfravisionDistance('Elf')).toBe(60);
-      expect(getInfravisionDistance('Half-Orc')).toBe(60);
+    it('should return 18 meters for most non-human races', () => {
+      expect(getInfravisionDistance('Dwarf')).toBe(18);
+      expect(getInfravisionDistance('Elf')).toBe(18);
+      expect(getInfravisionDistance('Half-Orc')).toBe(18);
     });
   });
 
   describe('getBaseMovementRate', () => {
-    it('should return 120 feet for Humans', () => {
-      expect(getBaseMovementRate('Human')).toBe(120);
+    it('should return 36 meters for Humans', () => {
+      expect(getBaseMovementRate('Human')).toBe(36);
     });
 
-    it('should return 90 feet for smaller races', () => {
-      expect(getBaseMovementRate('Dwarf')).toBe(90);
-      expect(getBaseMovementRate('Halfling')).toBe(90);
-      expect(getBaseMovementRate('Gnome')).toBe(90);
+    it('should return 27 meters for smaller races', () => {
+      expect(getBaseMovementRate('Dwarf')).toBe(27);
+      expect(getBaseMovementRate('Halfling')).toBe(27);
+      expect(getBaseMovementRate('Gnome')).toBe(27);
     });
   });
 
