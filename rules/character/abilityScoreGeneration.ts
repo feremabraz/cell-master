@@ -1,4 +1,4 @@
-import type { AbilityScores } from '../types';
+import type { AbilityScores } from '@rules/types';
 
 /**
  * Contains methods to generate ability scores based on OSRIC rules

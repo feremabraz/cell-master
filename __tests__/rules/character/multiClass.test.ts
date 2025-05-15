@@ -4,8 +4,8 @@ import {
   canDualClass,
   distributeExperience,
   VALID_MULTICLASS_COMBINATIONS,
-} from '../../../rules/character/multiClass';
-import type { AbilityScores, CharacterRace } from '../../../rules/types';
+} from '@rules/character/multiClass';
+import type { AbilityScores, CharacterRace } from '@rules/types';
 
 describe('Multi-Class Handling', () => {
   const validScores: AbilityScores = {

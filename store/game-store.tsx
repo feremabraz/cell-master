@@ -1,5 +1,5 @@
 import { atom } from 'jotai';
-import { clientGameMap } from '@/lib/client/game-data';
+import { clientGameMap } from '@lib/client/game-data';
 import { QueryClient } from '@tanstack/react-query';
 
 // Helper function to generate a UUID for user identification

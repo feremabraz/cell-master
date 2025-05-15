@@ -5,9 +5,9 @@ import {
   calculateSpellSavingThrow,
   getSpellRange,
   getSpellDuration
-} from '../../../rules/spells/spellResolver';
-import { findSpellByName } from '../../../rules/spells/spellList';
-import type { Character, Monster, Spell, AbilityScoreModifiers, CharacterClass, MovementTypeValue, SavingThrowType } from '../../../rules/types';
+} from '@rules/spells/spellResolver';
+import { findSpellByName } from '@rules/spells/spellList';
+import type { Character, Monster, Spell, AbilityScoreModifiers, CharacterClass, MovementTypeValue, SavingThrowType } from '@rules/types';
 
 // Mock dependencies
 vi.mock('../../../rules/dice', () => ({

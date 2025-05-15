@@ -5,7 +5,7 @@ import {
   calculateProficiencyModifier,
   calculateSpecializationBonus,
   applyProficiencyModifiers
-} from '../../../rules/combat/proficiency';
+} from '@rules/combat/proficiency';
 import {
   mockFighter,
   mockThief,
@@ -13,7 +13,7 @@ import {
   mockGoblin,
   mockWeapons
 } from './mockData';
-import type { Character } from '../../../rules/types';
+import type { Character } from '@rules/types';
 
 describe('Weapon Proficiency Mechanics', () => {
   describe('getNonProficiencyPenalty', () => {

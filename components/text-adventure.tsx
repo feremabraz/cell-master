@@ -1,7 +1,7 @@
 'use client';
 
 import { useAtom } from 'jotai';
-import { Card } from '@/components/ui/card';
+import { Card } from '@components/ui/card';
 import { GameHistory } from './game-story';
 import { CommandInput } from './command-input';
 import { 
@@ -11,7 +11,7 @@ import {
   isLoadingAtom, 
   userIdAtom,
   isInitializedAtom
-} from '@/store/game-store';
+} from '@store/game-store';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { useEffect } from 'react';
 

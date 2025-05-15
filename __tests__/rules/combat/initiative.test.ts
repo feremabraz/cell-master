@@ -6,7 +6,7 @@ import {
   checkSurprise,
   checkGroupSurprise,
   manageCombatOrder 
-} from '../../../rules/combat/initiative';
+} from '@rules/combat/initiative';
 import {
   mockFighter,
   mockThief,
@@ -15,7 +15,7 @@ import {
   mockOrc,
   mockWeapons
 } from './mockData';
-import * as diceLib from '../../../lib/dice';
+import * as diceLib from '@lib/dice';
 
 describe('Combat Initiative Mechanics', () => {
   // Mock the dice to provide deterministic results

@@ -8,9 +8,9 @@ import {
   updateLightSourceDuration,
   calculateVisibility,
   isTargetVisible
-} from '../../../rules/travel/lighting';
-import type { Character, Item } from '../../../rules/types';
-import { createMockCharacter } from '../../utils/mockData';
+} from '@rules/travel/lighting';
+import type { Character, Item } from '@rules/types';
+import { createMockCharacter } from '@tests/utils/mockData';
 
 describe('Travel Lighting', () => {
   describe('Light Sources', () => {

@@ -4,21 +4,21 @@ import type {
   ActionResult, 
   Weapon,
   WeaponProficiency
-} from '../types';
+} from '@rules/types';
 
 // Import only the functions needed for resolveCombat
-import { attackRoll } from './attackRoll';
-import { applyDamage } from './damage';
-import { applyWeaponVsArmorAdjustment } from './weaponVsArmor';
-import { getNonProficiencyPenalty } from './proficiency';
+import { attackRoll } from '@rules/combat/attackRoll';
+import { applyDamage } from '@rules/combat/damage';
+import { applyWeaponVsArmorAdjustment } from '@rules/combat/weaponVsArmor';
+import { getNonProficiencyPenalty } from '@rules/combat/proficiency';
 
 // Export all combat-related functions for easy importing
-export * from './attackRoll';
-export * from './weaponVsArmor';
-export * from './proficiency';
-export * from './damage';
-export * from './initiative';
-export * from './death';
+export * from '@rules/combat/attackRoll';
+export * from '@rules/combat/weaponVsArmor';
+export * from '@rules/combat/proficiency';
+export * from '@rules/combat/damage';
+export * from '@rules/combat/initiative';
+export * from '@rules/combat/death';
 
 /**
  * Main combat resolution function that combines all aspects of combat

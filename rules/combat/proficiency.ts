@@ -1,4 +1,4 @@
-import type { Character, Monster, Weapon, WeaponProficiency } from '../types';
+import type { Character, Monster, Weapon, WeaponProficiency } from '@rules/types';
 
 /**
  * Default non-proficiency penalties by character class

@@ -1,5 +1,5 @@
 import { nanoid } from 'nanoid';
-import type { CharacterRace, CharacterSex } from '@/rules/types';
+import type { CharacterRace, CharacterSex } from '@rules/types';
 
 export interface RandomTable<T> {
   id: string;

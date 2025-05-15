@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { Inter, VT323 } from 'next/font/google';
 import './globals.css';
-import { Providers } from '@/components/providers';
+import { Providers } from '@components/providers';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
 

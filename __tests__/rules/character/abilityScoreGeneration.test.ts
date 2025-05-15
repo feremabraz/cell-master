@@ -6,9 +6,9 @@ import {
   rollExceptionalStrength,
   applyRacialAbilityAdjustments,
   meetsRacialRequirements
-} from '../../../rules/character/abilityScoreGeneration';
-import type { AbilityScores } from '../../../rules/types';
-import type { CharacterRace } from '../../../rules/types';
+} from '@rules/character/abilityScoreGeneration';
+import type { AbilityScores } from '@rules/types';
+import type { CharacterRace } from '@rules/types';
 
 // Mock Math.random for predictable test results
 const mockMathRandom = vi.spyOn(Math, 'random');

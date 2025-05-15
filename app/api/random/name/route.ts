@@ -1,7 +1,7 @@
 import { OpenAI } from 'openai';
 import { NextResponse } from 'next/server';
-import type { RandomNameRequest } from '@/lib/random';
-import type { CharacterRace, CharacterSex } from '@/rules/types';
+import type { RandomNameRequest } from '@lib/random';
+import type { CharacterRace, CharacterSex } from '@rules/types';
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,

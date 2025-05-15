@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
-import { findSpellByName, spellLists } from '../../../rules/spells/spellList';
-import type { Character, Monster, Spell, AbilityScoreModifiers } from '../../../rules/types';
+import { findSpellByName, spellLists } from '@rules/spells/spellList';
+import type { Character, Monster, Spell, AbilityScoreModifiers } from '@rules/types';
 
 describe('Spell List', () => {
   describe('findSpellByName', () => {

@@ -2,10 +2,10 @@
 
 import { useState } from 'react';
 import { useAtom } from 'jotai';
-import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
-import { Slider } from '@/components/ui/slider';
-import { ScrollArea } from '@/components/ui/scroll-area';
+import { Button } from '@components/ui/button';
+import { Card } from '@components/ui/card';
+import { Slider } from '@components/ui/slider';
+import { ScrollArea } from '@components/ui/scroll-area';
 import { ChevronUp, ChevronDown, Settings } from 'lucide-react';
 import {
   scanlineOpacityAtom,
@@ -23,7 +23,7 @@ import {
   noiseOpacityAtom,
   noiseSpeedAtom,
   showControlsAtom,
-} from '@/store/crt-effect-store';
+} from '@store/crt-effect-store';
 
 export function CRTControls() {
   const [isOpen, setIsOpen] = useState(true);

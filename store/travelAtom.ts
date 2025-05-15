@@ -7,9 +7,9 @@ import {
   moveCharacter,
   calculateVisibility,
   calculateDailyMovement,
-} from '../rules/travel';
-import type { Character, Environment, TerrainType, LightingCondition } from '../rules/types';
-import type { ActiveLightSource } from '../rules/travel/lighting';
+} from '@rules/travel';
+import type { Character, Environment, TerrainType, LightingCondition } from '@rules/types';
+import type { ActiveLightSource } from '@rules/travel/lighting';
 
 export const explorationAtom = atomWithReset<ExplorationState | null>(null);
 

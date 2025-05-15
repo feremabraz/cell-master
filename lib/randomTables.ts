@@ -1,5 +1,5 @@
-import { createRandomTable, getRandomInt } from '@/lib/random';
-import type { Environment, TerrainType } from '@/rules/types';
+import { createRandomTable, getRandomInt } from '@lib/random';
+import type { Environment, TerrainType } from '@rules/types';
 
 // --- Weather Generator Tables ---
 

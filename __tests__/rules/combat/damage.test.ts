@@ -1,11 +1,11 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import * as damageModule from '../../../rules/combat/damage';
+import * as damageModule from '@rules/combat/damage';
 import { 
   calculateDamage,
   applyDamage,
   calculateSubdualDamage,
   applySubdualDamage
-} from '../../../rules/combat/damage';
+} from '@rules/combat/damage';
 import {
   mockFighter,
   mockThief,
@@ -15,8 +15,8 @@ import {
   mockTroll,
   mockWeapons
 } from './mockData';
-import * as diceLib from '../../../lib/dice';
-import type { Character, Monster, Weapon } from '../../../rules/types';
+import * as diceLib from '@lib/dice';
+import type { Character, Monster, Weapon } from '@rules/types';
 
 // First, let's read the actual functions from the damage.ts file
 // since we don't know exactly what it contains

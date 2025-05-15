@@ -8,7 +8,7 @@ import type {
   Seasons,
   TimedEffect,
   DurationDescriptor
-} from './types';
+} from '@rules/types';
 
 // Constants
 const ROUNDS_PER_TURN = 10;

@@ -1,4 +1,4 @@
-export * from './types';
+export * from '@rules/types';
 
 // Export falling damage functionality
 export { calculateFallingDamage } from './falling';

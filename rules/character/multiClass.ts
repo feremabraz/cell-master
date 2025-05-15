@@ -1,4 +1,4 @@
-import type { CharacterClass, CharacterRace, AbilityScores } from '../types';
+import type { CharacterClass, CharacterRace, AbilityScores } from '@rules/types';
 import { meetsClassRequirements } from './classRequirements';
 
 /**

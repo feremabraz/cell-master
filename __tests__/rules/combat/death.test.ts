@@ -5,10 +5,10 @@ import {
   processDeath,
   resurrectCharacter,
   handleBleeding
-} from '../../../rules/combat/death';
+} from '@rules/combat/death';
 import { roll } from '../../../lib/dice';
-import type { Character, Monster, StatusEffect } from '../../../rules/types';
-import { createMockCharacter } from '../../utils/mockData';
+import type { Character, Monster, StatusEffect } from '@rules/types';
+import { createMockCharacter } from '@tests/utils/mockData';
 import { mockGoblin, mockFighter } from './mockData';
 
 // Mock dice rolls for consistent testing

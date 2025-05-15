@@ -6,9 +6,9 @@ import {
   forgetSpell,
   getTotalSpellSlots,
   resetSpellSlots
-} from '../../../rules/spells/spellMemorization';
-import { findSpellByName } from '../../../rules/spells/spellList';
-import type { Character, Spell, AbilityScoreModifiers } from '../../../rules/types';
+} from '@rules/spells/spellMemorization';
+import { findSpellByName } from '@rules/spells/spellList';
+import type { Character, Spell, AbilityScoreModifiers } from '@rules/types';
 
 // Mock the spell progression module
 vi.mock('../../../rules/spells/spellProgression', () => {

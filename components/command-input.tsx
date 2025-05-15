@@ -3,12 +3,12 @@
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { Button } from '@components/ui/button';
+import { Input } from '@components/ui/input';
 import { ChevronRight } from 'lucide-react';
 import { useAtomValue } from 'jotai';
-import { isLoadingAtom } from '@/store/game-store';
-import { Form, FormControl, FormField, FormItem } from '@/components/ui/form';
+import { isLoadingAtom } from '@store/game-store';
+import { Form, FormControl, FormField, FormItem } from '@components/ui/form';
 
 interface CommandInputProps {
   onSubmitCommand: (command: string) => void;

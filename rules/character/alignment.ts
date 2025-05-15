@@ -1,4 +1,4 @@
-import type { Alignment } from '../types';
+import type { Alignment } from '@rules/types';
 
 interface AlignmentDetails {
   name: Alignment;

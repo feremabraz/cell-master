@@ -8,7 +8,7 @@ import {
   areAlignmentsCompatible,
   areAlignmentsAdversarial,
   getAlignmentReactionModifier
-} from '../../../rules/character/alignment';
+} from '@rules/character/alignment';
 
 describe('Alignment System', () => {
   describe('getAlignmentDetails', () => {

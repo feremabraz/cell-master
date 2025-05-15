@@ -10,9 +10,9 @@ import {
   calculateMovementRate,
   calculateCombatMovementRate,
   updateEncumbranceAndMovement
-} from '../../../rules/travel/movement';
-import type { Character, Item, CharacterRace, AbilityScoreModifiers } from '../../../rules/types';
-import { createMockCharacter, createMockItem } from '../../utils/mockData';
+} from '@rules/travel/movement';
+import type { Character, Item, CharacterRace, AbilityScoreModifiers } from '@rules/types';
+import { createMockCharacter, createMockItem } from '@tests/utils/mockData';
 
 describe('Travel Movement', () => {
   // Use centralized mock functions instead of local ones

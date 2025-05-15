@@ -1,4 +1,4 @@
-import type { SpellClass, SpellSlots } from '../types';
+import type { SpellClass, SpellSlots } from '@rules/types';
 
 /**
  * Defines how many spells each spellcasting class can cast at each level.

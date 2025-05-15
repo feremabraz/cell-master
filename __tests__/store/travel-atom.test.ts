@@ -1,8 +1,8 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { createStore } from 'jotai';
-import type { Environment, TerrainType, LightingCondition } from '@/rules/types';
-import type { ActiveLightSource } from '@/rules/travel/lighting';
-import { createMockCharacter } from '../utils/mockData';
+import type { Environment, TerrainType, LightingCondition } from '@rules/types';
+import type { ActiveLightSource } from '@rules/travel/lighting';
+import { createMockCharacter } from '@tests/utils/mockData';
 import {
   explorationAtom,
   characterPositionAtom,
@@ -18,7 +18,7 @@ import {
   removeLightSourceAtom,
   updateTerrainAtom,
   resetExplorationAtom,
-} from '@/store/travelAtom';
+} from '@store/travelAtom';
 
 describe('Travel Atom Store', () => {
   let store: ReturnType<typeof createStore>;

@@ -11,29 +11,29 @@
  */
 
 // Export all spell-related functionality
-import * as Spells from './spells';
+import * as Spells from '@rules/spells';
 export { Spells };
 
 // Export all types
-export * from './types';
+export * from '@rules/types';
 
 // Export dice system
-export * as Dice from './dice';
+export * as Dice from '@rules/dice';
 
 // Export time system (when implemented)
-// export * from './time';
+// export * from '@rules/time';
 
 // Export character creation (when implemented)
-// export * from './character';
+// export * from '@rules/character';
 
 // Export combat system (when implemented)
-// export * from './combat';
+// export * from '@rules/combat';
 
 // Export movement and exploration (when implemented)
-// export * from './travel';
+// export * from '@rules/travel';
 
 // Export environment handling (when implemented)
-// export * from './environment';
+// export * from '@rules/environment';
 
 /**
  * Action context interface for the rule engine

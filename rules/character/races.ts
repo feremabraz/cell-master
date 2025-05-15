@@ -1,4 +1,4 @@
-import type { CharacterRace, RacialAbility, CharacterClass, AbilityScores } from '../types';
+import type { CharacterRace, RacialAbility, CharacterClass, AbilityScores } from '@rules/types';
 
 /**
  * Gets racial language choices for a character race

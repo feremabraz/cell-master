@@ -1,4 +1,4 @@
-import type { AbilityScores, CharacterClass, CharacterRace } from '../types';
+import type { AbilityScores, CharacterClass, CharacterRace } from '@rules/types';
 
 /**
  * Minimum ability score requirements for each class

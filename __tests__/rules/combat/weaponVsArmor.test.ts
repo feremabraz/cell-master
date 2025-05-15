@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest';
 import { 
   getWeaponVsArmorAdjustment, 
   applyWeaponVsArmorAdjustment 
-} from '../../../rules/combat/weaponVsArmor';
+} from '@rules/combat/weaponVsArmor';
 import { 
   mockFighter, 
   mockGoblin, 

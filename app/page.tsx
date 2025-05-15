@@ -1,11 +1,11 @@
 'use client';
 
-import { TextAdventure } from '@/components/text-adventure';
-import { EnhancedCRTEffect } from '@/components/crt-effect';
-import { CRTControls } from '@/components/crt-controls';
+import { TextAdventure } from '@components/text-adventure';
+import { EnhancedCRTEffect } from '@components/crt-effect';
+import { CRTControls } from '@components/crt-controls';
 import { useAtom, useAtomValue } from 'jotai';
-import { showControlsAtom, sceneImageUrlAtom } from '@/store/crt-effect-store';
-import { SceneImage } from '@/components/scene-image';
+import { showControlsAtom, sceneImageUrlAtom } from '@store/crt-effect-store';
+import { SceneImage } from '@components/scene-image';
 
 export default function Home() {
   const showControls = useAtomValue(showControlsAtom);

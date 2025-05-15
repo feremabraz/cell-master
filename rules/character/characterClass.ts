@@ -4,7 +4,7 @@ import type {
   Character, 
   CharacterClass,
   CharacterRace,
-} from '../types';
+} from '@rules/types';
 import { meetsClassRequirements, canRaceBeClass, getMaxLevelForRaceClass } from './classRequirements';
 import { canMultiClass } from './multiClass';
 import { type SecondarySkill, SkillLevel, type CharacterSecondarySkill } from './secondarySkills';

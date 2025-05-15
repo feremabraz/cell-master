@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { calculateFallingDamage } from '../../../rules/environment/falling';
-import { mockAdventurer } from '../../utils/mockData';
-import * as diceLib from '../../../lib/dice';
+import { calculateFallingDamage } from '@rules/environment/falling';
+import { mockAdventurer } from '@tests/utils/mockData';
+import * as diceLib from '@lib/dice';
 describe('Falling Damage', () => {
   beforeEach(() => {
     vi.clearAllMocks();

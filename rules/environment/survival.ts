@@ -1,5 +1,5 @@
-import { roll } from '../../lib/dice';
-import type { SurvivalNeedParams, SurvivalNeedResult } from './types';
+import { roll } from '@lib/dice';
+import type { SurvivalNeedParams, SurvivalNeedResult } from '@rules/types';
 
 /**
  * Constants for survival needs

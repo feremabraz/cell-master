@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { resolveTemperatureEffects } from '../../../rules/environment/temperature';
-import { mockAdventurer, mockWeakAdventurer } from '../../utils/mockData';
-import * as diceLib from '../../../lib/dice';
+import { resolveTemperatureEffects } from '@rules/environment/temperature';
+import { mockAdventurer, mockWeakAdventurer } from '@tests/utils/mockData';
+import * as diceLib from '@lib/dice';
 
 describe('Temperature Effects', () => {
   beforeEach(() => {

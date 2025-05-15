@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
-import type { GameTime, TimeUnit, TimedEffect } from '@/rules/time/types';
+import type { GameTime, TimeUnit, TimedEffect } from '@rules/time/types';
 import {
   createNewGameTime,
   determineTimeOfDayPhase,
@@ -12,7 +12,7 @@ import {
   getTimeDescription,
   getWeatherModifiers,
   formatDuration
-} from '@/rules/time/timeSystem';
+} from '@rules/time/timeSystem';
 
 describe('Time System Core', () => {
   describe('createNewGameTime', () => {

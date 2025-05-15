@@ -4,7 +4,7 @@ import type {
   Weapon, 
   AbilityScores, 
   AbilityScoreModifiers 
-} from '../../../rules/types';
+} from '@rules/types';
 
 // Mock ability scores
 export const standardAbilityScores: AbilityScores = {

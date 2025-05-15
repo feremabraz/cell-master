@@ -1,4 +1,4 @@
-import type { Weapon, Armor, Character, Monster } from '../types';
+import type { Weapon, Armor, Character, Monster } from '@rules/types';
 
 // Define weapon vs armor adjustment types
 type WeaponType = 'Slashing' | 'Piercing' | 'Bludgeoning';

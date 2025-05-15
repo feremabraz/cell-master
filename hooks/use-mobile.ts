@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useAtom } from 'jotai';
-import { isMobileAtom } from '@/store/game-store';
+import { isMobileAtom } from '@store/game-store';
 
 const MOBILE_BREAKPOINT = 768;
 

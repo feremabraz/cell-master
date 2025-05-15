@@ -1,4 +1,4 @@
-import type { ActionResult, Character } from '../types';
+import type { ActionResult, Character } from '@rules/types';
 
 // Falling damage related types
 export interface FallingDamageParams {

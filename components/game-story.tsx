@@ -3,7 +3,7 @@
 import { useEffect, useRef } from 'react';
 import { motion } from 'motion/react';
 import { useAtomValue } from 'jotai';
-import { gameHistoryAtom } from '@/store/game-store';
+import { gameHistoryAtom } from '@store/game-store';
 
 export function GameHistory() {
   const gameHistory = useAtomValue(gameHistoryAtom);

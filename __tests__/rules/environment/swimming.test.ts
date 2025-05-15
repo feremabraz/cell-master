@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { resolveSwimming, resolveDrowning } from '../../../rules/environment/swimming';
-import { mockAdventurer, mockArmoredAdventurer, mockWeakAdventurer } from '../../utils/mockData';
-import * as diceLib from '../../../lib/dice';
+import { resolveSwimming, resolveDrowning } from '@rules/environment/swimming';
+import { mockAdventurer, mockArmoredAdventurer, mockWeakAdventurer } from '@tests/utils/mockData';
+import * as diceLib from '@lib/dice';
 
 describe('Swimming and Drowning Mechanics', () => {
   beforeEach(() => {

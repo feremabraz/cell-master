@@ -7,7 +7,7 @@ import {
   SECONDARY_SKILL_CATEGORIES,
   SKILL_GROUPS,
   type CharacterSecondarySkill
-} from '../../../rules/character/secondarySkills';
+} from '@rules/character/secondarySkills';
 
 describe('Secondary Skills', () => {
   describe('SkillLevel enum', () => {

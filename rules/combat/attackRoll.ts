@@ -1,5 +1,5 @@
-import type { Character, Monster, Weapon, DiceRoll, ActionResult, CombatResult } from '../types';
-import { roll, rollFromNotation, sumDice } from '../../lib/dice';
+import type { Character, Monster, Weapon, DiceRoll, ActionResult, CombatResult } from '@rules/types';
+import { roll, rollFromNotation, sumDice } from '@lib/dice';
 
 /**
  * Calculate if an attack hits based on THAC0 and target's AC

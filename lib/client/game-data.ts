@@ -1,4 +1,4 @@
-import type { GameMap } from '@/lib/types';
+import type { GameMap } from '@lib/types';
 
 // Basic client-side game map for initial rendering
 export const clientGameMap: GameMap = {

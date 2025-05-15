@@ -31,9 +31,9 @@ vi.mock('@/app/api/random/encounter/route', () => ({
 }));
 
 // Import route handlers after mocking
-import { POST as nameRandomPost } from '@/app/api/random/name/route';
-import { POST as weatherRandomPost } from '@/app/api/random/weather/route';
-import { POST as encounterRandomPost } from '@/app/api/random/encounter/route';
+import { POST as nameRandomPost } from '@app/api/random/name/route';
+import { POST as weatherRandomPost } from '@app/api/random/weather/route';
+import { POST as encounterRandomPost } from '@app/api/random/encounter/route';
 
 describe('Random API Endpoints', () => {
   describe('/api/random/name', () => {

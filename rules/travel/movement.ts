@@ -1,4 +1,4 @@
-import type { Character, Item, WeaponSize } from '../types';
+import type { Character, Item, WeaponSize } from '@rules/types';
 
 /**
  * Encumbrance levels defined in kilograms

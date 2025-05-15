@@ -4,7 +4,7 @@ import {
   calculateAttackRoll, 
   attackRoll, 
   rollDiceDamage 
-} from '../../../rules/combat/attackRoll';
+} from '@rules/combat/attackRoll';
 import { 
   mockFighter, 
   mockThief, 
@@ -14,7 +14,7 @@ import {
   mockTroll,
   mockWeapons 
 } from './mockData';
-import * as diceLib from '../../../lib/dice';
+import * as diceLib from '@lib/dice';
 
 describe('Combat Attack Roll Mechanics', () => {
   // Mock the dice to provide deterministic results

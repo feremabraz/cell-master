@@ -6,8 +6,8 @@ import {
   CLASS_MINIMUM_SCORES,
   RACIAL_CLASS_OPTIONS,
   RACIAL_LEVEL_LIMITS
-} from '../../../rules/character/classRequirements';
-import type { AbilityScores, CharacterClass, CharacterRace } from '../../../rules/types';
+} from '@rules/character/classRequirements';
+import type { AbilityScores, CharacterClass, CharacterRace } from '@rules/types';
 
 describe('Class Requirements', () => {
   describe('meetsClassRequirements', () => {

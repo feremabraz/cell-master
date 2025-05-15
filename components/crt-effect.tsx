@@ -17,7 +17,7 @@ import {
   glowSizeAtom,
   curvatureIntensityAtom,
   vignetteIntensityAtom,
-} from '@/store/crt-effect-store';
+} from '@store/crt-effect-store';
 
 export function EnhancedCRTEffect() {
   const [flickerValue, setFlickerValue] = useState(1);

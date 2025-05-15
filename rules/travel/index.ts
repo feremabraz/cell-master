@@ -4,7 +4,7 @@ export * from './terrain';
 export * from './lighting';
 
 // Combined functions for easy access
-import type { Character, Environment, TerrainType, LightingCondition } from '../types';
+import type { Character, Environment, TerrainType, LightingCondition } from '@rules/types';
 import { updateEncumbranceAndMovement } from './movement';
 import { calculateTerrainAdjustedMovement, calculateDailyMovement } from './terrain';
 import type { ActiveLightSource } from './lighting';

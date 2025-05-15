@@ -1,6 +1,6 @@
-import type { Character, Monster, Weapon, CombatResult, StatusEffect } from '../types';
-import { rollDiceDamage } from './attackRoll';
-import { processDeath } from './death';
+import type { Character, Monster, Weapon, CombatResult, StatusEffect } from '@rules/types';
+import { rollDiceDamage } from '@rules/combat/attackRoll';
+import { processDeath } from '@rules/combat/death';
 
 /**
  * Calculate the damage of an attack

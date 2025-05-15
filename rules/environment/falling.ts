@@ -1,5 +1,5 @@
-import { rollFromNotation, sumDice } from '../../lib/dice';
-import type { FallingDamageParams, FallingDamageResult } from './types';
+import { rollFromNotation, sumDice } from '@lib/dice';
+import type { FallingDamageParams, FallingDamageResult } from '@rules/types';
 
 /**
  * Calculate falling damage based on OSRIC rules, converted to metric

@@ -1,6 +1,6 @@
 import { atom, useAtom } from 'jotai';
 import { useCallback } from 'react';
-import type { RandomNameRequest } from '@/lib/random';
+import type { RandomNameRequest } from '@lib/random';
 
 export const nameRequestAtom = atom<RandomNameRequest | null>(null);
 export const nameResultAtom = atom<string | null>(null);

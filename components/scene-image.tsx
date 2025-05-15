@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useAtom } from 'jotai';
 import { motion } from 'motion/react';
-import { sceneImageUrlAtom } from '@/store/crt-effect-store';
+import { sceneImageUrlAtom } from '@store/crt-effect-store';
 
 interface SceneImageProps {
   imageUrl: string;

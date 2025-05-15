@@ -8,8 +8,8 @@ import {
   getRacialAbilities,
   getPermittedClassOptions,
   getMultiClassOptions
-} from '../../../rules/character/races';
-import type { CharacterRace, CharacterClass } from '../../../rules/types';
+} from '@rules/character/races';
+import type { CharacterRace, CharacterClass } from '@rules/types';
 
 describe('Character Races', () => {
   describe('getRacialLanguages', () => {

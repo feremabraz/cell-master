@@ -1,5 +1,5 @@
-import type { Character, Monster, StatusEffect } from '../types';
-import { roll } from '../../lib/dice';
+import type { Character, Monster, StatusEffect } from '@rules/types';
+import { roll } from '@lib/dice';
 
 /**
  * Check if a character survives a system shock (such as polymorph, petrification)

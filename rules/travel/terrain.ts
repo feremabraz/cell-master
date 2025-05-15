@@ -1,4 +1,4 @@
-import type { TerrainType, Environment, Character } from '../types';
+import type { TerrainType, Environment, Character } from '@rules/types';
 
 /**
  * Movement rate multipliers by terrain type

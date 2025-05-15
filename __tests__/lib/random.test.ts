@@ -1,5 +1,5 @@
 import { describe, test, expect, vi, beforeEach, afterEach } from 'vitest';
-import { getRandomInt, createRandomTable, type RandomTable } from '../../lib/random';
+import { getRandomInt, createRandomTable, type RandomTable } from '@lib/random';
 
 describe('Random Utility Functions', () => {
   // Mock Math.random for deterministic tests

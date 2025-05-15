@@ -7,9 +7,9 @@ import {
   calculateTerrainAdjustedMovement,
   isTerrainNavigable,
   calculateDailyMovement
-} from '../../../rules/travel/terrain';
-import type { Environment, TerrainType } from '../../../rules/types';
-import { createMockCharacter } from '../../utils/mockData';
+} from '@rules/travel/terrain';
+import type { Environment, TerrainType } from '@rules/types';
+import { createMockCharacter } from '@tests/utils/mockData';
 
 describe('Travel Terrain', () => {
   describe('getTerrainMultiplier', () => {

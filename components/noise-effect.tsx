@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from 'react';
 import { useAtomValue } from 'jotai';
-import { noiseOpacityAtom, noiseSpeedAtom } from '@/store/crt-effect-store';
+import { noiseOpacityAtom, noiseSpeedAtom } from '@store/crt-effect-store';
 
 export function NoiseEffect() {
   const canvasRef = useRef<HTMLCanvasElement>(null);

@@ -1,17 +1,17 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { resolveCombat } from '../../../rules/combat';
+import { resolveCombat } from '@rules/combat';
 import { 
   attackRoll 
-} from '../../../rules/combat/attackRoll';
+} from '@rules/combat/attackRoll';
 import {
   applyDamage
-} from '../../../rules/combat/damage';
+} from '@rules/combat/damage';
 import {
   applyWeaponVsArmorAdjustment
-} from '../../../rules/combat/weaponVsArmor';
+} from '@rules/combat/weaponVsArmor';
 import {
   getNonProficiencyPenalty
-} from '../../../rules/combat/proficiency';
+} from '@rules/combat/proficiency';
 import {
   mockFighter,
   mockThief,
@@ -19,7 +19,7 @@ import {
   mockOrc,
   mockWeapons
 } from './mockData';
-import type { Action, CombatResult } from '../../../rules/types';
+import type { Action, CombatResult } from '@rules/types';
 
 // Mock individual combat functions
 vi.mock('../../../rules/combat/attackRoll', () => ({

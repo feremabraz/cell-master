@@ -3,7 +3,7 @@
  * This is a wrapper around lib/dice for use in the rules engine
  */
 
-import * as DiceLib from '../lib/dice';
+import * as DiceLib from '@lib/dice';
 
 export interface DiceResult {
   roll: number;

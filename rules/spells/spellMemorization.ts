@@ -1,4 +1,4 @@
-import type { Character, Spell, SpellSlots, SpellClass } from '../types';
+import type { Character, Spell, SpellSlots, SpellClass } from '@rules/types';
 import { findSpellByName } from './spellList';
 import { getSpellSlots, getBonusSpellsFromWisdom } from './spellProgression';
 

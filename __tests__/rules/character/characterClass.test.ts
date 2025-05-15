@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
-import { canChooseClass, validateMultiClass, addSecondarySkill, calculateLevel, hasReachedLevelLimit } from '../../../rules/character/characterClass';
-import { type SecondarySkill, SkillLevel } from '../../../rules/character/secondarySkills';
-import type { AbilityScores, Character, CharacterClass } from '../../../rules/types';
+import { canChooseClass, validateMultiClass, addSecondarySkill, calculateLevel, hasReachedLevelLimit } from '@rules/character/characterClass';
+import { type SecondarySkill, SkillLevel } from '@rules/character/secondarySkills';
+import type { AbilityScores, Character, CharacterClass } from '@rules/types';
 
 describe('Character Class Framework', () => {
   const validFighterScores: AbilityScores = {

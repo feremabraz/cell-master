@@ -1,4 +1,4 @@
-import type { Character, LightingCondition } from '../types';
+import type { Character, LightingCondition } from '@rules/types';
 
 /**
  * Light source types and their properties

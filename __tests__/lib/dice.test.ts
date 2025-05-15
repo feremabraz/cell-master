@@ -13,7 +13,7 @@ import {
   rollWithAdvantage,
   rollWithDisadvantage,
   contestedRoll
-} from '../../lib/dice';
+} from '@lib/dice';
 
 describe('Dice Utility Functions', () => {
   // Mock Math.random for deterministic tests

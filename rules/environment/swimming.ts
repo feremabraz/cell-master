@@ -1,5 +1,5 @@
-import { roll } from '../../lib/dice';
-import type { SwimmingParams, SwimmingResult } from './types';
+import { roll } from '@lib/dice';
+import type { SwimmingParams, SwimmingResult } from '@rules/types';
 
 /**
  * Difficulty modifiers for different swimming conditions

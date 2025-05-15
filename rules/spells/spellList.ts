@@ -1,4 +1,4 @@
-import type { Spell, SpellClass, SavingThrowType } from '../types';
+import type { Spell, SpellClass, SavingThrowType } from '@rules/types';
 
 /**
  * This file contains the spell lists for all classes in OSRIC.

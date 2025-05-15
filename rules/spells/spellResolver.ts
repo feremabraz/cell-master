@@ -1,7 +1,7 @@
-import type { Character, Monster, Spell, SpellResult, ActionResult } from '../types';
+import type { Character, Monster, Spell, SpellResult, ActionResult } from '@rules/types';
 import { forgetSpell } from './spellMemorization';
 import { findSpellByName } from './spellList';
-import { rollDice } from '../dice';
+import { rollDice } from '@rules/dice';
 
 export interface SpellCastingOptions {
   ignoreComponents: boolean;

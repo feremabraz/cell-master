@@ -1,5 +1,5 @@
-import type { Character, Monster, InitiativeResult, Weapon } from '../types';
-import { roll } from '../../lib/dice';
+import type { Character, Monster, InitiativeResult, Weapon } from '@rules/types';
+import { roll } from '@lib/dice';
 
 /**
  * Roll initiative for a single character or monster

@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { createStore } from 'jotai';
-import type { GameTime, TimedEffect } from '@/rules/time/types';
+import type { GameTime, TimedEffect } from '@rules/time/types';
 import {
   gameTimeAtom,
   inCombatAtom,
@@ -17,8 +17,8 @@ import {
   addTimedEffectAtom,
   removeTimedEffectAtom,
   resetToNewDayAtom
-} from '@/store/time-store';
-import { createNewGameTime } from '@/rules/time/timeSystem';
+} from '@store/time-store';
+import { createNewGameTime } from '@rules/time/timeSystem';
 
 describe('Time Store', () => {
   let store: ReturnType<typeof createStore>;

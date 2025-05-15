@@ -12,7 +12,7 @@ import {
   calamityEvents,
   fortuneEvents,
   generateRandomEvent
-} from '../../lib/randomTables';
+} from '@lib/randomTables';
 
 describe('Random Tables', () => {
   // Mock Math.random for deterministic tests

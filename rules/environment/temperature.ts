@@ -1,5 +1,5 @@
-import { roll } from '../../lib/dice';
-import type { TemperatureEffectParams, TemperatureEffectResult, TemperatureRange } from './types';
+import { roll } from '@lib/dice';
+import type { TemperatureEffectParams, TemperatureEffectResult, TemperatureRange } from '@rules/types';
 
 /**
  * Temperature effect thresholds

@@ -3,11 +3,11 @@ import {
   initializeExplorationState,
   advanceExplorationTurn,
   moveCharacter,
-} from '../../../rules/travel';
-import type { ExplorationState } from '../../../rules/travel';
-import { createActiveLightSource } from '../../../rules/travel/lighting';
-import type { Character, Environment, TerrainType, LightingCondition } from '../../../rules/types';
-import { createMockCharacter } from '../../utils/mockData';
+} from '@rules/travel';
+import type { ExplorationState } from '@rules/travel';
+import { createActiveLightSource } from '@rules/travel/lighting';
+import type { Character, Environment, TerrainType, LightingCondition } from '@rules/types';
+import { createMockCharacter } from '@tests/utils/mockData';
 
 describe('Travel Exploration', () => {
   // Use centralized createMockCharacter instead of local one

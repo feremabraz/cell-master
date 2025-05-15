@@ -5,7 +5,7 @@ import type {
   TimeOfDayPhase, 
   Season, 
   TimedEffect 
-} from '@/rules/time/types';
+} from '@rules/time/types';
 import { 
   createNewGameTime, 
   determineTimeOfDayPhase, 
@@ -15,7 +15,7 @@ import {
   getTimeDescription,
   getWeatherModifiers,
   getLightLevel
-} from '@/rules/time/timeSystem';
+} from '@rules/time/timeSystem';
 
 // Create base atoms
 export const gameTimeAtom = atom<GameTime>(createNewGameTime());
