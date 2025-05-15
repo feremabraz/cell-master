@@ -56,7 +56,7 @@ Ordered by conceptual dependencies:
 
 ### Phase 4: Magic Foundations
 
-10. **Basic Spell Management**
+10. **Basic Spell Management** (implemented)
     - Spell memorization system
     - Class-specific spell progression
     - Basic spell effects
