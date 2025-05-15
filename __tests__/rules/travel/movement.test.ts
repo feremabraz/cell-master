@@ -9,7 +9,7 @@ import {
   getStrengthEncumbranceBonus,
   calculateMovementRate,
   calculateCombatMovementRate,
-  updateEncumbranceAndMovement
+  updateEncumbranceAndMovement,
 } from '@rules/travel/movement';
 import type { Character, Item, CharacterRace, AbilityScoreModifiers } from '@rules/types';
 import { createMockCharacter, createMockItem } from '@tests/utils/mockData';
@@ -23,11 +23,7 @@ describe('Travel Movement', () => {
     });
 
     it('should sum the weights of all items', () => {
-      const inventory = [
-        createMockItem(5),
-        createMockItem(3),
-        createMockItem(10)
-      ];
+      const inventory = [createMockItem(5), createMockItem(3), createMockItem(10)];
       expect(calculateTotalWeight(inventory)).toBe(18);
     });
   });
@@ -93,56 +89,66 @@ describe('Travel Movement', () => {
     it('should apply racial modifiers', () => {
       const dwarf = createMockCharacter({ race: 'Dwarf' });
       const halfling = createMockCharacter({ race: 'Halfling' });
-      
+
       const dwarfRate = calculateMovementRate(dwarf);
       const halflingRate = calculateMovementRate(halfling);
-      
+
       expect(dwarfRate).toBe(36 + RacialMovementModifiers.Dwarf);
       expect(halflingRate).toBe(36 + RacialMovementModifiers.Halfling);
     });
 
     it('should reduce movement rate based on encumbrance', () => {
-      const character = createMockCharacter({ 
-        inventory: [createMockItem(32)] // Moderate encumbrance
+      const character = createMockCharacter({
+        inventory: [createMockItem(32)], // Moderate encumbrance
       });
-      
-      expect(calculateMovementRate(character)).toBe(MovementRateByEncumbrance[EncumbranceLevel.Moderate]);
+
+      expect(calculateMovementRate(character)).toBe(
+        MovementRateByEncumbrance[EncumbranceLevel.Moderate]
+      );
     });
 
     it('should account for strength bonus reducing effective encumbrance', () => {
       // Character with 18 strength gets +22.7kg bonus
-      const strongCharacter = createMockCharacter({ 
+      const strongCharacter = createMockCharacter({
         strength: 18,
-        inventory: [createMockItem(30)] // Would be Light encumbrance, but with bonus becomes Unencumbered
+        inventory: [createMockItem(30)], // Would be Light encumbrance, but with bonus becomes Unencumbered
       });
-      
-      expect(calculateMovementRate(strongCharacter)).toBe(MovementRateByEncumbrance[EncumbranceLevel.Unencumbered]);
+
+      expect(calculateMovementRate(strongCharacter)).toBe(
+        MovementRateByEncumbrance[EncumbranceLevel.Unencumbered]
+      );
     });
   });
 
   describe('calculateCombatMovementRate', () => {
     it('should return combat movement based on encumbrance', () => {
       const character = createMockCharacter();
-      expect(calculateCombatMovementRate(character)).toBe(CombatMovementRateByEncumbrance[EncumbranceLevel.Unencumbered]);
-      
+      expect(calculateCombatMovementRate(character)).toBe(
+        CombatMovementRateByEncumbrance[EncumbranceLevel.Unencumbered]
+      );
+
       const encumberedCharacter = createMockCharacter({
-        inventory: [createMockItem(48)] // Heavy encumbrance
+        inventory: [createMockItem(48)], // Heavy encumbrance
       });
-      
-      expect(calculateCombatMovementRate(encumberedCharacter)).toBe(CombatMovementRateByEncumbrance[EncumbranceLevel.Heavy]);
+
+      expect(calculateCombatMovementRate(encumberedCharacter)).toBe(
+        CombatMovementRateByEncumbrance[EncumbranceLevel.Heavy]
+      );
     });
   });
 
   describe('updateEncumbranceAndMovement', () => {
     it('should update character encumbrance and movement rate', () => {
       const character = createMockCharacter({
-        inventory: [createMockItem(20)] // Light encumbrance
+        inventory: [createMockItem(20)], // Light encumbrance
       });
-      
+
       const updated = updateEncumbranceAndMovement(character);
-      
+
       expect(updated.encumbrance).toBe(20);
-      expect(updated.movementRate).toBe(MovementRateByEncumbrance[EncumbranceLevel.Light] + RacialMovementModifiers.Human);
+      expect(updated.movementRate).toBe(
+        MovementRateByEncumbrance[EncumbranceLevel.Light] + RacialMovementModifiers.Human
+      );
     });
   });
-}); 
+});

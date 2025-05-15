@@ -22,10 +22,10 @@ export const SwimmingDifficultyLevels = [
   'Choppy',
   'Rough',
   'Stormy',
-  'Treacherous'
+  'Treacherous',
 ] as const;
 
-export type SwimmingDifficulty = typeof SwimmingDifficultyLevels[number];
+export type SwimmingDifficulty = (typeof SwimmingDifficultyLevels)[number];
 
 export interface SwimmingParams {
   character: Character;
@@ -35,7 +35,7 @@ export interface SwimmingParams {
   consecutiveRounds?: number; // How many rounds the character has been swimming
   modifiers?: {
     strengthBonus?: number; // Additional strength bonus beyond normal modifiers
-    constitutionBonus?: number; // Additional constitution bonus 
+    constitutionBonus?: number; // Additional constitution bonus
   };
 }
 
@@ -70,16 +70,16 @@ export interface SurvivalNeedResult extends ActionResult {
 
 // Environment temperature related types
 export const TemperatureRanges = [
-  'Frigid',     // Below freezing, risk of hypothermia
-  'Cold',       // Cold but above freezing
-  'Cool',       // Cool but not uncomfortable
-  'Moderate',   // Comfortable
-  'Warm',       // Warm but not uncomfortable
-  'Hot',        // Hot, risk of heat exhaustion
-  'Extreme'     // Extremely hot, risk of heat stroke
+  'Frigid', // Below freezing, risk of hypothermia
+  'Cold', // Cold but above freezing
+  'Cool', // Cool but not uncomfortable
+  'Moderate', // Comfortable
+  'Warm', // Warm but not uncomfortable
+  'Hot', // Hot, risk of heat exhaustion
+  'Extreme', // Extremely hot, risk of heat stroke
 ] as const;
 
-export type TemperatureRange = typeof TemperatureRanges[number];
+export type TemperatureRange = (typeof TemperatureRanges)[number];
 
 export interface TemperatureEffectParams {
   character: Character;
@@ -97,4 +97,4 @@ export interface TemperatureEffectResult extends ActionResult {
   effectLevel: number; // 0 = none, 1 = mild, 2 = moderate, 3 = severe
   damageApplied: number;
   statPenalties: Record<string, number>;
-} 
+}

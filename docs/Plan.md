@@ -74,17 +74,17 @@ Ordered by conceptual dependencies:
 
 ### Phase 5: Advanced Combat
 
-13. **Advanced Combat Features**
+13. **Advanced Combat Features** (implemented)
     - Weapon speed factors
     - Multiple attacks handling
     - Weapon specialization
 
-14. **Special Combat Rules**
+14. **Special Combat Rules** (implemented)
     - Grappling/wrestling
     - Two-weapon fighting
     - Shield usage
 
-15. **Advanced Damage Systems**
+15. **Advanced Damage Systems** (implemented)
     - Critical hit tables
     - Fumble tables
     - Massive damage rules

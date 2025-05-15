@@ -67,7 +67,7 @@ export enum XPSource {
   TREASURE = 'treasure',
   QUEST = 'quest',
   ROLEPLAY = 'roleplay',
-  OTHER = 'other'
+  OTHER = 'other',
 }
 
 /**
@@ -95,4 +95,4 @@ export interface ExperienceTracker {
     completionDate?: Date;
     trainer?: string;
   };
-} 
+}

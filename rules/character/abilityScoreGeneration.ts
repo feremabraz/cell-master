@@ -18,7 +18,7 @@ export const generateStandard3d6 = (): AbilityScores => {
     constitution: roll3d6(),
     intelligence: roll3d6(),
     wisdom: roll3d6(),
-    charisma: roll3d6()
+    charisma: roll3d6(),
   };
 };
 
@@ -30,7 +30,9 @@ export const generate3d6Arranged = (): number[] => {
   const rollDice = () => Math.floor(Math.random() * 6) + 1;
   const roll3d6 = () => rollDice() + rollDice() + rollDice();
 
-  return Array(6).fill(0).map(() => roll3d6());
+  return Array(6)
+    .fill(0)
+    .map(() => roll3d6());
 };
 
 /**
@@ -39,15 +41,17 @@ export const generate3d6Arranged = (): number[] => {
  */
 export const generate4d6DropLowest = (): number[] => {
   const rollDice = () => Math.floor(Math.random() * 6) + 1;
-  
+
   const roll4d6DropLowest = () => {
     const rolls = [rollDice(), rollDice(), rollDice(), rollDice()];
     const minRoll = Math.min(...rolls);
     const minIndex = rolls.indexOf(minRoll);
-    return rolls.reduce((sum, val, index) => index !== minIndex ? sum + val : sum, 0);
+    return rolls.reduce((sum, val, index) => (index !== minIndex ? sum + val : sum), 0);
   };
 
-  return Array(6).fill(0).map(() => roll4d6DropLowest());
+  return Array(6)
+    .fill(0)
+    .map(() => roll4d6DropLowest());
 };
 
 /**
@@ -59,7 +63,7 @@ export const rollExceptionalStrength = (characterClass: string): number | null =
   if (!['Fighter', 'Paladin', 'Ranger'].includes(characterClass)) {
     return null;
   }
-  
+
   // Roll percentile dice
   const roll = Math.floor(Math.random() * 100) + 1;
   return roll;
@@ -69,11 +73,11 @@ export const rollExceptionalStrength = (characterClass: string): number | null =
  * Apply racial ability score adjustments
  */
 export const applyRacialAbilityAdjustments = (
-  abilityScores: AbilityScores, 
+  abilityScores: AbilityScores,
   race: string
 ): AbilityScores => {
   const newScores = { ...abilityScores };
-  
+
   switch (race) {
     case 'Dwarf':
       newScores.constitution += 1;
@@ -94,24 +98,21 @@ export const applyRacialAbilityAdjustments = (
       break;
     // No adjustments for humans or other races
   }
-  
+
   // Ensure no score goes below 3 or above 18 (unless exceptional strength)
   for (const key of Object.keys(newScores)) {
     const ability = key as keyof AbilityScores;
     if (newScores[ability] < 3) newScores[ability] = 3;
     if (newScores[ability] > 18) newScores[ability] = 18;
   }
-  
+
   return newScores;
 };
 
 /**
  * Check if ability scores meet racial minimum requirements
  */
-export const meetsRacialRequirements = (
-  abilityScores: AbilityScores, 
-  race: string
-): boolean => {
+export const meetsRacialRequirements = (abilityScores: AbilityScores, race: string): boolean => {
   switch (race) {
     case 'Dwarf':
       return (
@@ -173,4 +174,4 @@ export const meetsRacialRequirements = (
     default:
       return false;
   }
-}; 
+};

@@ -3,7 +3,7 @@ import {
   levelProgressionTables,
   determineLevel,
   getExperienceForNextLevel,
-  getLevelTitle
+  getLevelTitle,
 } from '@rules/experience/levelProgression';
 import type { CharacterClass } from '@rules/types';
 
@@ -14,7 +14,7 @@ describe('Level Progression', () => {
       expect(levelProgressionTables).toHaveProperty('Cleric');
       expect(levelProgressionTables).toHaveProperty('Magic-User');
       expect(levelProgressionTables).toHaveProperty('Thief');
-      
+
       // Check that each class has a valid progression table
       for (const className in levelProgressionTables) {
         const table = levelProgressionTables[className as CharacterClass];
@@ -33,7 +33,7 @@ describe('Level Progression', () => {
       expect(determineLevel('Fighter', 1999)).toBe(1); // 1999 XP = level 1
       expect(determineLevel('Fighter', 2000)).toBe(2); // 2000 XP = level 2
       expect(determineLevel('Fighter', 4000)).toBe(3); // 4000 XP = level 3
-      
+
       // Test for another class (Magic-User)
       expect(determineLevel('Magic-User', 0)).toBe(1);
       expect(determineLevel('Magic-User', 2500)).toBe(2);
@@ -42,7 +42,7 @@ describe('Level Progression', () => {
     it('should return highest level if experience exceeds max table entry', () => {
       const maxFighterLevel = levelProgressionTables.Fighter.length;
       const maxXPEntry = levelProgressionTables.Fighter[maxFighterLevel - 1].experienceRequired;
-      
+
       // Extremely high XP value should still return highest level in table
       expect(determineLevel('Fighter', maxXPEntry * 10)).toBe(maxFighterLevel);
     });
@@ -52,7 +52,7 @@ describe('Level Progression', () => {
     it('should return correct XP needed for next level', () => {
       // Level 1 Fighter needs 2000 XP to reach level 2
       expect(getExperienceForNextLevel('Fighter', 1)).toBe(2000);
-      
+
       // Level 2 Fighter needs 4000 XP to reach level 3
       expect(getExperienceForNextLevel('Fighter', 2)).toBe(4000);
     });
@@ -68,7 +68,7 @@ describe('Level Progression', () => {
       expect(getLevelTitle('Fighter', 1)).toBe('Veteran');
       expect(getLevelTitle('Fighter', 2)).toBe('Warrior');
       expect(getLevelTitle('Fighter', 3)).toBe('Swordsman');
-      
+
       // Also test another class
       expect(getLevelTitle('Thief', 1)).toBe('Apprentice');
     });
@@ -76,7 +76,7 @@ describe('Level Progression', () => {
     it('should return default title for levels without specific titles', () => {
       // Assuming there might be some high level without specific title
       const maxFighterLevel = levelProgressionTables.Fighter.length;
-      
+
       // This might not be applicable if all levels have titles, but test the behavior
       const title = getLevelTitle('Fighter', maxFighterLevel);
       expect(title).toBeTypeOf('string');

@@ -34,10 +34,10 @@ export const SECONDARY_SKILL_CATEGORIES = [
   'Teamster',
   'Trader/Merchant',
   'Weaver',
-  'Woodworker'
+  'Woodworker',
 ] as const;
 
-export type SecondarySkill = typeof SECONDARY_SKILL_CATEGORIES[number];
+export type SecondarySkill = (typeof SECONDARY_SKILL_CATEGORIES)[number];
 
 /**
  * Secondary skills grouped by origins (for random selection)
@@ -52,7 +52,7 @@ export const SKILL_GROUPS: Record<string, SecondarySkill[]> = {
     'Forester',
     'Hunter/Trapper',
     'Leather Worker',
-    'Woodworker'
+    'Woodworker',
   ],
   Urban: [
     'Armorer/Weaponsmith',
@@ -67,25 +67,11 @@ export const SKILL_GROUPS: Record<string, SecondarySkill[]> = {
     'Scribe',
     'Tailor',
     'Trader/Merchant',
-    'Weaver'
+    'Weaver',
   ],
-  Wilderness: [
-    'Forester',
-    'Hunter/Trapper',
-    'Leather Worker',
-    'Miner'
-  ],
-  Maritime: [
-    'Fisher',
-    'Navigator',
-    'Sailor',
-    'Shipwright'
-  ],
-  Traveling: [
-    'Gambler',
-    'Teamster',
-    'Trader/Merchant'
-  ]
+  Wilderness: ['Forester', 'Hunter/Trapper', 'Leather Worker', 'Miner'],
+  Maritime: ['Fisher', 'Navigator', 'Sailor', 'Shipwright'],
+  Traveling: ['Gambler', 'Teamster', 'Trader/Merchant'],
 };
 
 /**
@@ -95,7 +81,7 @@ export enum SkillLevel {
   Novice = 1,
   Apprentice = 2,
   Journeyman = 3,
-  Master = 4
+  Master = 4,
 }
 
 /**
@@ -113,7 +99,7 @@ export function generateRandomSecondarySkill(): CharacterSecondarySkill {
   // Roll 1d100 to determine skill category
   const roll = Math.floor(Math.random() * 100) + 1;
   let category: keyof typeof SKILL_GROUPS;
-  
+
   if (roll <= 40) {
     category = 'Rural';
   } else if (roll <= 70) {
@@ -125,16 +111,16 @@ export function generateRandomSecondarySkill(): CharacterSecondarySkill {
   } else {
     category = 'Wilderness';
   }
-  
+
   // Pick a random skill from that category
   const skills = SKILL_GROUPS[category];
   const randomIndex = Math.floor(Math.random() * skills.length);
   const skill = skills[randomIndex];
-  
+
   // Determine expertise level (mostly novice/apprentice)
   const levelRoll = Math.floor(Math.random() * 100) + 1;
   let level: SkillLevel;
-  
+
   if (levelRoll <= 50) {
     level = SkillLevel.Novice;
   } else if (levelRoll <= 85) {
@@ -144,10 +130,10 @@ export function generateRandomSecondarySkill(): CharacterSecondarySkill {
   } else {
     level = SkillLevel.Master;
   }
-  
+
   return {
     skill,
-    level
+    level,
   };
 }
 
@@ -157,24 +143,21 @@ export function generateRandomSecondarySkill(): CharacterSecondarySkill {
  * @param difficulty 1-20 difficulty rating (higher is harder)
  * @returns Whether the skill check succeeds
  */
-export function checkSecondarySkill(
-  skill: CharacterSecondarySkill,
-  difficulty: number
-): boolean {
+export function checkSecondarySkill(skill: CharacterSecondarySkill, difficulty: number): boolean {
   // Base success chance by level
   const baseChance = {
     [SkillLevel.Novice]: 50,
     [SkillLevel.Apprentice]: 65,
     [SkillLevel.Journeyman]: 80,
-    [SkillLevel.Master]: 95
+    [SkillLevel.Master]: 95,
   };
-  
+
   // Calculate success chance based on difficulty
-  const successChance = baseChance[skill.level] - (difficulty * 5);
-  
+  const successChance = baseChance[skill.level] - difficulty * 5;
+
   // Roll percentile
   const roll = Math.floor(Math.random() * 100) + 1;
-  
+
   return roll <= successChance;
 }
 
@@ -194,4 +177,4 @@ export function getSkillLevelDescription(level: SkillLevel): string {
     default:
       return 'knows something about';
   }
-} 
+}

@@ -1,4 +1,11 @@
-import type { Character, Monster, Weapon, DiceRoll, ActionResult, CombatResult } from '@rules/types';
+import type {
+  Character,
+  Monster,
+  Weapon,
+  DiceRoll,
+  ActionResult,
+  CombatResult,
+} from '@rules/types';
 import { roll, rollFromNotation, sumDice } from '@lib/dice';
 
 /**
@@ -7,16 +14,16 @@ import { roll, rollFromNotation, sumDice } from '@lib/dice';
  * To determine if an attack hits: attacker's THAC0 - target's AC = number needed on d20
  */
 export const resolveAttackRoll = (
-  attacker: Character | Monster, 
+  attacker: Character | Monster,
   target: Character | Monster,
   attackRoll: number
 ): boolean => {
   // Get the attacker's THAC0
   const thac0 = attacker.thac0;
-  
+
   // Get target's AC
   const targetAC = target.armorClass;
-  
+
   // Calculate the number needed to hit
   const numberNeededToHit = thac0 - targetAC;
 
@@ -34,32 +41,32 @@ export const calculateAttackRoll = (
 ): number => {
   // Base roll is d20
   const baseRoll = roll(20);
-  
+
   // Apply strength bonus for melee attacks if attacker is a Character
   let totalModifier = modifiers;
-  
+
   if (
-    weaponUsed?.type === 'Melee' && 
+    weaponUsed?.type === 'Melee' &&
     'abilities' in attacker &&
     attacker.abilityModifiers.strengthHitAdj
   ) {
     totalModifier += attacker.abilityModifiers.strengthHitAdj;
   }
-  
+
   // Apply dexterity bonus for ranged attacks if attacker is a Character
   if (
-    weaponUsed?.type === 'Ranged' && 
+    weaponUsed?.type === 'Ranged' &&
     'abilities' in attacker &&
     attacker.abilityModifiers.dexterityMissile
   ) {
     totalModifier += attacker.abilityModifiers.dexterityMissile;
   }
-  
+
   // Apply weapon's magic bonus if any
   if (weaponUsed?.magicBonus) {
     totalModifier += weaponUsed.magicBonus;
   }
-  
+
   // Return the total roll
   return baseRoll + totalModifier;
 };
@@ -74,12 +81,8 @@ export const attackRoll = (
   situationalModifiers = 0
 ): CombatResult => {
   // Calculate attack roll
-  const attackRollValue = calculateAttackRoll(
-    attacker, 
-    weaponUsed, 
-    situationalModifiers
-  );
-  
+  const attackRollValue = calculateAttackRoll(attacker, weaponUsed, situationalModifiers);
+
   // Record the natural roll (before modifiers) for critical hit detection
   const naturalRoll = attackRollValue - situationalModifiers;
   let adjustedNaturalRoll = naturalRoll;
@@ -94,10 +97,10 @@ export const attackRoll = (
       adjustedNaturalRoll -= attacker.abilityModifiers.dexterityMissile;
     }
   }
-  
+
   // Determine if the attack hits
   const hit = resolveAttackRoll(attacker, target, attackRollValue);
-  
+
   // If the attack doesn't hit, return early
   if (!hit) {
     return {
@@ -105,46 +108,44 @@ export const attackRoll = (
       damage: [],
       critical: false,
       message: `${attacker.name}'s attack missed ${target.name}.`,
-      specialEffects: null
+      specialEffects: null,
     };
   }
-  
+
   // If hit, calculate damage
   // For now, using a simple approach - this will be expanded with the damage.ts file
-  const damageResults = weaponUsed 
-    ? rollFromNotation(weaponUsed.damage)
-    : rollFromNotation('1d2'); // Unarmed damage
-  
+  const damageResults = weaponUsed ? rollFromNotation(weaponUsed.damage) : rollFromNotation('1d2'); // Unarmed damage
+
   // Calculate total base damage
   const baseDamage = sumDice(damageResults);
-  
+
   // Apply strength bonus for melee attacks if attacker is a Character
   let damageModifier = 0;
   if (
-    weaponUsed?.type === 'Melee' && 
+    weaponUsed?.type === 'Melee' &&
     'abilities' in attacker &&
     attacker.abilityModifiers.strengthDamageAdj
   ) {
     damageModifier += attacker.abilityModifiers.strengthDamageAdj;
   }
-  
+
   // Apply weapon's magic bonus if any
   if (weaponUsed?.magicBonus) {
     damageModifier += weaponUsed.magicBonus;
   }
-  
+
   // Ensure minimum damage of 1 if hit
   const totalDamage = Math.max(1, baseDamage + damageModifier);
-  
+
   // Check for critical hit (natural 20) - simple implementation for now
   const critical = adjustedNaturalRoll === 20;
-  
+
   return {
     hit: true,
     damage: [totalDamage],
     critical,
     message: `${attacker.name} ${critical ? 'critically ' : ''}hit ${target.name} for ${totalDamage} damage.`,
-    specialEffects: null
+    specialEffects: null,
   };
 };
 
@@ -154,4 +155,4 @@ export const attackRoll = (
 export const rollDiceDamage = (damageStr: string): number => {
   const damageResults = rollFromNotation(damageStr);
   return sumDice(damageResults);
-}; 
+};

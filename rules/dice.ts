@@ -15,19 +15,19 @@ export interface DiceResult {
 /**
  * Roll a specific number of dice with a given number of sides
  * @param count Number of dice to roll
- * @param sides Number of sides per die 
+ * @param sides Number of sides per die
  * @param modifier Modifier to add to the total
  * @returns The dice result object
  */
 export function rollDice(count: number, sides: number, modifier = 0): DiceResult {
   const results = DiceLib.rollMultiple(count, sides);
   const total = DiceLib.sumDice(results) + modifier;
-  
+
   return {
     roll: count,
     sides,
     modifier,
-    result: total
+    result: total,
   };
 }
 
@@ -45,4 +45,4 @@ export function rollExpression(notation: string): number {
 export const rollWithAdvantage = DiceLib.rollWithAdvantage;
 export const rollWithDisadvantage = DiceLib.rollWithDisadvantage;
 export const rollKeepHighest = DiceLib.rollKeepHighest;
-export const rollKeepLowest = DiceLib.rollKeepLowest; 
+export const rollKeepLowest = DiceLib.rollKeepLowest;

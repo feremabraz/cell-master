@@ -7,7 +7,7 @@ import {
   getBaseMovementRate,
   getRacialAbilities,
   getPermittedClassOptions,
-  getMultiClassOptions
+  getMultiClassOptions,
 } from '@rules/character/races';
 import type { CharacterRace, CharacterClass } from '@rules/types';
 
@@ -95,8 +95,16 @@ describe('Character Races', () => {
 
   describe('getRacialAbilities', () => {
     it('should return at least one racial ability for each race', () => {
-      const races: CharacterRace[] = ['Human', 'Dwarf', 'Elf', 'Gnome', 'Half-Elf', 'Halfling', 'Half-Orc'];
-      
+      const races: CharacterRace[] = [
+        'Human',
+        'Dwarf',
+        'Elf',
+        'Gnome',
+        'Half-Elf',
+        'Halfling',
+        'Half-Orc',
+      ];
+
       for (const race of races) {
         const abilities = getRacialAbilities(race);
         expect(abilities.length).toBeGreaterThan(0);
@@ -108,9 +116,8 @@ describe('Character Races', () => {
 
     it('should return combat bonuses for Dwarves', () => {
       const abilities = getRacialAbilities('Dwarf');
-      const hasCombatBonus = abilities.some(ability => 
-        ability.name.includes('Combat Bonus'));
-      
+      const hasCombatBonus = abilities.some((ability) => ability.name.includes('Combat Bonus'));
+
       expect(hasCombatBonus).toBe(true);
     });
   });
@@ -147,7 +154,7 @@ describe('Character Races', () => {
     it('should return multiple options for Elves', () => {
       const options = getMultiClassOptions('Elf');
       expect(options.length).toBeGreaterThan(0);
-      
+
       // Check that each option is an array of valid classes
       for (const combination of options) {
         expect(Array.isArray(combination)).toBe(true);
@@ -155,11 +162,12 @@ describe('Character Races', () => {
           expect(typeof cls).toBe('string');
         }
       }
-      
+
       // Verify specific combinations exist
-      const hasFighterMage = options.some(combo => 
-        combo.includes('Fighter') && combo.includes('Magic-User'));
+      const hasFighterMage = options.some(
+        (combo) => combo.includes('Fighter') && combo.includes('Magic-User')
+      );
       expect(hasFighterMage).toBe(true);
     });
   });
-}); 
+});

@@ -1,11 +1,10 @@
 import { atom } from 'jotai';
-import type { 
-  AbilityScores, 
-  Character, 
-  CharacterClass,
-  CharacterRace,
-} from '@rules/types';
-import { meetsClassRequirements, canRaceBeClass, getMaxLevelForRaceClass } from './classRequirements';
+import type { AbilityScores, Character, CharacterClass, CharacterRace } from '@rules/types';
+import {
+  meetsClassRequirements,
+  canRaceBeClass,
+  getMaxLevelForRaceClass,
+} from './classRequirements';
 import { canMultiClass } from './multiClass';
 import { type SecondarySkill, SkillLevel, type CharacterSecondarySkill } from './secondarySkills';
 
@@ -24,16 +23,12 @@ export const additionalClassesAtom = atom<CharacterClass[]>([]);
 /**
  * Derived atom that combines primary and additional classes
  */
-export const allClassesAtom = atom(
-  (get) => {
-    const primaryClass = get(primaryClassAtom);
-    const additionalClasses = get(additionalClassesAtom);
-    
-    return primaryClass 
-      ? [primaryClass, ...additionalClasses] 
-      : additionalClasses;
-  }
-);
+export const allClassesAtom = atom((get) => {
+  const primaryClass = get(primaryClassAtom);
+  const additionalClasses = get(additionalClassesAtom);
+
+  return primaryClass ? [primaryClass, ...additionalClasses] : additionalClasses;
+});
 
 /**
  * Secondary skills atom
@@ -52,12 +47,15 @@ export function canChooseClass(
   if (!canRaceBeClass(race, characterClass)) {
     return { allowed: false, reason: `${race} characters cannot be ${characterClass}s` };
   }
-  
+
   // Check if character meets minimum ability scores
   if (!meetsClassRequirements(abilityScores, characterClass)) {
-    return { allowed: false, reason: `Character does not meet the minimum ability score requirements for ${characterClass}` };
+    return {
+      allowed: false,
+      reason: `Character does not meet the minimum ability score requirements for ${characterClass}`,
+    };
   }
-  
+
   return { allowed: true };
 }
 
@@ -73,25 +71,25 @@ export function validateMultiClass(
   if (race === 'Human') {
     return { valid: false, reason: 'Humans cannot multi-class' };
   }
-  
+
   // Check if this is a valid multi-class combination for the race
   if (!canMultiClass(race, classes)) {
-    return { 
-      valid: false, 
-      reason: `${race} characters cannot multi-class with this combination of classes`
+    return {
+      valid: false,
+      reason: `${race} characters cannot multi-class with this combination of classes`,
     };
   }
-  
+
   // Check if character meets requirements for all classes
   for (const characterClass of classes) {
     if (!meetsClassRequirements(abilityScores, characterClass)) {
-      return { 
-        valid: false, 
-        reason: `Character does not meet the minimum ability score requirements for ${characterClass}`
+      return {
+        valid: false,
+        reason: `Character does not meet the minimum ability score requirements for ${characterClass}`,
       };
     }
   }
-  
+
   return { valid: true };
 }
 
@@ -105,36 +103,30 @@ export function addSecondarySkill(
 ): Character {
   return {
     ...character,
-    secondarySkills: [
-      ...character.secondarySkills,
-      { skill, level }
-    ]
+    secondarySkills: [...character.secondarySkills, { skill, level }],
   };
 }
 
 /**
  * Calculate character level based on experience and class(es)
  */
-export function calculateLevel(
-  character: Character
-): number {
+export function calculateLevel(character: Character): number {
   // For single-classed characters, just return their level
-  if (character.primaryClass && 
-      Object.keys(character.classes).length === 1) {
+  if (character.primaryClass && Object.keys(character.classes).length === 1) {
     return character.level;
   }
-  
+
   // For multi-classed characters, calculate average level
   let totalLevels = 0;
   let classCount = 0;
-  
+
   for (const [, level] of Object.entries(character.classes)) {
     if (level) {
       totalLevels += level;
       classCount++;
     }
   }
-  
+
   return Math.floor(totalLevels / Math.max(1, classCount));
 }
 
@@ -147,12 +139,12 @@ export function hasReachedLevelLimit(
 ): boolean {
   const currentLevel = character.classes[characterClass] || 0;
   const maxLevel = getMaxLevelForRaceClass(character.race, characterClass);
-  
+
   // -1 means unlimited advancement
   if (maxLevel === -1) {
     return false;
   }
-  
+
   return currentLevel >= maxLevel;
 }
 
@@ -169,33 +161,31 @@ export function createClassValidationAtom(
   raceAtom: ReturnType<typeof atom<CharacterRace>>,
   abilityScoresAtom: ReturnType<typeof atom<AbilityScores>>
 ) {
-  return atom(
-    (get) => {
-      const race = get(raceAtom);
-      const abilityScores = get(abilityScoresAtom);
-      const primaryClass = get(primaryClassAtom);
-      const additionalClasses = get(additionalClassesAtom);
-      const allClasses = get(allClassesAtom);
-      
-      const errors: string[] = [];
-      
-      // Validate primary class
-      if (primaryClass) {
-        const validation = canChooseClass(abilityScores, race, primaryClass);
-        if (!validation.allowed) {
-          errors.push(validation.reason || 'Invalid primary class');
-        }
+  return atom((get) => {
+    const race = get(raceAtom);
+    const abilityScores = get(abilityScoresAtom);
+    const primaryClass = get(primaryClassAtom);
+    const additionalClasses = get(additionalClassesAtom);
+    const allClasses = get(allClassesAtom);
+
+    const errors: string[] = [];
+
+    // Validate primary class
+    if (primaryClass) {
+      const validation = canChooseClass(abilityScores, race, primaryClass);
+      if (!validation.allowed) {
+        errors.push(validation.reason || 'Invalid primary class');
       }
-      
-      // Validate additional classes and multi-classing
-      if (additionalClasses.length > 0) {
-        const validation = validateMultiClass(race, allClasses, abilityScores);
-        if (!validation.valid) {
-          errors.push(validation.reason || 'Invalid multi-class combination');
-        }
-      }
-      
-      return errors;
     }
-  );
-} 
+
+    // Validate additional classes and multi-classing
+    if (additionalClasses.length > 0) {
+      const validation = validateMultiClass(race, allClasses, abilityScores);
+      if (!validation.valid) {
+        errors.push(validation.reason || 'Invalid multi-class combination');
+      }
+    }
+
+    return errors;
+  });
+}

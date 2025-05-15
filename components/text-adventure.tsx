@@ -4,13 +4,13 @@ import { useAtom } from 'jotai';
 import { Card } from '@components/ui/card';
 import { GameHistory } from './game-story';
 import { CommandInput } from './command-input';
-import { 
-  gameHistoryAtom, 
-  locationAtom, 
-  inventoryAtom, 
-  isLoadingAtom, 
+import {
+  gameHistoryAtom,
+  locationAtom,
+  inventoryAtom,
+  isLoadingAtom,
   userIdAtom,
-  isInitializedAtom
+  isInitializedAtom,
 } from '@store/game-store';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { useEffect } from 'react';
@@ -50,9 +50,13 @@ async function initializeGame(userId: string): Promise<GameState> {
   };
 }
 
-async function processCommand({ command, gameHistory, userId }: { 
-  command: string; 
-  gameHistory: string[]; 
+async function processCommand({
+  command,
+  gameHistory,
+  userId,
+}: {
+  command: string;
+  gameHistory: string[];
   userId: string;
 }): Promise<Response> {
   const response = await fetch('/api/ai', {
@@ -105,14 +109,14 @@ export function TextAdventure() {
         setGameHistory(['Failed to initialize game. Please refresh to try again.']);
       }
     };
-    
+
     window.addEventListener('error', handleError);
     return () => window.removeEventListener('error', handleError);
   }, [setGameHistory]);
 
   // React Query mutation for command processing
   const { mutateAsync: processCommandMutation } = useMutation<
-    Response, 
+    Response,
     Error,
     { command: string; gameHistory: string[]; userId: string }
   >({
@@ -138,13 +142,21 @@ export function TextAdventure() {
       setIsLoading(false);
       setIsInitialized(true);
     }
-  }, [initialState, isInitialized, setLocation, setInventory, setGameHistory, setIsLoading, setIsInitialized]);
+  }, [
+    initialState,
+    isInitialized,
+    setLocation,
+    setInventory,
+    setGameHistory,
+    setIsLoading,
+    setIsInitialized,
+  ]);
 
   // Function to handle user commands using React Query mutation
   const handleCommand = async (command: string) => {
     try {
       const response = await processCommandMutation({ command, gameHistory, userId });
-      
+
       // Process the response as a stream to show text as it arrives
       const reader = response.body?.getReader();
       if (!reader) throw new Error('Response body is null');

@@ -5,7 +5,7 @@ import {
   generate4d6DropLowest,
   rollExceptionalStrength,
   applyRacialAbilityAdjustments,
-  meetsRacialRequirements
+  meetsRacialRequirements,
 } from '@rules/character/abilityScoreGeneration';
 import type { AbilityScores } from '@rules/types';
 import type { CharacterRace } from '@rules/types';
@@ -42,7 +42,7 @@ describe('Ability Score Generation', () => {
         .mockReturnValueOnce(0.1); // 2
 
       const scores = generateStandard3d6();
-      
+
       // 1+4+6 = 11
       expect(scores.strength).toBe(12);
       // 2+5+6 = 13
@@ -67,9 +67,9 @@ describe('Ability Score Generation', () => {
   describe('generate3d6Arranged', () => {
     it('should generate six values within 3-18 range', () => {
       mockMathRandom.mockImplementation(() => 0.5); // All dice will be 4
-      
+
       const scores = generate3d6Arranged();
-      
+
       expect(scores).toHaveLength(6);
       for (const score of scores) {
         // Each score should be 4+4+4 = 12
@@ -94,9 +94,9 @@ describe('Ability Score Generation', () => {
         .mockReturnValueOnce(0.4) // 3
         .mockReturnValueOnce(0.6) // 4
         .mockReturnValueOnce(0.8); // 5
-      
+
       const scores = generate4d6DropLowest();
-      
+
       expect(scores).toHaveLength(6);
       expect(scores[0]).toBe(9); // 2+3+4 = 9
       expect(scores[1]).toBe(12); // 3+4+5 = 12
@@ -112,7 +112,7 @@ describe('Ability Score Generation', () => {
 
     it('should return a number between 1-100 for warrior classes', () => {
       mockMathRandom.mockReturnValue(0.5); // 51
-      
+
       expect(rollExceptionalStrength('Fighter')).toBe(51);
       expect(rollExceptionalStrength('Paladin')).toBe(51);
       expect(rollExceptionalStrength('Ranger')).toBe(51);
@@ -127,11 +127,11 @@ describe('Ability Score Generation', () => {
         constitution: 10,
         intelligence: 10,
         wisdom: 10,
-        charisma: 10
+        charisma: 10,
       };
-      
+
       const adjusted = applyRacialAbilityAdjustments(baseScores, 'Dwarf');
-      
+
       expect(adjusted.constitution).toBe(11); // +1
       expect(adjusted.charisma).toBe(9); // -1
     });
@@ -143,11 +143,11 @@ describe('Ability Score Generation', () => {
         constitution: 10,
         intelligence: 10,
         wisdom: 10,
-        charisma: 10
+        charisma: 10,
       };
-      
+
       const adjusted = applyRacialAbilityAdjustments(baseScores, 'Elf');
-      
+
       expect(adjusted.dexterity).toBe(11); // +1
       expect(adjusted.constitution).toBe(9); // -1
     });
@@ -159,11 +159,11 @@ describe('Ability Score Generation', () => {
         constitution: 10,
         intelligence: 10,
         wisdom: 10,
-        charisma: 10
+        charisma: 10,
       };
-      
+
       const adjusted = applyRacialAbilityAdjustments(baseScores, 'Human');
-      
+
       // Should be identical to original
       expect(adjusted).toEqual(baseScores);
     });
@@ -175,11 +175,11 @@ describe('Ability Score Generation', () => {
         constitution: 10,
         intelligence: 10,
         wisdom: 10,
-        charisma: 3
+        charisma: 3,
       };
-      
+
       const adjusted = applyRacialAbilityAdjustments(lowScores, 'Half-Orc');
-      
+
       // Half-Orc has -2 charisma, but should be capped at 3
       expect(adjusted.charisma).toBe(3);
     });
@@ -193,9 +193,9 @@ describe('Ability Score Generation', () => {
         constitution: 3,
         intelligence: 3,
         wisdom: 3,
-        charisma: 3
+        charisma: 3,
       };
-      
+
       expect(meetsRacialRequirements(lowScores, 'Human')).toBe(true);
     });
 
@@ -206,9 +206,9 @@ describe('Ability Score Generation', () => {
         constitution: 8, // min 8
         intelligence: 8, // min 8
         wisdom: 3,
-        charisma: 8 // min 8
+        charisma: 8, // min 8
       };
-      
+
       expect(meetsRacialRequirements(elfScores, 'Elf')).toBe(true);
     });
 
@@ -219,9 +219,9 @@ describe('Ability Score Generation', () => {
         constitution: 8,
         intelligence: 8,
         wisdom: 3,
-        charisma: 8
+        charisma: 8,
       };
-      
+
       expect(meetsRacialRequirements(lowScores, 'Elf')).toBe(false);
     });
 
@@ -232,10 +232,10 @@ describe('Ability Score Generation', () => {
         constitution: 10,
         intelligence: 10,
         wisdom: 10,
-        charisma: 10
+        charisma: 10,
       };
-      
+
       expect(meetsRacialRequirements(scores, 'Unknown' as CharacterRace)).toBe(false);
     });
   });
-}); 
+});

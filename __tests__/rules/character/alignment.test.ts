@@ -7,14 +7,14 @@ import {
   getAlignmentLanguage,
   areAlignmentsCompatible,
   areAlignmentsAdversarial,
-  getAlignmentReactionModifier
+  getAlignmentReactionModifier,
 } from '@rules/character/alignment';
 
 describe('Alignment System', () => {
   describe('getAlignmentDetails', () => {
     it('should return details for Lawful Good alignment', () => {
       const details = getAlignmentDetails('Lawful Good');
-      
+
       expect(details.name).toBe('Lawful Good');
       expect(details.description).toBeDefined();
       expect(details.description.length).toBeGreaterThan(20);
@@ -25,7 +25,7 @@ describe('Alignment System', () => {
 
     it('should return details for Chaotic Evil alignment', () => {
       const details = getAlignmentDetails('Chaotic Evil');
-      
+
       expect(details.name).toBe('Chaotic Evil');
       expect(details.description).toBeDefined();
       expect(details.compatibleAlignments).toContain('Chaotic Neutral');
@@ -36,7 +36,7 @@ describe('Alignment System', () => {
   describe('getAllAlignments', () => {
     it('should return all nine alignments', () => {
       const alignments = getAllAlignments();
-      
+
       expect(alignments).toHaveLength(9);
       expect(alignments).toContain('Lawful Good');
       expect(alignments).toContain('True Neutral');
@@ -47,21 +47,21 @@ describe('Alignment System', () => {
   describe('getClassAlignmentRestrictions', () => {
     it('should return only Lawful Good for Paladins', () => {
       const allowedAlignments = getClassAlignmentRestrictions('Paladin');
-      
+
       expect(allowedAlignments).toHaveLength(1);
       expect(allowedAlignments).toEqual(['Lawful Good']);
     });
 
     it('should return only True Neutral for Druids', () => {
       const allowedAlignments = getClassAlignmentRestrictions('Druid');
-      
+
       expect(allowedAlignments).toHaveLength(1);
       expect(allowedAlignments).toEqual(['True Neutral']);
     });
 
     it('should return only evil alignments for Assassins', () => {
       const allowedAlignments = getClassAlignmentRestrictions('Assassin');
-      
+
       expect(allowedAlignments).toHaveLength(3);
       expect(allowedAlignments).toContain('Lawful Evil');
       expect(allowedAlignments).toContain('Neutral Evil');
@@ -71,7 +71,7 @@ describe('Alignment System', () => {
 
     it('should return all alignments for Fighters', () => {
       const allowedAlignments = getClassAlignmentRestrictions('Fighter');
-      
+
       expect(allowedAlignments).toHaveLength(9);
     });
   });
@@ -148,4 +148,4 @@ describe('Alignment System', () => {
       expect(getAlignmentReactionModifier('Lawful Neutral', 'Neutral Good')).toBe(-2);
     });
   });
-}); 
+});

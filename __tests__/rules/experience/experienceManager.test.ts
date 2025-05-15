@@ -6,7 +6,7 @@ import {
   startTraining,
   completeLevelUp,
   calculatePrimeRequisiteBonus,
-  initializeExperienceTracker
+  initializeExperienceTracker,
 } from '@rules/experience/experienceManager';
 import type { Monster, Alignment, MovementType } from '@rules/types';
 import type { ExperienceTracker } from '@rules/experience/types';
@@ -25,7 +25,7 @@ describe('Experience Manager', () => {
     level: 3,
     hitPoints: {
       current: 20,
-      maximum: 20
+      maximum: 20,
     },
     armorClass: 6,
     thac0: 17,
@@ -59,9 +59,9 @@ describe('Experience Manager', () => {
       history: [],
       level: 1,
       bonuses: {
-        primeRequisiteBonus: 0
+        primeRequisiteBonus: 0,
       },
-      trainingStatus: undefined
+      trainingStatus: undefined,
     };
   });
 
@@ -87,7 +87,12 @@ describe('Experience Manager', () => {
 
   describe('awardExperience', () => {
     it('should correctly add XP to the tracker', () => {
-      const updatedTracker = awardExperience(sampleTracker, 1000, XPSource.COMBAT, 'Defeated a monster');
+      const updatedTracker = awardExperience(
+        sampleTracker,
+        1000,
+        XPSource.COMBAT,
+        'Defeated a monster'
+      );
       expect(updatedTracker.current).toBe(1000);
       // Instead of checking total which no longer exists, verify the history was updated
       expect(updatedTracker.history.length).toBe(1);
@@ -99,7 +104,7 @@ describe('Experience Manager', () => {
     it('should keep history of multiple XP awards', () => {
       let tracker = awardExperience(sampleTracker, 1000, XPSource.COMBAT, 'Defeated a monster');
       tracker = awardExperience(tracker, 500, XPSource.QUEST, 'Completed a side quest');
-      
+
       expect(tracker.current).toBe(1500);
       // Check the tracker state and history
       expect(tracker.history.length).toBe(2);
@@ -130,11 +135,11 @@ describe('Experience Manager', () => {
         'Fighter',
         1,
         5000, // Enough gold
-        true,  // Has trainer
-        4,     // Sufficient trainer level
+        true, // Has trainer
+        4, // Sufficient trainer level
         'Master Trainer'
       );
-      
+
       expect(result.success).toBe(true);
       expect(result.goldSpent).toBeGreaterThan(0);
       expect(result.experienceTracker.trainingStatus).not.toBeNull();
@@ -148,11 +153,11 @@ describe('Experience Manager', () => {
         'Fighter',
         1,
         1000, // Not enough gold
-        true,  // Has trainer
-        4,     // Sufficient trainer level
+        true, // Has trainer
+        4, // Sufficient trainer level
         'Master Trainer'
       );
-      
+
       expect(result.success).toBe(false);
       expect(result.goldSpent).toBe(0);
       expect(result.experienceTracker.trainingStatus).toBeUndefined();
@@ -166,11 +171,11 @@ describe('Experience Manager', () => {
       sampleTracker.trainingStatus = {
         inProgress: true,
         completionDate: new Date(2025, 4, 10), // Completed 5 days ago
-        trainer: 'Master Trainer'
+        trainer: 'Master Trainer',
       };
-      
+
       const result = completeLevelUp(sampleTracker, 'Fighter', 1);
-      
+
       expect(result.success).toBe(true);
       expect(result.newLevel).toBe(2);
       expect(result.experienceTracker.trainingStatus).toBeUndefined();
@@ -182,11 +187,11 @@ describe('Experience Manager', () => {
       sampleTracker.trainingStatus = {
         inProgress: true,
         completionDate: new Date(2025, 4, 20), // Will complete in 5 days
-        trainer: 'Master Trainer'
+        trainer: 'Master Trainer',
       };
-      
+
       const result = completeLevelUp(sampleTracker, 'Fighter', 1);
-      
+
       expect(result.success).toBe(false);
       expect(result.experienceTracker.trainingStatus).not.toBeUndefined();
     });
@@ -197,12 +202,12 @@ describe('Experience Manager', () => {
       expect(calculatePrimeRequisiteBonus(10)).toBe(0);
       expect(calculatePrimeRequisiteBonus(12)).toBe(0);
     });
-    
+
     it('should return positive bonus for high ability scores', () => {
       expect(calculatePrimeRequisiteBonus(15)).toBeGreaterThan(0);
       expect(calculatePrimeRequisiteBonus(18)).toBeGreaterThan(0);
     });
-    
+
     it('should return negative penalty for low ability scores', () => {
       expect(calculatePrimeRequisiteBonus(6)).toBeLessThan(0);
       expect(calculatePrimeRequisiteBonus(3)).toBeLessThan(0);
@@ -212,23 +217,23 @@ describe('Experience Manager', () => {
   describe('initializeExperienceTracker', () => {
     it('should create a proper tracker for a new character', () => {
       const tracker = initializeExperienceTracker('Fighter', 10, 0);
-      
+
       expect(tracker.current).toBe(0);
       expect(tracker.level).toBe(1); // Level 1 character
       expect(tracker.bonuses.primeRequisiteBonus).toBe(0); // No bonus for score 10
       expect(tracker.history.length).toBe(0);
       expect(tracker.trainingStatus).toBeUndefined();
     });
-    
+
     it('should apply bonus percentage for high ability scores', () => {
       const tracker = initializeExperienceTracker('Fighter', 16, 0);
-      
+
       expect(tracker.bonuses.primeRequisiteBonus).toBeGreaterThan(0);
     });
-    
+
     it('should initialize with starting experience if provided', () => {
       const tracker = initializeExperienceTracker('Fighter', 10, 1000);
-      
+
       expect(tracker.current).toBe(1000);
       // The implementation doesn't add a history entry for initial XP, only sets current
       expect(tracker.history.length).toBe(0);

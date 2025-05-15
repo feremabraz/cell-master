@@ -107,9 +107,9 @@ export const illusionistSpellProgression: SpellProgressionTable = {
 // Combined progression tables for all classes
 export const spellProgressions: Record<SpellClass, SpellProgressionTable> = {
   'Magic-User': magicUserSpellProgression,
-  'Cleric': clericSpellProgression,
-  'Druid': druidSpellProgression,
-  'Illusionist': illusionistSpellProgression,
+  Cleric: clericSpellProgression,
+  Druid: druidSpellProgression,
+  Illusionist: illusionistSpellProgression,
 };
 
 /**
@@ -120,15 +120,15 @@ export const spellProgressions: Record<SpellClass, SpellProgressionTable> = {
  */
 export function getSpellSlots(spellClass: SpellClass, characterLevel: number): SpellSlots {
   const progression = spellProgressions[spellClass];
-  
+
   // Cap at level 20
   const level = Math.min(characterLevel, 20);
-  
+
   // Return empty slots if below level 1 or if the class doesn't cast spells
   if (level < 1 || !progression) {
     return {};
   }
-  
+
   return progression[level] || {};
 }
 
@@ -139,14 +139,14 @@ export function getSpellSlots(spellClass: SpellClass, characterLevel: number): S
  */
 export function getBonusSpellsFromWisdom(wisdomScore: number): Record<number, number> {
   const bonusSpells: Record<number, number> = {};
-  
+
   if (wisdomScore >= 13) bonusSpells[1] = 1;
   if (wisdomScore >= 14) bonusSpells[1] = 2;
   if (wisdomScore >= 15) bonusSpells[2] = 1;
   if (wisdomScore >= 16) bonusSpells[2] = 2;
   if (wisdomScore >= 17) bonusSpells[3] = 1;
   if (wisdomScore >= 18) bonusSpells[3] = 2;
-  
+
   return bonusSpells;
 }
 
@@ -184,4 +184,4 @@ export function getSpellLearningChance(intelligenceScore: number): number | null
   if (intelligenceScore === 16) return 70;
   if (intelligenceScore === 17) return 75;
   return 85; // Intelligence 18
-} 
+}

@@ -4,21 +4,21 @@ import type { FallingDamageParams, FallingDamageResult } from '@rules/types';
 /**
  * Calculate falling damage based on OSRIC rules, converted to metric
  * In OSRIC, falling damage is typically 1d6 per 10 feet (≈3 meters) fallen
- * 
+ *
  * @param params The falling damage parameters
  * @returns A result object containing success, message, and damage information
  */
 export const calculateFallingDamage = (params: FallingDamageParams): FallingDamageResult => {
   const { distance, character, modifiers = {} } = params;
   const { damageFactor = 1 } = modifiers;
-  
+
   // In OSRIC, falling damage is typically 1d6 per 10 feet (≈3 meters) fallen
   const damagePerDie = 6;
   const distancePerDie = 3; // meters (converted from 10 feet)
-  
+
   // Calculate number of dice to roll (rounded down as per OSRIC)
   const diceRolled = Math.floor(distance / distancePerDie);
-  
+
   // No damage for falls less than 3 meters
   if (diceRolled <= 0) {
     return {
@@ -31,26 +31,26 @@ export const calculateFallingDamage = (params: FallingDamageParams): FallingDama
       diceRolled,
     };
   }
-  
+
   // Generate dice notation string (e.g., "3d6" for 9 meter fall)
   const diceNotation = `${diceRolled}d${damagePerDie}`;
-  
+
   // Roll the damage dice
   const damageRolls = rollFromNotation(diceNotation);
-  
+
   // Apply damage factor (for magical effects that might reduce damage)
   const finalDamage = Math.floor(sumDice(damageRolls) * damageFactor);
-  
+
   // Apply damage to character
   character.hitPoints.current -= finalDamage;
-  
+
   // Determine if the character is unconscious or dead
   let effects: string[] | null = null;
   let message = '';
-  
+
   if (character.hitPoints.current <= 0) {
     effects = ['Unconscious'];
-    
+
     // In OSRIC, a character dies at -10 HP
     if (character.hitPoints.current <= -10) {
       effects.push('Dead');
@@ -61,13 +61,14 @@ export const calculateFallingDamage = (params: FallingDamageParams): FallingDama
   } else {
     // Character is still conscious
     message = `${character.name} falls ${distance} meters, taking ${finalDamage} damage.`;
-    
+
     // Check for broken bones or other injuries for severe falls
-    if (diceRolled >= 3) { // Falls of 9+ meters might cause additional injuries
+    if (diceRolled >= 3) {
+      // Falls of 9+ meters might cause additional injuries
       const injuryCheck = rollFromNotation('1d20')[0];
       const constitutionBonus = character.abilityModifiers.constitutionHitPoints || 0;
       const injuryThreshold = 10 - constitutionBonus; // Higher constitution means less chance of injury
-      
+
       if (injuryCheck <= injuryThreshold) {
         if (!effects) effects = [];
         effects.push('Broken Bone');
@@ -75,7 +76,7 @@ export const calculateFallingDamage = (params: FallingDamageParams): FallingDama
       }
     }
   }
-  
+
   return {
     success: true,
     message,
@@ -85,4 +86,4 @@ export const calculateFallingDamage = (params: FallingDamageParams): FallingDama
     damagePerDie,
     diceRolled,
   };
-}; 
+};

@@ -1,13 +1,13 @@
-import type { 
-  GameTime, 
-  TimeUnitType, 
-  TimeUnit, 
-  TimeOfDayPhase, 
+import type {
+  GameTime,
+  TimeUnitType,
+  TimeUnit,
+  TimeOfDayPhase,
   TimeOfDayPhases,
   Season,
   Seasons,
   TimedEffect,
-  DurationDescriptor
+  DurationDescriptor,
 } from '@rules/types';
 
 // Constants
@@ -26,7 +26,7 @@ export const createNewGameTime = (): GameTime => ({
   days: 1,
   weeks: 1,
   months: 1,
-  years: 1
+  years: 1,
 });
 
 // Determine time of day phase based on hour
@@ -51,8 +51,8 @@ export const determineSeason = (month: number): Season => {
 
 // Advance time by specified units
 export const advanceTime = (
-  currentTime: GameTime, 
-  amount: number, 
+  currentTime: GameTime,
+  amount: number,
   unit: TimeUnitType
 ): GameTime => {
   const newTime = { ...currentTime };
@@ -119,14 +119,12 @@ export const formatGameTime = (time: GameTime): string => {
 };
 
 // Convert a duration to a standardized unit (for calculations)
-export const standardizeDuration = (
-  duration: DurationDescriptor
-): TimeUnit => {
+export const standardizeDuration = (duration: DurationDescriptor): TimeUnit => {
   const { value, unit } = duration;
-  
+
   // For simplicity, convert everything to rounds
   let standardValue = value;
-  
+
   switch (unit) {
     case 'Turn':
       standardValue = value * ROUNDS_PER_TURN;
@@ -144,13 +142,14 @@ export const standardizeDuration = (
       standardValue = value * ROUNDS_PER_TURN * TURNS_PER_HOUR * HOURS_PER_DAY * DAYS_PER_MONTH;
       break;
     case 'Year':
-      standardValue = value * ROUNDS_PER_TURN * TURNS_PER_HOUR * HOURS_PER_DAY * DAYS_PER_MONTH * MONTHS_PER_YEAR;
+      standardValue =
+        value * ROUNDS_PER_TURN * TURNS_PER_HOUR * HOURS_PER_DAY * DAYS_PER_MONTH * MONTHS_PER_YEAR;
       break;
   }
-  
+
   return {
     type: 'Round',
-    value: standardValue
+    value: standardValue,
   };
 };
 
@@ -161,31 +160,33 @@ export const updateTimedEffects = (
   amountAdvanced: number,
   unitAdvanced: TimeUnitType
 ): TimedEffect[] => {
-  return effects.filter(effect => {
+  return effects.filter((effect) => {
     // Convert both the effect duration and the time advanced to a common unit (rounds)
     const effectDuration = standardizeDuration({
       value: effect.remaining.value,
-      unit: effect.remaining.type
+      unit: effect.remaining.type,
     });
-    
+
     const timeAdvanced = standardizeDuration({
       value: amountAdvanced,
-      unit: unitAdvanced
+      unit: unitAdvanced,
     });
-    
+
     // If the effect would expire
     if (effectDuration.value <= timeAdvanced.value) {
       // Trigger the onExpire callback
       effect.onExpire();
       return false; // Remove from list
     }
-    
+
     // Otherwise, reduce the remaining time
     effect.remaining = {
       type: effect.remaining.type,
-      value: effect.remaining.value - (timeAdvanced.value / standardizeDuration({ value: 1, unit: effect.remaining.type }).value)
+      value:
+        effect.remaining.value -
+        timeAdvanced.value / standardizeDuration({ value: 1, unit: effect.remaining.type }).value,
     };
-    
+
     return true; // Keep in list
   });
 };
@@ -221,9 +222,11 @@ export const getLightLevel = (phase: TimeOfDayPhase): number => {
 export const getTimeDescription = (time: GameTime): string => {
   const phase = determineTimeOfDayPhase(time.hours);
   const season = determineSeason(time.months);
-  
-  return `It's ${phase.toLowerCase()} during ${season.toLowerCase()}. ` +
-         `The time is approximately ${time.hours % 12 || 12}:${time.turns * 10 || '00'} ${time.hours >= 12 ? 'PM' : 'AM'}.`;
+
+  return (
+    `It's ${phase.toLowerCase()} during ${season.toLowerCase()}. ` +
+    `The time is approximately ${time.hours % 12 || 12}:${time.turns * 10 || '00'} ${time.hours >= 12 ? 'PM' : 'AM'}.`
+  );
 };
 
 // Calculate weather effects based on season and time
@@ -234,7 +237,7 @@ export const getWeatherModifiers = (season: Season, phase: TimeOfDayPhase) => {
     wind: 0, // 0 to 10, 0 being none
     visibility: 10, // 0 to 10, 10 being perfect
   };
-  
+
   // Season effects
   switch (season) {
     case 'Winter':
@@ -261,7 +264,7 @@ export const getWeatherModifiers = (season: Season, phase: TimeOfDayPhase) => {
       modifiers.visibility -= 2;
       break;
   }
-  
+
   // Time of day effects
   switch (phase) {
     case 'Dawn':
@@ -279,7 +282,7 @@ export const getWeatherModifiers = (season: Season, phase: TimeOfDayPhase) => {
       modifiers.visibility -= 6;
       break;
   }
-  
+
   return modifiers;
 };
 
@@ -303,4 +306,4 @@ export const formatDuration = (duration: TimeUnit): string => {
     default:
       return `${duration.value} time units`;
   }
-}; 
+};

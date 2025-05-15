@@ -1,18 +1,18 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { 
-  resolveAttackRoll, 
-  calculateAttackRoll, 
-  attackRoll, 
-  rollDiceDamage 
+import {
+  resolveAttackRoll,
+  calculateAttackRoll,
+  attackRoll,
+  rollDiceDamage,
 } from '@rules/combat/attackRoll';
-import { 
-  mockFighter, 
-  mockThief, 
-  mockWizard, 
-  mockGoblin, 
-  mockOrc, 
+import {
+  mockFighter,
+  mockThief,
+  mockWizard,
+  mockGoblin,
+  mockOrc,
   mockTroll,
-  mockWeapons 
+  mockWeapons,
 } from './mockData';
 import * as diceLib from '@lib/dice';
 
@@ -21,9 +21,9 @@ describe('Combat Attack Roll Mechanics', () => {
   vi.mock('../../../lib/dice', () => ({
     roll: vi.fn(),
     rollFromNotation: vi.fn(),
-    sumDice: vi.fn()
+    sumDice: vi.fn(),
   }));
-  
+
   beforeEach(() => {
     vi.clearAllMocks();
   });
@@ -35,17 +35,17 @@ describe('Combat Attack Roll Mechanics', () => {
       expect(resolveAttackRoll(mockFighter, mockGoblin, 9)).toBe(false); // Below 10, miss
       expect(resolveAttackRoll(mockFighter, mockGoblin, 10)).toBe(true); // Exactly 10, hit
       expect(resolveAttackRoll(mockFighter, mockGoblin, 15)).toBe(true); // Above 10, hit
-      
+
       // Thief with THAC0 18 vs Orc with AC 6
       // Number needed to hit: 18 - 6 = 12
       expect(resolveAttackRoll(mockThief, mockOrc, 11)).toBe(false); // Below 12, miss
       expect(resolveAttackRoll(mockThief, mockOrc, 12)).toBe(true); // Exactly 12, hit
-      
+
       // Wizard with THAC0 19 vs Troll with AC 4
       // Number needed to hit: 19 - 4 = 15
       expect(resolveAttackRoll(mockWizard, mockTroll, 14)).toBe(false); // Below 15, miss
       expect(resolveAttackRoll(mockWizard, mockTroll, 15)).toBe(true); // Exactly 15, hit
-      
+
       // Monster attacking player
       // Goblin with THAC0 20 vs Fighter with AC 4
       // Number needed to hit: 20 - 4 = 16
@@ -57,39 +57,39 @@ describe('Combat Attack Roll Mechanics', () => {
   describe('calculateAttackRoll', () => {
     it('should apply strength modifier for melee attacks', () => {
       vi.mocked(diceLib.roll).mockReturnValue(10); // Mock a roll of 10
-      
+
       // Fighter with strength hit adj +1, using a longsword
       const result = calculateAttackRoll(mockFighter, mockWeapons.longsword);
-      
+
       expect(diceLib.roll).toHaveBeenCalledWith(20); // Should roll d20
       expect(result).toBe(11); // 10 (roll) + 1 (str bonus)
     });
 
     it('should apply dexterity modifier for ranged attacks', () => {
       vi.mocked(diceLib.roll).mockReturnValue(10);
-      
+
       // Thief with dexterity missile adj +2, using a shortbow
       const result = calculateAttackRoll(mockThief, mockWeapons.shortbow);
-      
+
       expect(diceLib.roll).toHaveBeenCalledWith(20);
       expect(result).toBe(12); // 10 (roll) + 2 (dex bonus)
     });
 
     it('should apply magic bonus for magic weapons', () => {
       vi.mocked(diceLib.roll).mockReturnValue(10);
-      
+
       // Fighter using magic longsword +1
       const result = calculateAttackRoll(mockFighter, mockWeapons.magicLongsword);
-      
+
       expect(result).toBe(12); // 10 (roll) + 1 (str) + 1 (magic)
     });
 
     it('should apply situational modifiers', () => {
       vi.mocked(diceLib.roll).mockReturnValue(10);
-      
+
       // Fighter with +2 situational modifier (e.g. high ground)
       const result = calculateAttackRoll(mockFighter, mockWeapons.longsword, 2);
-      
+
       expect(result).toBe(13); // 10 (roll) + 1 (str) + 2 (situation)
     });
   });
@@ -104,11 +104,11 @@ describe('Combat Attack Roll Mechanics', () => {
 
     it('should return correct result for a hit', () => {
       // Mock specific damage values
-      vi.mocked(diceLib.rollFromNotation).mockReturnValue([5]); 
+      vi.mocked(diceLib.rollFromNotation).mockReturnValue([5]);
       vi.mocked(diceLib.sumDice).mockReturnValue(5);
-      
+
       const result = attackRoll(mockFighter, mockGoblin, mockWeapons.longsword);
-      
+
       expect(result.hit).toBe(true);
       expect(result.damage).toEqual([6]); // 5 (base) + 1 (strength bonus)
       expect(result.critical).toBe(false);
@@ -120,9 +120,9 @@ describe('Combat Attack Roll Mechanics', () => {
     it('should return correct result for a miss', () => {
       // Mock a low roll that will miss
       vi.mocked(diceLib.roll).mockReturnValue(5);
-      
+
       const result = attackRoll(mockFighter, mockTroll, mockWeapons.longsword);
-      
+
       expect(result.hit).toBe(false);
       expect(result.damage).toEqual([]);
       expect(result.critical).toBe(false);
@@ -134,14 +134,14 @@ describe('Combat Attack Roll Mechanics', () => {
     it('should correctly identify critical hits', () => {
       // Set up for a natural 20
       vi.mocked(diceLib.roll).mockReturnValueOnce(20);
-      
+
       // Fix the bug in naturalRoll calculations when detecting critical hit
       // Explicitly mock to ensure calculation is correct
       const result = attackRoll(mockFighter, mockGoblin, mockWeapons.longsword);
-      
+
       // Update the test to match the implementation
       expect(result.hit).toBe(true);
-      
+
       // If the implementation is correct, this should be true
       // But there's a bug in attackRoll.ts where naturalRoll calculations use
       // subtraction without assignment (naturalRoll - x instead of naturalRoll -= x)
@@ -151,18 +151,18 @@ describe('Combat Attack Roll Mechanics', () => {
 
     it('should apply strength damage bonus for melee weapons', () => {
       vi.mocked(diceLib.sumDice).mockReturnValue(6);
-      
+
       const result = attackRoll(mockFighter, mockGoblin, mockWeapons.longsword);
-      
+
       // Fighter has +1 strength damage modifier
       expect(result.damage).toEqual([7]); // 6 (base) + 1 (str)
     });
 
     it('should apply magic bonus to damage', () => {
       vi.mocked(diceLib.sumDice).mockReturnValue(6);
-      
+
       const result = attackRoll(mockFighter, mockGoblin, mockWeapons.magicLongsword);
-      
+
       // +1 from strength, +1 from magic
       expect(result.damage).toEqual([8]); // 6 (base) + 1 (str) + 1 (magic)
     });
@@ -170,10 +170,10 @@ describe('Combat Attack Roll Mechanics', () => {
     it('should ensure minimum damage of 1 if hit', () => {
       // Set up for very low damage roll
       vi.mocked(diceLib.sumDice).mockReturnValue(0);
-      
+
       // Wizard with no strength bonus using a dagger
       const result = attackRoll(mockWizard, mockGoblin, mockWeapons.dagger);
-      
+
       expect(result.hit).toBe(true);
       expect(result.damage).toEqual([1]); // Minimum 1 damage
     });
@@ -183,11 +183,11 @@ describe('Combat Attack Roll Mechanics', () => {
     it('should correctly calculate damage from dice notation', () => {
       vi.mocked(diceLib.rollFromNotation).mockReturnValue([4, 3]);
       vi.mocked(diceLib.sumDice).mockReturnValue(7);
-      
+
       const damage = rollDiceDamage('2d4');
-      
+
       expect(diceLib.rollFromNotation).toHaveBeenCalledWith('2d4');
       expect(damage).toBe(7);
     });
   });
-}); 
+});

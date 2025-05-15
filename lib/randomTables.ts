@@ -33,19 +33,15 @@ export const weatherPrecipitation = createRandomTable(
   ]
 );
 
-export const weatherWind = createRandomTable(
-  'Weather Wind',
-  'Wind conditions',
-  [
-    'Still air',
-    'Light breeze',
-    'Moderate wind',
-    'Strong wind',
-    'Very strong wind',
-    'Gale',
-    'Storm winds',
-  ]
-);
+export const weatherWind = createRandomTable('Weather Wind', 'Wind conditions', [
+  'Still air',
+  'Light breeze',
+  'Moderate wind',
+  'Strong wind',
+  'Very strong wind',
+  'Gale',
+  'Storm winds',
+]);
 
 // Weather generation interface
 export interface WeatherResult {
@@ -60,7 +56,7 @@ export const generateWeather = (_climate: string, _season: string): WeatherResul
   const temperature = weatherTemperature.roll();
   const precipitation = weatherPrecipitation.roll();
   const wind = weatherWind.roll();
-  
+
   return {
     temperature,
     precipitation,
@@ -183,10 +179,10 @@ export const dungeonEncounters = createRandomTable(
 export const generateEncounter = (terrain: TerrainType | string, _level: number): string => {
   // Select appropriate table based on terrain
   let encounterTable: ReturnType<typeof createRandomTable<string>>;
-  
+
   // Convert terrain to lowercase for case-insensitive comparison
   const terrainLower = typeof terrain === 'string' ? terrain.toLowerCase() : '';
-  
+
   switch (terrainLower) {
     case 'forest':
       encounterTable = forestEncounters;
@@ -205,7 +201,7 @@ export const generateEncounter = (terrain: TerrainType | string, _level: number)
     default:
       encounterTable = forestEncounters;
   }
-  
+
   // Roll on the table
   return encounterTable.roll();
 };
@@ -269,4 +265,4 @@ export const fortuneEvents = createRandomTable(
 // Generate a random event (calamity or fortune)
 export const generateRandomEvent = (isCalamity: boolean = Math.random() > 0.5): string => {
   return isCalamity ? calamityEvents.roll() : fortuneEvents.roll();
-}; 
+};

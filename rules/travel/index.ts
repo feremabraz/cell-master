@@ -42,7 +42,7 @@ export function initializeExplorationState(
 ): ExplorationState {
   // Update character's encumbrance and movement rate
   const updatedCharacter = updateEncumbranceAndMovement(character);
-  
+
   // Create exploration state
   const state: ExplorationState = {
     character: updatedCharacter,
@@ -62,10 +62,10 @@ export function initializeExplorationState(
     currentPosition: {
       x: 0,
       y: 0,
-      z: 0
-    }
+      z: 0,
+    },
   };
-  
+
   return state;
 }
 
@@ -77,7 +77,7 @@ export function advanceExplorationTurn(
   turnsToAdvance = 1
 ): ExplorationState {
   // Update light sources
-  const updatedLightSources = state.activeLightSources.map(source => {
+  const updatedLightSources = state.activeLightSources.map((source) => {
     const updated = { ...source };
     // Update duration
     if (updated.source.duration !== Number.POSITIVE_INFINITY) {
@@ -86,19 +86,16 @@ export function advanceExplorationTurn(
     }
     return updated;
   });
-  
+
   // Calculate new visibility based on updated light sources
-  const newVisibility = calculateVisibility(
-    state.lightingCondition,
-    updatedLightSources
-  );
-  
+  const newVisibility = calculateVisibility(state.lightingCondition, updatedLightSources);
+
   // Create updated state
   return {
     ...state,
     activeLightSources: updatedLightSources,
     visibility: newVisibility,
-    turnsElapsed: state.turnsElapsed + turnsToAdvance
+    turnsElapsed: state.turnsElapsed + turnsToAdvance,
   };
 }
 
@@ -108,11 +105,11 @@ export function advanceExplorationTurn(
 export function moveCharacter(
   state: ExplorationState,
   distance: number,
-  direction: { x: number, y: number, z: number }
+  direction: { x: number; y: number; z: number }
 ): ExplorationState {
   // Get base movement rate
   const baseRate = state.character.movementRate;
-  
+
   // Get adjusted movement rate for terrain
   const adjustedRate = calculateTerrainAdjustedMovement(
     baseRate,
@@ -120,39 +117,37 @@ export function moveCharacter(
     state.environment,
     state.environmentalFeature
   );
-  
+
   // Calculate movement capabilities - in meters per turn
   const maxDistancePerTurn = adjustedRate;
-  
+
   // Calculate how many turns it takes to move the requested distance
   const turnsRequired = Math.max(1, Math.ceil(distance / maxDistancePerTurn));
-  
+
   // Normalize direction vector
   const magnitude = Math.sqrt(
-    direction.x * direction.x + 
-    direction.y * direction.y + 
-    direction.z * direction.z
+    direction.x * direction.x + direction.y * direction.y + direction.z * direction.z
   );
-  
+
   const normalizedDirection = {
     x: direction.x / magnitude,
     y: direction.y / magnitude,
-    z: direction.z / magnitude
+    z: direction.z / magnitude,
   };
-  
+
   // Calculate new position
   const newPosition = {
-    x: state.currentPosition.x + (normalizedDirection.x * distance),
-    y: state.currentPosition.y + (normalizedDirection.y * distance),
-    z: state.currentPosition.z + (normalizedDirection.z * distance)
+    x: state.currentPosition.x + normalizedDirection.x * distance,
+    y: state.currentPosition.y + normalizedDirection.y * distance,
+    z: state.currentPosition.z + normalizedDirection.z * distance,
   };
-  
+
   // Advance time by required turns
   const updatedState = advanceExplorationTurn(state, turnsRequired);
-  
+
   // Return updated state with new position
   return {
     ...updatedState,
-    currentPosition: newPosition
+    currentPosition: newPosition,
   };
-} 
+}

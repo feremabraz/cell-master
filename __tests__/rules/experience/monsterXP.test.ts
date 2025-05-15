@@ -1,5 +1,9 @@
 import { describe, it, expect } from 'vitest';
-import { calculateXPRewardFactors, calculateMonsterXP, calculateGroupXP } from '@rules/experience/monsterXP';
+import {
+  calculateXPRewardFactors,
+  calculateMonsterXP,
+  calculateGroupXP,
+} from '@rules/experience/monsterXP';
 import type { Monster, Alignment, MovementType } from '@rules/types';
 
 describe('Monster XP Calculations', () => {
@@ -10,7 +14,7 @@ describe('Monster XP Calculations', () => {
     level: 3,
     hitPoints: {
       current: 20,
-      maximum: 20
+      maximum: 20,
     },
     armorClass: 6,
     thac0: 17,

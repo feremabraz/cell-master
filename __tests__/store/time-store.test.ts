@@ -16,7 +16,7 @@ import {
   toggleCombatAtom,
   addTimedEffectAtom,
   removeTimedEffectAtom,
-  resetToNewDayAtom
+  resetToNewDayAtom,
 } from '@store/time-store';
 import { createNewGameTime } from '@rules/time/timeSystem';
 
@@ -90,26 +90,26 @@ describe('Time Store', () => {
       // Set to winter midnight
       store.set(gameTimeAtom, { ...createNewGameTime(), hours: 0, months: 1 });
       const winterNightMods = store.get(weatherModifiersAtom);
-      
+
       // Set to summer noon
       store.set(gameTimeAtom, { ...createNewGameTime(), hours: 12, months: 7 });
       const summerDayMods = store.get(weatherModifiersAtom);
-      
+
       expect(winterNightMods.temperature).toBeLessThan(summerDayMods.temperature);
       expect(winterNightMods.visibility).toBeLessThan(summerDayMods.visibility);
     });
 
     it('should generate a descriptive time string', () => {
-      store.set(gameTimeAtom, { 
+      store.set(gameTimeAtom, {
         rounds: 0,
         turns: 3,
-        hours: 14, 
+        hours: 14,
         days: 5,
         weeks: 2,
         months: 7,
-        years: 1234
+        years: 1234,
       });
-      
+
       const description = store.get(timeDescriptionAtom);
       expect(description).toContain('afternoon');
       expect(description).toContain('summer');
@@ -119,7 +119,7 @@ describe('Time Store', () => {
       // Morning (daylight)
       store.set(gameTimeAtom, { ...createNewGameTime(), hours: 10 });
       expect(store.get(isDaylightAtom)).toBe(true);
-      
+
       // Night (not daylight)
       store.set(gameTimeAtom, { ...createNewGameTime(), hours: 22 });
       expect(store.get(isDaylightAtom)).toBe(false);
@@ -129,9 +129,9 @@ describe('Time Store', () => {
   describe('Action atoms', () => {
     it('should advance time correctly', () => {
       const initialTime = store.get(gameTimeAtom);
-      
+
       store.set(advanceTimeAtom, { amount: 5, unit: 'Hour' });
-      
+
       const newTime = store.get(gameTimeAtom);
       expect(newTime.hours).toBe(initialTime.hours + 5);
     });
@@ -147,14 +147,14 @@ describe('Time Store', () => {
         remaining: { type: 'Turn', value: 2 },
         source: 'test',
         targetId: null,
-        onExpire: mockExpire
+        onExpire: mockExpire,
       };
-      
+
       store.set(activeEffectsAtom, [effect]);
-      
+
       // Advance time enough to expire the effect
       store.set(advanceTimeAtom, { amount: 3, unit: 'Turn' });
-      
+
       // Check if effect was removed
       expect(store.get(activeEffectsAtom)).toEqual([]);
       expect(mockExpire).toHaveBeenCalled();
@@ -162,10 +162,10 @@ describe('Time Store', () => {
 
     it('should toggle combat state', () => {
       expect(store.get(inCombatAtom)).toBe(false);
-      
+
       store.set(toggleCombatAtom);
       expect(store.get(inCombatAtom)).toBe(true);
-      
+
       store.set(toggleCombatAtom);
       expect(store.get(inCombatAtom)).toBe(false);
     });
@@ -179,11 +179,11 @@ describe('Time Store', () => {
         remaining: { type: 'Turn', value: 2 },
         source: 'test',
         targetId: null,
-        onExpire: vi.fn()
+        onExpire: vi.fn(),
       };
-      
+
       store.set(addTimedEffectAtom, effect);
-      
+
       const effects = store.get(activeEffectsAtom);
       expect(effects).toHaveLength(1);
       expect(effects[0].id).toBe('test-effect');
@@ -198,9 +198,9 @@ describe('Time Store', () => {
         remaining: { type: 'Turn', value: 2 },
         source: 'test',
         targetId: null,
-        onExpire: vi.fn()
+        onExpire: vi.fn(),
       };
-      
+
       const effect2: TimedEffect = {
         id: 'effect-2',
         name: 'Effect Two',
@@ -209,14 +209,14 @@ describe('Time Store', () => {
         remaining: { type: 'Turn', value: 3 },
         source: 'test',
         targetId: null,
-        onExpire: vi.fn()
+        onExpire: vi.fn(),
       };
-      
+
       store.set(activeEffectsAtom, [effect1, effect2]);
-      
+
       // Remove the first effect
       store.set(removeTimedEffectAtom, 'effect-1');
-      
+
       const effects = store.get(activeEffectsAtom);
       expect(effects).toHaveLength(1);
       expect(effects[0].id).toBe('effect-2');
@@ -231,11 +231,11 @@ describe('Time Store', () => {
         days: 3,
         weeks: 1,
         months: 1,
-        years: 1
+        years: 1,
       });
-      
+
       store.set(resetToNewDayAtom);
-      
+
       const newTime = store.get(gameTimeAtom);
       expect(newTime.rounds).toBe(0);
       expect(newTime.turns).toBe(0);
@@ -246,4 +246,4 @@ describe('Time Store', () => {
       expect(newTime.years).toBe(1); // Unchanged
     });
   });
-}); 
+});

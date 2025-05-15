@@ -20,9 +20,9 @@ export const POUNDS_TO_KILOGRAMS = 0.453592;
 /**
  * Temperature conversion factors (for weather effects)
  */
-export const CELSIUS_TO_FAHRENHEIT_FACTOR = 9/5;
+export const CELSIUS_TO_FAHRENHEIT_FACTOR = 9 / 5;
 export const CELSIUS_TO_FAHRENHEIT_OFFSET = 32;
-export const FAHRENHEIT_TO_CELSIUS_FACTOR = 5/9;
+export const FAHRENHEIT_TO_CELSIUS_FACTOR = 5 / 9;
 export const FAHRENHEIT_TO_CELSIUS_OFFSET = 32;
 
 /**
@@ -59,7 +59,7 @@ export function poundsToKilograms(pounds: number): number {
  * Temperature conversions
  */
 export function celsiusToFahrenheit(celsius: number): number {
-  return (celsius * CELSIUS_TO_FAHRENHEIT_FACTOR) + CELSIUS_TO_FAHRENHEIT_OFFSET;
+  return celsius * CELSIUS_TO_FAHRENHEIT_FACTOR + CELSIUS_TO_FAHRENHEIT_OFFSET;
 }
 
 export function fahrenheitToCelsius(fahrenheit: number): number {
@@ -76,23 +76,23 @@ export function formatDistance(value: number, useMetric = true, precision = 1): 
   if (useMetric) {
     if (value < 1000) {
       // Small distances in meters
-      return `${Math.round(value * (10 ** precision)) / (10 ** precision)}m`;
+      return `${Math.round(value * 10 ** precision) / 10 ** precision}m`;
     }
-    
+
     // Larger distances in kilometers
     const km = value / 1000;
-    return `${Math.round(km * (10 ** precision)) / (10 ** precision)}km`;
+    return `${Math.round(km * 10 ** precision) / 10 ** precision}km`;
   }
-  
+
   const feet = metersToFeet(value);
   if (feet < 1000) {
     // Small distances in feet
-    return `${Math.round(feet * (10 ** precision)) / (10 ** precision)}ft`;
+    return `${Math.round(feet * 10 ** precision) / 10 ** precision}ft`;
   }
-  
+
   // Larger distances in miles
   const miles = feet / 5280;
-  return `${Math.round(miles * (10 ** precision)) / (10 ** precision)}mi`;
+  return `${Math.round(miles * 10 ** precision) / 10 ** precision}mi`;
 }
 
 /**
@@ -103,11 +103,11 @@ export function formatDistance(value: number, useMetric = true, precision = 1): 
  */
 export function formatWeight(value: number, useMetric = true, precision = 1): string {
   if (useMetric) {
-    return `${Math.round(value * (10 ** precision)) / (10 ** precision)}kg`;
+    return `${Math.round(value * 10 ** precision) / 10 ** precision}kg`;
   }
-  
+
   const pounds = kilogramsToPounds(value);
-  return `${Math.round(pounds * (10 ** precision)) / (10 ** precision)}lb`;
+  return `${Math.round(pounds * 10 ** precision) / 10 ** precision}lb`;
 }
 
 /**
@@ -128,22 +128,22 @@ export function kilogramsToCoins(kilograms: number): number {
 }
 
 /**
- * Helper to convert multiple values in a record/object from imperial to metric 
+ * Helper to convert multiple values in a record/object from imperial to metric
  * @param record An object with numeric values (like movement rates or distances)
  * @param conversionFactor The factor to multiply each value by
  */
 export function convertObjectValues<T extends Record<string, number>>(
-  record: T, 
+  record: T,
   conversionFactor: number
 ): T {
   const result = { ...record } as T;
-  
+
   for (const key in result) {
     if (Object.prototype.hasOwnProperty.call(result, key)) {
       result[key] = (result[key] * conversionFactor) as T[Extract<keyof T, string>];
     }
   }
-  
+
   return result;
 }
 
@@ -162,5 +162,5 @@ export interface UnitDisplayPreferences {
 export const defaultUnitPreferences: UnitDisplayPreferences = {
   useMetric: true,
   distancePrecision: 1,
-  weightPrecision: 1
-}; 
+  weightPrecision: 1,
+};

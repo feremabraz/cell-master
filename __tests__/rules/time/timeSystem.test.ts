@@ -11,7 +11,7 @@ import {
   getLightLevel,
   getTimeDescription,
   getWeatherModifiers,
-  formatDuration
+  formatDuration,
 } from '@rules/time/timeSystem';
 
 describe('Time System Core', () => {
@@ -25,7 +25,7 @@ describe('Time System Core', () => {
         days: 1,
         weeks: 1,
         months: 1,
-        years: 1
+        years: 1,
       });
     });
   });
@@ -193,13 +193,13 @@ describe('Time System Core', () => {
           remaining: { type: 'Round', value: 2 },
           source: 'test',
           targetId: null,
-          onExpire: mockExpire
-        }
+          onExpire: mockExpire,
+        },
       ];
 
       const gameTime = createNewGameTime();
       const result = updateTimedEffects(effects, gameTime, 3, 'Round');
-      
+
       expect(result.length).toBe(0);
       expect(mockExpire).toHaveBeenCalledTimes(1);
     });
@@ -215,13 +215,13 @@ describe('Time System Core', () => {
           remaining: { type: 'Turn', value: 5 },
           source: 'test',
           targetId: null,
-          onExpire: mockExpire
-        }
+          onExpire: mockExpire,
+        },
       ];
 
       const gameTime = createNewGameTime();
       const result = updateTimedEffects(effects, gameTime, 1, 'Turn');
-      
+
       expect(result.length).toBe(1);
       expect(result[0].remaining.value).toBe(4);
       expect(mockExpire).not.toHaveBeenCalled();
@@ -266,7 +266,7 @@ describe('Time System Core', () => {
         days: 15,
         weeks: 2,
         months: 6,
-        years: 1234
+        years: 1234,
       };
 
       const description = getTimeDescription(time);
@@ -282,7 +282,7 @@ describe('Time System Core', () => {
       const winterMods = getWeatherModifiers('Winter', 'Noon');
       expect(winterMods.temperature).toBeLessThan(0);
       expect(winterMods.precipitation).toBeGreaterThan(0);
-      
+
       const summerMods = getWeatherModifiers('Summer', 'Noon');
       expect(summerMods.temperature).toBeGreaterThan(0);
     });
@@ -290,7 +290,7 @@ describe('Time System Core', () => {
     it('should apply time-specific modifiers', () => {
       const noonMods = getWeatherModifiers('Spring', 'Noon');
       const nightMods = getWeatherModifiers('Spring', 'Midnight');
-      
+
       expect(noonMods.temperature).toBeGreaterThan(nightMods.temperature);
       expect(noonMods.visibility).toBeGreaterThan(nightMods.visibility);
     });
@@ -317,4 +317,4 @@ describe('Time System Core', () => {
       expect(formatDuration({ type: 'Day', value: 7 })).toBe('7 days');
     });
   });
-}); 
+});

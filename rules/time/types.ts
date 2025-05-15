@@ -1,5 +1,5 @@
 export const TimeUnitTypes = ['Round', 'Turn', 'Hour', 'Day', 'Week', 'Month', 'Year'] as const;
-export type TimeUnitType = typeof TimeUnitTypes[number];
+export type TimeUnitType = (typeof TimeUnitTypes)[number];
 
 export interface TimeUnit {
   type: TimeUnitType;
@@ -14,12 +14,12 @@ export const TimeOfDayPhases = [
   'Dusk',
   'Evening',
   'Midnight',
-  'DeepNight'
+  'DeepNight',
 ] as const;
-export type TimeOfDayPhase = typeof TimeOfDayPhases[number];
+export type TimeOfDayPhase = (typeof TimeOfDayPhases)[number];
 
 export const Seasons = ['Spring', 'Summer', 'Autumn', 'Winter'] as const;
-export type Season = typeof Seasons[number];
+export type Season = (typeof Seasons)[number];
 
 export interface GameTime {
   rounds: number;
@@ -80,4 +80,4 @@ export interface TimeModifier {
     spellDurationModifier?: number;
     spellRangeModifier?: number;
   };
-} 
+}

@@ -6,7 +6,7 @@ import {
   getEnvironmentFeatureMultiplier,
   calculateTerrainAdjustedMovement,
   isTerrainNavigable,
-  calculateDailyMovement
+  calculateDailyMovement,
 } from '@rules/travel/terrain';
 import type { Environment, TerrainType } from '@rules/types';
 import { createMockCharacter } from '@tests/utils/mockData';
@@ -44,15 +44,15 @@ describe('Travel Terrain', () => {
 
     it('should apply the correct multiplier from EnvironmentTerrainEffects', () => {
       const environmentKeys = Object.keys(EnvironmentTerrainEffects);
-      
+
       for (const environment of environmentKeys) {
         const env = environment as Environment;
         const features = EnvironmentTerrainEffects[env];
-        
+
         // Test the first feature of each environment
         const firstFeature = Object.keys(features)[0];
         const expectedMultiplier = features[firstFeature];
-        
+
         expect(getEnvironmentFeatureMultiplier(env, firstFeature)).toBe(expectedMultiplier);
       }
     });
@@ -63,7 +63,7 @@ describe('Travel Terrain', () => {
       const baseRate = 36;
       const terrain: TerrainType = 'Difficult';
       const environment: Environment = 'Dungeon';
-      
+
       const expected = Math.round(baseRate * TerrainMovementMultipliers[terrain]);
       expect(calculateTerrainAdjustedMovement(baseRate, terrain, environment)).toBe(expected);
     });
@@ -73,11 +73,16 @@ describe('Travel Terrain', () => {
       const terrain: TerrainType = 'Difficult';
       const environment: Environment = 'Dungeon';
       const feature = 'narrow passage';
-      
-      const expected = Math.round(baseRate * TerrainMovementMultipliers[terrain] * 
-        EnvironmentTerrainEffects[environment][feature]);
-      
-      expect(calculateTerrainAdjustedMovement(baseRate, terrain, environment, feature)).toBe(expected);
+
+      const expected = Math.round(
+        baseRate *
+          TerrainMovementMultipliers[terrain] *
+          EnvironmentTerrainEffects[environment][feature]
+      );
+
+      expect(calculateTerrainAdjustedMovement(baseRate, terrain, environment, feature)).toBe(
+        expected
+      );
     });
 
     it('should handle unknown environment features', () => {
@@ -85,11 +90,13 @@ describe('Travel Terrain', () => {
       const terrain: TerrainType = 'Normal';
       const environment: Environment = 'Dungeon';
       const feature = 'unknown feature';
-      
+
       // Unknown features should use a multiplier of 1.0
       const expected = Math.round(baseRate * TerrainMovementMultipliers[terrain]);
-      
-      expect(calculateTerrainAdjustedMovement(baseRate, terrain, environment, feature)).toBe(expected);
+
+      expect(calculateTerrainAdjustedMovement(baseRate, terrain, environment, feature)).toBe(
+        expected
+      );
     });
   });
 
@@ -116,10 +123,10 @@ describe('Travel Terrain', () => {
       const character = createMockCharacter();
       const terrain: TerrainType = 'Normal';
       const environment: Environment = 'Wilderness';
-      
+
       // Expected: movementRate * 48 turns per day / 1000 to convert to km
-      const expected = Math.round((character.movementRate * 48 / 1000) * 10) / 10;
-      
+      const expected = Math.round(((character.movementRate * 48) / 1000) * 10) / 10;
+
       expect(calculateDailyMovement(character, terrain, environment)).toBe(expected);
     });
 
@@ -128,21 +135,21 @@ describe('Travel Terrain', () => {
       const terrain: TerrainType = 'Difficult';
       const environment: Environment = 'Wilderness';
       const feature = 'road';
-      
+
       // Road gives a 1.5x multiplier while difficult terrain is 0.75x
       // So difficult terrain with road is actually faster than normal terrain
-      
+
       // 1. Should be greater than movement on difficult terrain without a road
       const withoutRoadMovement = calculateDailyMovement(character, terrain, environment);
       const withRoadMovement = calculateDailyMovement(character, terrain, environment, feature);
       expect(withRoadMovement).toBeGreaterThan(withoutRoadMovement);
-      
+
       // 2. Calculate the expected multiplier effect:
       // Road (1.5) * Difficult terrain (0.75) = 1.125
       // Normal terrain is 1.0, so road on difficult terrain should be faster
       const normalTerrainMovement = calculateDailyMovement(character, 'Normal', environment);
       expect(withRoadMovement).toBeGreaterThan(normalTerrainMovement);
-      
+
       // 3. Verify the ratio is approximately consistent with our expectation
       // Due to rounding in the implementation, we can't expect exactly 1.125
       const ratio = withRoadMovement / normalTerrainMovement;
@@ -155,16 +162,28 @@ describe('Travel Terrain', () => {
       const character = createMockCharacter();
       const terrain: TerrainType = 'Normal';
       const environment: Environment = 'Wilderness';
-      
+
       // Normal movement
-      const normalMovement = calculateDailyMovement(character, terrain, environment, undefined, false);
-      
+      const normalMovement = calculateDailyMovement(
+        character,
+        terrain,
+        environment,
+        undefined,
+        false
+      );
+
       // Forced march movement (should be 1.5x)
-      const forcedMovement = calculateDailyMovement(character, terrain, environment, undefined, true);
-      
+      const forcedMovement = calculateDailyMovement(
+        character,
+        terrain,
+        environment,
+        undefined,
+        true
+      );
+
       // Check that the ratio is approximately 1.5
       const ratio = forcedMovement / normalMovement;
       expect(ratio).toBeCloseTo(1.5, 1);
     });
   });
-}); 
+});

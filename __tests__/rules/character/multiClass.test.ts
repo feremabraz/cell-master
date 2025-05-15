@@ -14,7 +14,7 @@ describe('Multi-Class Handling', () => {
     constitution: 12,
     intelligence: 15,
     wisdom: 13,
-    charisma: 12
+    charisma: 12,
   };
 
   describe('canMultiClass', () => {
@@ -71,9 +71,9 @@ describe('Multi-Class Handling', () => {
     it('should check ability score requirements for both classes', () => {
       const lowIntScores: AbilityScores = {
         ...validScores,
-        intelligence: 8 // Below Magic-User minimum
+        intelligence: 8, // Below Magic-User minimum
       };
-      
+
       expect(canDualClass('Fighter', 'Magic-User', 2, validScores)).toBe(true);
       expect(canDualClass('Fighter', 'Magic-User', 2, lowIntScores)).toBe(false);
     });
@@ -100,4 +100,4 @@ describe('Multi-Class Handling', () => {
       // Note: 1 XP is lost due to rounding down
     });
   });
-}); 
+});

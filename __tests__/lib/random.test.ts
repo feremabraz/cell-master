@@ -32,7 +32,7 @@ describe('Random Utility Functions', () => {
     test('creates a table with correct structure', () => {
       const items = ['item1', 'item2', 'item3'];
       const table = createRandomTable('Test Table', 'A test table', items);
-      
+
       expect(table.name).toBe('Test Table');
       expect(table.description).toBe('A test table');
       expect(table.table).toEqual(items);
@@ -43,7 +43,7 @@ describe('Random Utility Functions', () => {
     test('roll method returns an item from the table', () => {
       const items = ['item1', 'item2', 'item3', 'item4', 'item5'];
       const table = createRandomTable('Test Table', 'A test table', items);
-      
+
       // With mocked random at 0.5, should return middle item
       expect(table.roll()).toBe('item3');
     });
@@ -51,8 +51,8 @@ describe('Random Utility Functions', () => {
     test('handles a table with a single item', () => {
       const items = ['only item'];
       const table = createRandomTable('Single Item', 'A single item table', items);
-      
+
       expect(table.roll()).toBe('only item');
     });
   });
-}); 
+});

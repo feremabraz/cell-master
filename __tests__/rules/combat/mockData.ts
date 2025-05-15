@@ -1,9 +1,9 @@
-import type { 
-  Character, 
-  Monster, 
-  Weapon, 
-  AbilityScores, 
-  AbilityScoreModifiers 
+import type {
+  Character,
+  Monster,
+  Weapon,
+  AbilityScores,
+  AbilityScoreModifiers,
 } from '@rules/types';
 
 // Mock ability scores
@@ -13,7 +13,7 @@ export const standardAbilityScores: AbilityScores = {
   constitution: 15,
   intelligence: 12,
   wisdom: 10,
-  charisma: 13
+  charisma: 13,
 };
 
 // Mock ability modifiers corresponding to standard scores
@@ -24,7 +24,7 @@ export const standardAbilityModifiers: AbilityScoreModifiers = {
   strengthEncumbrance: 35,
   strengthOpenDoors: 1,
   strengthBendBars: 10,
-  
+
   // Dexterity
   dexterityReaction: -1,
   dexterityMissile: 1,
@@ -34,28 +34,28 @@ export const standardAbilityModifiers: AbilityScoreModifiers = {
   dexterityFindTraps: 0,
   dexterityMoveSilently: 0,
   dexterityHideInShadows: 0,
-  
+
   // Constitution
   constitutionHitPoints: 1,
   constitutionSystemShock: 90,
   constitutionResurrectionSurvival: 92,
   constitutionPoisonSave: 0,
-  
+
   // Intelligence
   intelligenceLanguages: 3,
   intelligenceLearnSpells: 55,
   intelligenceMaxSpellLevel: 7,
   intelligenceIllusionImmunity: false,
-  
+
   // Wisdom
   wisdomMentalSave: 0,
   wisdomBonusSpells: null,
   wisdomSpellFailure: 0,
-  
+
   // Charisma
   charismaReactionAdj: 1,
   charismaLoyaltyBase: 55,
-  charismaMaxHenchmen: 5
+  charismaMaxHenchmen: 5,
 };
 
 // Mock weapons
@@ -76,7 +76,7 @@ export const mockWeapons: Record<string, Weapon> = {
     allowedClasses: ['Fighter', 'Ranger', 'Paladin', 'Cleric', 'Thief', 'Assassin'],
     damageVsLarge: '1d12',
     range: null,
-    twoHanded: false
+    twoHanded: false,
   },
   magicLongsword: {
     id: 'weapon_magic_longsword',
@@ -94,7 +94,7 @@ export const mockWeapons: Record<string, Weapon> = {
     allowedClasses: ['Fighter', 'Ranger', 'Paladin', 'Cleric', 'Thief', 'Assassin'],
     damageVsLarge: '1d12',
     range: null,
-    twoHanded: false
+    twoHanded: false,
   },
   shortbow: {
     id: 'weapon_shortbow',
@@ -112,7 +112,7 @@ export const mockWeapons: Record<string, Weapon> = {
     allowedClasses: ['Fighter', 'Ranger', 'Thief'],
     damageVsLarge: null,
     range: [50, 100, 150],
-    twoHanded: true
+    twoHanded: true,
   },
   dagger: {
     id: 'weapon_dagger',
@@ -127,11 +127,21 @@ export const mockWeapons: Record<string, Weapon> = {
     type: 'Melee',
     size: 'Small',
     speed: 2,
-    allowedClasses: ['Fighter', 'Ranger', 'Paladin', 'Magic-User', 'Illusionist', 'Cleric', 'Druid', 'Thief', 'Assassin'],
+    allowedClasses: [
+      'Fighter',
+      'Ranger',
+      'Paladin',
+      'Magic-User',
+      'Illusionist',
+      'Cleric',
+      'Druid',
+      'Thief',
+      'Assassin',
+    ],
     damageVsLarge: '1d3',
     range: [10, 20, 30],
-    twoHanded: false
-  }
+    twoHanded: false,
+  },
 };
 
 // Mock fighter character
@@ -141,14 +151,14 @@ export const mockFighter: Character = {
   level: 5,
   hitPoints: {
     current: 40,
-    maximum: 40
+    maximum: 40,
   },
   armorClass: 4, // Lower is better in OSRIC
   thac0: 16, // 'To Hit Armor Class 0'
   experience: {
     current: 20000,
     requiredForNextLevel: 32000,
-    level: 5
+    level: 5,
   },
   alignment: 'Lawful Good',
   inventory: [mockWeapons.longsword, mockWeapons.dagger],
@@ -160,10 +170,10 @@ export const mockFighter: Character = {
   abilityModifiers: standardAbilityModifiers,
   savingThrows: {
     'Poison or Death': 12,
-    'Wands': 13,
+    Wands: 13,
     'Paralysis, Polymorph, or Petrification': 14,
     'Breath Weapons': 15,
-    'Spells, Rods, or Staves': 16
+    'Spells, Rods, or Staves': 16,
   },
   spells: [],
   currency: {
@@ -171,12 +181,12 @@ export const mockFighter: Character = {
     gold: 50,
     electrum: 10,
     silver: 20,
-    copper: 30
+    copper: 30,
   },
   encumbrance: 120,
   movementRate: 12,
   classes: {
-    Fighter: 5
+    Fighter: 5,
   },
   primaryClass: 'Fighter',
   spellSlots: {},
@@ -192,9 +202,9 @@ export const mockFighter: Character = {
   classAbilities: [],
   proficiencies: [
     { weapon: 'Sword, Long', penalty: 0 },
-    { weapon: 'Dagger', penalty: 0 }
+    { weapon: 'Dagger', penalty: 0 },
   ],
-  secondarySkills: []
+  secondarySkills: [],
 };
 
 // Mock thief character with ranged weapon
@@ -204,14 +214,14 @@ export const mockThief: Character = {
   level: 5,
   hitPoints: {
     current: 25,
-    maximum: 25
+    maximum: 25,
   },
   armorClass: 6,
   thac0: 18,
   experience: {
     current: 20000,
     requiredForNextLevel: 40000,
-    level: 5
+    level: 5,
   },
   alignment: 'True Neutral',
   inventory: [mockWeapons.shortbow, mockWeapons.dagger],
@@ -221,20 +231,20 @@ export const mockThief: Character = {
   class: 'Thief',
   abilities: {
     ...standardAbilityScores,
-    dexterity: 17 // Higher dexterity for thief
+    dexterity: 17, // Higher dexterity for thief
   },
   abilityModifiers: {
     ...standardAbilityModifiers,
     dexterityReaction: -2,
     dexterityMissile: 2,
-    dexterityDefense: -2
+    dexterityDefense: -2,
   },
   savingThrows: {
     'Poison or Death': 13,
-    'Wands': 14,
+    Wands: 14,
     'Paralysis, Polymorph, or Petrification': 12,
     'Breath Weapons': 16,
-    'Spells, Rods, or Staves': 15
+    'Spells, Rods, or Staves': 15,
   },
   spells: [],
   currency: {
@@ -242,12 +252,12 @@ export const mockThief: Character = {
     gold: 30,
     electrum: 0,
     silver: 40,
-    copper: 50
+    copper: 50,
   },
   encumbrance: 80,
   movementRate: 12,
   classes: {
-    Thief: 5
+    Thief: 5,
   },
   primaryClass: 'Thief',
   spellSlots: {},
@@ -262,10 +272,10 @@ export const mockThief: Character = {
     hideInShadows: 40,
     hearNoise: 30,
     climbWalls: 85,
-    readLanguages: 25
+    readLanguages: 25,
   },
   turnUndead: null,
-  languages: ['Common', 'Elvish', 'Thieves\' Cant'],
+  languages: ['Common', 'Elvish', "Thieves' Cant"],
   age: 130,
   ageCategory: 'Adult',
   henchmen: [],
@@ -273,9 +283,9 @@ export const mockThief: Character = {
   classAbilities: [],
   proficiencies: [
     { weapon: 'Bow, Short', penalty: 0 },
-    { weapon: 'Dagger', penalty: 0 }
+    { weapon: 'Dagger', penalty: 0 },
   ],
-  secondarySkills: []
+  secondarySkills: [],
 };
 
 // Mock wizard character
@@ -285,14 +295,14 @@ export const mockWizard: Character = {
   level: 5,
   hitPoints: {
     current: 18,
-    maximum: 18
+    maximum: 18,
   },
   armorClass: 8,
   thac0: 19,
   experience: {
     current: 20000,
     requiredForNextLevel: 40000,
-    level: 5
+    level: 5,
   },
   alignment: 'Neutral Good',
   inventory: [mockWeapons.dagger],
@@ -303,7 +313,7 @@ export const mockWizard: Character = {
   abilities: {
     ...standardAbilityScores,
     intelligence: 17,
-    strength: 9
+    strength: 9,
   },
   abilityModifiers: {
     ...standardAbilityModifiers,
@@ -311,14 +321,14 @@ export const mockWizard: Character = {
     intelligenceLearnSpells: 75,
     intelligenceMaxSpellLevel: 9,
     strengthHitAdj: 0,
-    strengthDamageAdj: 0
+    strengthDamageAdj: 0,
   },
   savingThrows: {
     'Poison or Death': 14,
-    'Wands': 11,
+    Wands: 11,
     'Paralysis, Polymorph, or Petrification': 13,
     'Breath Weapons': 15,
-    'Spells, Rods, or Staves': 12
+    'Spells, Rods, or Staves': 12,
   },
   spells: [],
   currency: {
@@ -326,18 +336,18 @@ export const mockWizard: Character = {
     gold: 40,
     electrum: 0,
     silver: 15,
-    copper: 0
+    copper: 0,
   },
   encumbrance: 50,
   movementRate: 12,
   classes: {
-    'Magic-User': 5
+    'Magic-User': 5,
   },
   primaryClass: 'Magic-User',
   spellSlots: {
     1: 4,
     2: 2,
-    3: 1
+    3: 1,
   },
   memorizedSpells: {},
   spellbook: [],
@@ -349,10 +359,8 @@ export const mockWizard: Character = {
   henchmen: [],
   racialAbilities: [],
   classAbilities: [],
-  proficiencies: [
-    { weapon: 'Dagger', penalty: 0 }
-  ],
-  secondarySkills: []
+  proficiencies: [{ weapon: 'Dagger', penalty: 0 }],
+  secondarySkills: [],
 };
 
 // Mock goblin
@@ -362,14 +370,14 @@ export const mockGoblin: Monster = {
   level: 1,
   hitPoints: {
     current: 6,
-    maximum: 6
+    maximum: 6,
   },
   armorClass: 6,
   thac0: 20,
   experience: {
     current: 0,
     requiredForNextLevel: 0,
-    level: 1
+    level: 1,
   },
   alignment: 'Lawful Evil',
   inventory: [],
@@ -379,17 +387,15 @@ export const mockGoblin: Monster = {
   damagePerAttack: ['1d6'], // Short sword
   morale: 7,
   treasure: 'J',
-  specialAbilities: ['Infravision 60\''],
+  specialAbilities: ["Infravision 60'"],
   xpValue: 10,
   size: 'Small',
-  movementTypes: [
-    { type: 'Walk', rate: 6 }
-  ],
+  movementTypes: [{ type: 'Walk', rate: 6 }],
   habitat: ['Underground', 'Wilderness'],
   frequency: 'Common',
   organization: 'Tribal',
   diet: 'Omnivore',
-  ecology: 'Goblins are small, evil humanoids that dwell underground.'
+  ecology: 'Goblins are small, evil humanoids that dwell underground.',
 };
 
 // Mock orc
@@ -399,14 +405,14 @@ export const mockOrc: Monster = {
   level: 1,
   hitPoints: {
     current: 8,
-    maximum: 8
+    maximum: 8,
   },
   armorClass: 6,
   thac0: 19,
   experience: {
     current: 0,
     requiredForNextLevel: 0,
-    level: 1
+    level: 1,
   },
   alignment: 'Lawful Evil',
   inventory: [],
@@ -416,17 +422,15 @@ export const mockOrc: Monster = {
   damagePerAttack: ['1d8'], // Longsword
   morale: 8,
   treasure: 'L',
-  specialAbilities: ['Infravision 60\''],
+  specialAbilities: ["Infravision 60'"],
   xpValue: 15,
   size: 'Medium',
-  movementTypes: [
-    { type: 'Walk', rate: 9 }
-  ],
+  movementTypes: [{ type: 'Walk', rate: 9 }],
   habitat: ['Underground', 'Wilderness'],
   frequency: 'Common',
   organization: 'Tribal',
   diet: 'Carnivore',
-  ecology: 'Orcs are aggressive, brutish humanoids that raid and pillage.'
+  ecology: 'Orcs are aggressive, brutish humanoids that raid and pillage.',
 };
 
 // Mock troll (tougher monster)
@@ -436,14 +440,14 @@ export const mockTroll: Monster = {
   level: 6,
   hitPoints: {
     current: 42,
-    maximum: 42
+    maximum: 42,
   },
   armorClass: 4,
   thac0: 13,
   experience: {
     current: 0,
     requiredForNextLevel: 0,
-    level: 6
+    level: 6,
   },
   alignment: 'Chaotic Evil',
   inventory: [],
@@ -453,15 +457,14 @@ export const mockTroll: Monster = {
   damagePerAttack: ['1d6/1d6', '1d10'], // Claws and bite
   morale: 10,
   treasure: 'D',
-  specialAbilities: ['Regeneration 3 HP/round', 'Infravision 60\'', 'Vulnerable to fire and acid'],
+  specialAbilities: ['Regeneration 3 HP/round', "Infravision 60'", 'Vulnerable to fire and acid'],
   xpValue: 650,
   size: 'Large',
-  movementTypes: [
-    { type: 'Walk', rate: 12 }
-  ],
+  movementTypes: [{ type: 'Walk', rate: 12 }],
   habitat: ['Wilderness', 'Underground', 'Swamp'],
   frequency: 'Uncommon',
   organization: 'Solitary or gang',
   diet: 'Carnivore',
-  ecology: 'Trolls are feared for their strength, ravenous hunger, and incredible regenerative abilities.'
-}; 
+  ecology:
+    'Trolls are feared for their strength, ravenous hunger, and incredible regenerative abilities.',
+};

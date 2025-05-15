@@ -3,7 +3,7 @@ import type { Spell, SpellClass, SavingThrowType } from '@rules/types';
 /**
  * This file contains the spell lists for all classes in OSRIC.
  * Spells are organized by class and then by level.
- * 
+ *
  * Range values are in meters (converted from feet in original OSRIC rules)
  * Areas of effect are also in metric units
  */
@@ -42,9 +42,9 @@ const createSpell = (
         damage: null,
         healing: null,
         statusEffects: null,
-        narrative: `${_caster.name} casts ${name}, but nothing happens yet as the specific spell effect is not implemented.`
+        narrative: `${_caster.name} casts ${name}, but nothing happens yet as the specific spell effect is not implemented.`,
       };
-    }
+    },
   };
 };
 
@@ -62,7 +62,7 @@ export const magicUserLevel1Spells: Spell[] = [
     ['V', 'S'],
     '1 segment',
     'None',
-    'Creates one or more magic missiles that automatically hit their targets for 1d4+1 damage each. One missile at levels 1-2, two at 3-4, three at 5-6, etc.',
+    'Creates one or more magic missiles that automatically hit their targets for 1d4+1 damage each. One missile at levels 1-2, two at 3-4, three at 5-6, etc.'
   ),
   createSpell(
     'Shield',
@@ -74,7 +74,7 @@ export const magicUserLevel1Spells: Spell[] = [
     ['V', 'S'],
     '1 segment',
     'None',
-    'Creates an invisible barrier that provides AC 2 against missiles and AC 4 against other attacks',
+    'Creates an invisible barrier that provides AC 2 against missiles and AC 4 against other attacks'
   ),
   createSpell(
     'Sleep',
@@ -89,10 +89,10 @@ export const magicUserLevel1Spells: Spell[] = [
     'Causes 2d4 HD of creatures to fall asleep. Affects lowest HD creatures first.',
     false,
     ['Fine sand', 'Rose petals', 'Cricket']
-  )
+  ),
 ];
 
-// Level 2 
+// Level 2
 export const magicUserLevel2Spells: Spell[] = [
   createSpell(
     'Invisibility',
@@ -121,7 +121,7 @@ export const magicUserLevel2Spells: Spell[] = [
     'Creates sticky webs that trap creatures. Strong creatures can break free in 2d4 rounds, others take 2d4 turns.',
     false,
     ['Spider web']
-  )
+  ),
 ];
 
 // === CLERIC SPELLS ===
@@ -154,7 +154,7 @@ export const clericLevel1Spells: Spell[] = [
     'Allies gain +1 to attack rolls and morale checks.',
     true,
     ['Holy water']
-  )
+  ),
 ];
 
 // === DRUID SPELLS ===
@@ -188,7 +188,7 @@ export const druidLevel1Spells: Spell[] = [
     'Outlines subjects with light, negating blur, invisibility, etc.',
     false,
     ['Firefly']
-  )
+  ),
 ];
 
 // === ILLUSIONIST SPELLS ===
@@ -219,10 +219,10 @@ export const illusionistLevel1Spells: Spell[] = [
     ['V', 'S', 'M'],
     '1 segment',
     'Spells, Rods, or Staves',
-    'Creates an illusion of the caster\'s choice. Deals 1d6 damage if believed and used as an attack.',
+    "Creates an illusion of the caster's choice. Deals 1d6 damage if believed and used as an attack.",
     false,
     ['Bit of fleece']
-  )
+  ),
 ];
 
 // Export all spell lists by class and level
@@ -232,38 +232,38 @@ export const spellLists: Record<SpellClass, Record<number, Spell[]>> = {
     2: magicUserLevel2Spells,
     // Additional levels would be added here
   },
-  'Cleric': {
+  Cleric: {
     1: clericLevel1Spells,
     // Additional levels would be added here
   },
-  'Druid': {
+  Druid: {
     1: druidLevel1Spells,
     // Additional levels would be added here
   },
-  'Illusionist': {
+  Illusionist: {
     1: illusionistLevel1Spells,
     // Additional levels would be added here
-  }
+  },
 };
 
 // Utility function to find a spell by name (case-insensitive)
 export function findSpellByName(spellName: string): Spell | undefined {
   const normalizedName = spellName.toLowerCase();
-  
+
   for (const className of Object.keys(spellLists)) {
     const classSpells = spellLists[className as SpellClass];
-    
+
     for (const levelKey of Object.keys(classSpells)) {
       const level = Number(levelKey);
       const levelSpells = classSpells[level];
-      
+
       const foundSpell = levelSpells.find(
         (spell: Spell) => spell.name.toLowerCase() === normalizedName
       );
-      
+
       if (foundSpell) return foundSpell;
     }
   }
-  
+
   return undefined;
-} 
+}

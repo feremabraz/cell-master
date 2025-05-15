@@ -16,7 +16,7 @@ export const useRandomNameGenerator = () => {
     async (options: RandomNameRequest) => {
       setIsLoading(true);
       setNameRequest(options);
-      
+
       try {
         const response = await fetch('/api/random/name', {
           method: 'POST',
@@ -25,11 +25,11 @@ export const useRandomNameGenerator = () => {
           },
           body: JSON.stringify(options),
         });
-        
+
         if (!response.ok) {
           throw new Error('Failed to generate name');
         }
-        
+
         const data = await response.json();
         setNameResult(data.name);
         return data.name;
@@ -48,4 +48,4 @@ export const useRandomNameGenerator = () => {
     nameResult,
     isLoading,
   };
-}; 
+};

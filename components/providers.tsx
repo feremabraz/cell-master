@@ -8,9 +8,5 @@ export function Providers({ children }: { children: React.ReactNode }) {
   // We get the QueryClient from Jotai atom instead of useState
   const queryClient = useAtomValue(queryClientAtom);
 
-  return (
-    <QueryClientProvider client={queryClient}>
-      {children}
-    </QueryClientProvider>
-  );
+  return <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>;
 }

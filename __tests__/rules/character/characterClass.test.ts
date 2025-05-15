@@ -1,5 +1,11 @@
 import { describe, it, expect } from 'vitest';
-import { canChooseClass, validateMultiClass, addSecondarySkill, calculateLevel, hasReachedLevelLimit } from '@rules/character/characterClass';
+import {
+  canChooseClass,
+  validateMultiClass,
+  addSecondarySkill,
+  calculateLevel,
+  hasReachedLevelLimit,
+} from '@rules/character/characterClass';
 import { type SecondarySkill, SkillLevel } from '@rules/character/secondarySkills';
 import type { AbilityScores, Character, CharacterClass } from '@rules/types';
 
@@ -10,7 +16,7 @@ describe('Character Class Framework', () => {
     constitution: 12,
     intelligence: 10,
     wisdom: 10,
-    charisma: 10
+    charisma: 10,
   };
 
   const invalidFighterScores: AbilityScores = {
@@ -19,7 +25,7 @@ describe('Character Class Framework', () => {
     constitution: 12,
     intelligence: 10,
     wisdom: 10,
-    charisma: 10
+    charisma: 10,
   };
 
   const validMultiClassScores: AbilityScores = {
@@ -28,7 +34,7 @@ describe('Character Class Framework', () => {
     constitution: 12,
     intelligence: 15,
     wisdom: 10,
-    charisma: 10
+    charisma: 10,
   };
 
   const mockCharacter: Character = {
@@ -73,14 +79,14 @@ describe('Character Class Framework', () => {
       wisdomSpellFailure: 0,
       charismaReactionAdj: 0,
       charismaLoyaltyBase: 0,
-      charismaMaxHenchmen: 0
+      charismaMaxHenchmen: 0,
     },
     savingThrows: {
       'Poison or Death': 14,
-      'Wands': 15,
+      Wands: 15,
       'Paralysis, Polymorph, or Petrification': 16,
       'Breath Weapons': 17,
-      'Spells, Rods, or Staves': 17
+      'Spells, Rods, or Staves': 17,
     },
     spells: [],
     currency: { platinum: 0, gold: 0, electrum: 0, silver: 0, copper: 0 },
@@ -100,7 +106,7 @@ describe('Character Class Framework', () => {
     racialAbilities: [],
     classAbilities: [],
     proficiencies: [],
-    secondarySkills: []
+    secondarySkills: [],
   };
 
   describe('canChooseClass', () => {
@@ -141,7 +147,7 @@ describe('Character Class Framework', () => {
     it('should add a secondary skill to a character', () => {
       const newSkill: SecondarySkill = 'Animal Handling';
       const updatedCharacter = addSecondarySkill(mockCharacter, newSkill, SkillLevel.Apprentice);
-      
+
       expect(updatedCharacter.secondarySkills).toHaveLength(1);
       expect(updatedCharacter.secondarySkills[0].skill).toBe(newSkill);
       expect(updatedCharacter.secondarySkills[0].level).toBe(SkillLevel.Apprentice);
@@ -158,9 +164,9 @@ describe('Character Class Framework', () => {
       const multiClassCharacter: Character = {
         ...mockCharacter,
         race: 'Elf',
-        classes: { Fighter: 3, 'Magic-User': 2 }
+        classes: { Fighter: 3, 'Magic-User': 2 },
       };
-      
+
       const level = calculateLevel(multiClassCharacter);
       expect(level).toBe(2); // (3 + 2) / 2 = 2.5, floor = 2
     });
@@ -176,9 +182,9 @@ describe('Character Class Framework', () => {
       const halflingCharacter: Character = {
         ...mockCharacter,
         race: 'Halfling',
-        classes: { Fighter: 4 }
+        classes: { Fighter: 4 },
       };
-      
+
       const result = hasReachedLevelLimit(halflingCharacter, 'Fighter');
       expect(result).toBe(true); // Halflings are limited to level 4 as fighters
     });
@@ -187,11 +193,11 @@ describe('Character Class Framework', () => {
       const halflingCharacter: Character = {
         ...mockCharacter,
         race: 'Halfling',
-        classes: { Fighter: 3 }
+        classes: { Fighter: 3 },
       };
-      
+
       const result = hasReachedLevelLimit(halflingCharacter, 'Fighter');
       expect(result).toBe(false); // Halflings are limited to level 4 as fighters
     });
   });
-}); 
+});

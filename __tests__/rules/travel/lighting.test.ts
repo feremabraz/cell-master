@@ -7,7 +7,7 @@ import {
   createActiveLightSource,
   updateLightSourceDuration,
   calculateVisibility,
-  isTargetVisible
+  isTargetVisible,
 } from '@rules/travel/lighting';
 import type { Character, Item } from '@rules/types';
 import { createMockCharacter } from '@tests/utils/mockData';
@@ -84,10 +84,10 @@ describe('Travel Lighting', () => {
     it('should reduce remaining duration by the specified turns', () => {
       const lightSource = createActiveLightSource('Torch');
       if (!lightSource) throw new Error('Failed to create light source');
-      
+
       const initialDuration = lightSource.remainingDuration;
       const updatedLightSource = updateLightSourceDuration(lightSource, 2);
-      
+
       expect(updatedLightSource.remainingDuration).toBe(initialDuration - 2);
       expect(updatedLightSource.isActive).toBe(true);
     });
@@ -95,10 +95,13 @@ describe('Travel Lighting', () => {
     it('should set isActive to false when duration reaches 0', () => {
       const lightSource = createActiveLightSource('Torch');
       if (!lightSource) throw new Error('Failed to create light source');
-      
+
       // Update with turn count equal to duration
-      const updatedLightSource = updateLightSourceDuration(lightSource, lightSource.remainingDuration);
-      
+      const updatedLightSource = updateLightSourceDuration(
+        lightSource,
+        lightSource.remainingDuration
+      );
+
       expect(updatedLightSource.remainingDuration).toBe(0);
       expect(updatedLightSource.isActive).toBe(false);
     });
@@ -106,9 +109,9 @@ describe('Travel Lighting', () => {
     it('should not reduce duration for infinite duration light sources', () => {
       const lightSource = createActiveLightSource('Continual Light spell');
       if (!lightSource) throw new Error('Failed to create light source');
-      
+
       const updatedLightSource = updateLightSourceDuration(lightSource, 1000);
-      
+
       expect(updatedLightSource.remainingDuration).toBe(lightSource.remainingDuration);
       expect(updatedLightSource.isActive).toBe(true);
     });
@@ -124,14 +127,14 @@ describe('Travel Lighting', () => {
     it('should use light source radius in darkness', () => {
       const torch = createActiveLightSource('Torch');
       if (!torch) throw new Error('Failed to create light source');
-      
+
       expect(calculateVisibility('Darkness', [torch])).toBe(torch.source.radius);
     });
 
     it('should extend visibility in dim light', () => {
       const lantern = createActiveLightSource('Lantern, Hooded');
       if (!lantern) throw new Error('Failed to create light source');
-      
+
       // In dim light, visibility should be the greater of base visibility or light source radius
       expect(calculateVisibility('Dim', [lantern])).toBe(
         Math.max(VisibilityRanges.Dim, lantern.source.radius)
@@ -140,20 +143,20 @@ describe('Travel Lighting', () => {
 
     it('should use the largest radius from multiple light sources', () => {
       const torch = createActiveLightSource('Torch');
-      const lantern = createActiveLightSource('Lantern, Bull\'s-eye');
+      const lantern = createActiveLightSource("Lantern, Bull's-eye");
       if (!torch || !lantern) throw new Error('Failed to create light sources');
-      
+
       // Bull's-eye lantern has a larger radius than torch
       expect(calculateVisibility('Darkness', [torch, lantern])).toBe(lantern.source.radius);
     });
-    
+
     it('should ignore inactive light sources', () => {
       const torch = createActiveLightSource('Torch');
       if (!torch) throw new Error('Failed to create light source');
-      
+
       // Set torch to inactive
       torch.isActive = false;
-      
+
       expect(calculateVisibility('Darkness', [torch])).toBe(VisibilityRanges.Darkness);
     });
   });
@@ -173,7 +176,7 @@ describe('Travel Lighting', () => {
     it('should account for light sources', () => {
       const torch = createActiveLightSource('Torch');
       if (!torch) throw new Error('Failed to create light source');
-      
+
       expect(isTargetVisible(5, 'Darkness', [torch])).toBe(true);
       expect(isTargetVisible(15, 'Darkness', [torch])).toBe(false);
     });
@@ -184,4 +187,4 @@ describe('Travel Lighting', () => {
       expect(isTargetVisible(25, 'Darkness', [], true)).toBe(false); // Beyond 2x torch radius
     });
   });
-}); 
+});

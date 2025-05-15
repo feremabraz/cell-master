@@ -11,35 +11,35 @@ describe('Spell List', () => {
       expect(magicMissile?.name).toBe('Magic Missile');
       expect(magicMissile?.class).toBe('Magic-User');
       expect(magicMissile?.level).toBe(1);
-      
+
       // Test case insensitivity
       const shield = findSpellByName('SHIELD');
       expect(shield).toBeDefined();
       expect(shield?.name).toBe('Shield');
-      
+
       // Test for Cleric spell
       const cureLight = findSpellByName('cure light wounds');
       expect(cureLight).toBeDefined();
       expect(cureLight?.class).toBe('Cleric');
     });
-    
+
     it('should return undefined for non-existent spells', () => {
       const nonExistentSpell = findSpellByName('Fireball'); // Not implemented in our spell list
       expect(nonExistentSpell).toBeUndefined();
     });
   });
-  
+
   describe('Spell Lists Structure', () => {
     it('should have spells organized by class and level', () => {
       expect(spellLists.Cleric).toBeDefined();
       expect(spellLists.Druid).toBeDefined();
       expect(spellLists.Illusionist).toBeDefined();
       expect(spellLists['Magic-User']).toBeDefined();
-      
+
       // Check Magic-User spells at level 1
       expect(Array.isArray(spellLists['Magic-User'][1])).toBe(true);
       expect(spellLists['Magic-User'][1].length).toBeGreaterThan(0);
-      
+
       // Verify a specific spell has all required properties
       const randomSpell = spellLists['Magic-User'][1][0];
       expect(randomSpell.name).toBeDefined();
@@ -54,10 +54,17 @@ describe('Spell List', () => {
       expect(randomSpell.description).toBeDefined();
       expect(typeof randomSpell.effect).toBe('function');
     });
-    
+
     it('should have properly typed saving throws for all spells', () => {
-      const validSavingThrows = ['Poison or Death', 'Wands', 'Paralysis, Polymorph, or Petrification', 'Breath Weapons', 'Spells, Rods, or Staves', 'None'];
-      
+      const validSavingThrows = [
+        'Poison or Death',
+        'Wands',
+        'Paralysis, Polymorph, or Petrification',
+        'Breath Weapons',
+        'Spells, Rods, or Staves',
+        'None',
+      ];
+
       // Check all spells from all classes
       for (const [_className, levelSpells] of Object.entries(spellLists)) {
         for (const [_level, spells] of Object.entries(levelSpells)) {
@@ -67,7 +74,7 @@ describe('Spell List', () => {
         }
       }
     });
-    
+
     it('should render spell effects narratively', () => {
       // Create dummy character and target
       const mockAbilityModifiers: AbilityScoreModifiers = {
@@ -97,28 +104,28 @@ describe('Spell List', () => {
         wisdomSpellFailure: 0,
         charismaReactionAdj: 0,
         charismaLoyaltyBase: 0,
-        charismaMaxHenchmen: 0
+        charismaMaxHenchmen: 0,
       };
 
       // Minimal character implementation with required properties
-      const dummyCaster: Partial<Character> = { 
+      const dummyCaster: Partial<Character> = {
         name: 'Test Caster',
         id: 'test-caster',
-        abilityModifiers: mockAbilityModifiers
+        abilityModifiers: mockAbilityModifiers,
       };
-      
+
       // Minimal monster implementation with required properties
-      const dummyTarget: Partial<Monster> = { 
+      const dummyTarget: Partial<Monster> = {
         name: 'Test Target',
-        id: 'test-target'
+        id: 'test-target',
       };
-      
+
       // Test a spell effect
       const spell = findSpellByName('Magic Missile');
       const result = spell?.effect(dummyCaster as Character, [dummyTarget as Monster]);
-      
+
       expect(result).toBeDefined();
       expect(result?.narrative).toContain('Test Caster casts Magic Missile');
     });
   });
-}); 
+});

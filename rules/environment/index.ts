@@ -10,4 +10,4 @@ export { resolveSwimming, resolveDrowning } from './swimming';
 export { resolveSurvivalNeeds, findFoodAndWater } from './survival';
 
 // Export temperature effects functionality
-export { resolveTemperatureEffects } from './temperature'; 
+export { resolveTemperatureEffects } from './temperature';

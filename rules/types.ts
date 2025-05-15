@@ -12,57 +12,57 @@ export interface AbilityScores {
 }
 
 export const CharacterClasses = [
-  'Fighter', 
-  'Paladin', 
-  'Ranger', 
-  'Magic-User', 
-  'Illusionist', 
-  'Cleric', 
-  'Druid', 
-  'Thief', 
-  'Assassin'
+  'Fighter',
+  'Paladin',
+  'Ranger',
+  'Magic-User',
+  'Illusionist',
+  'Cleric',
+  'Druid',
+  'Thief',
+  'Assassin',
 ] as const;
 
-export type CharacterClass = typeof CharacterClasses[number];
+export type CharacterClass = (typeof CharacterClasses)[number];
 
 export const CharacterRaces = [
-  'Human', 
-  'Dwarf', 
-  'Elf', 
-  'Gnome', 
-  'Half-Elf', 
-  'Halfling', 
-  'Half-Orc'
+  'Human',
+  'Dwarf',
+  'Elf',
+  'Gnome',
+  'Half-Elf',
+  'Halfling',
+  'Half-Orc',
 ] as const;
 
-export type CharacterRace = typeof CharacterRaces[number];
+export type CharacterRace = (typeof CharacterRaces)[number];
 
 export const CharacterSexes = ['male', 'female'] as const;
-export type CharacterSex = typeof CharacterSexes[number];
+export type CharacterSex = (typeof CharacterSexes)[number];
 
 export const Alignments = [
-  'Lawful Good', 
-  'Lawful Neutral', 
-  'Lawful Evil', 
-  'Neutral Good', 
-  'True Neutral', 
-  'Neutral Evil', 
-  'Chaotic Good', 
-  'Chaotic Neutral', 
-  'Chaotic Evil'
+  'Lawful Good',
+  'Lawful Neutral',
+  'Lawful Evil',
+  'Neutral Good',
+  'True Neutral',
+  'Neutral Evil',
+  'Chaotic Good',
+  'Chaotic Neutral',
+  'Chaotic Evil',
 ] as const;
 
-export type Alignment = typeof Alignments[number];
+export type Alignment = (typeof Alignments)[number];
 
 export const SavingThrowTypes = [
-  'Poison or Death', 
-  'Wands', 
-  'Paralysis, Polymorph, or Petrification', 
-  'Breath Weapons', 
-  'Spells, Rods, or Staves'
+  'Poison or Death',
+  'Wands',
+  'Paralysis, Polymorph, or Petrification',
+  'Breath Weapons',
+  'Spells, Rods, or Staves',
 ] as const;
 
-export type SavingThrowType = typeof SavingThrowTypes[number];
+export type SavingThrowType = (typeof SavingThrowTypes)[number];
 
 // Common base for all characters (PC, NPCs, animals, and monsters)
 export interface BaseCharacter {
@@ -83,6 +83,9 @@ export interface BaseCharacter {
 }
 
 // Character-specific info (Player or NPC/Monster)
+// Import specialization types from combat/specialization
+import type { WeaponSpecialization } from '@rules/combat/specialization';
+
 export interface Character extends BaseCharacter {
   race: CharacterRace;
   class: CharacterClass;
@@ -108,6 +111,7 @@ export interface Character extends BaseCharacter {
   classAbilities: ClassAbility[];
   proficiencies: WeaponProficiency[];
   secondarySkills: CharacterSecondarySkill[]; // Secondary skills from non-class background
+  weaponSpecializations?: WeaponSpecialization[]; // Optional weapon specializations for fighters
 }
 
 export interface Monster extends BaseCharacter {
@@ -139,10 +143,10 @@ export interface Item {
 }
 
 export const WeaponTypes = ['Melee', 'Ranged'] as const;
-export type WeaponType = typeof WeaponTypes[number];
+export type WeaponType = (typeof WeaponTypes)[number];
 
 export const WeaponSizes = ['Small', 'Medium', 'Large'] as const;
-export type WeaponSize = typeof WeaponSizes[number];
+export type WeaponSize = (typeof WeaponSizes)[number];
 
 export interface Weapon extends Item {
   damage: string; // e.g., "1d8" for longsword
@@ -156,7 +160,7 @@ export interface Weapon extends Item {
 }
 
 export const ArmorTypes = ['Shield', 'Armor'] as const;
-export type ArmorType = typeof ArmorTypes[number];
+export type ArmorType = (typeof ArmorTypes)[number];
 
 export interface Armor extends Item {
   armorClass: number; // AC provided
@@ -183,29 +187,32 @@ export interface ActionResult {
 
 // Action types (from the user input)
 export const ActionTypes = [
-  'Attack', 
-  'CastSpell', 
-  'SavingThrow', 
-  'SkillCheck', 
-  'Movement', 
+  'Attack',
+  'CastSpell',
+  'SavingThrow',
+  'SkillCheck',
+  'Movement',
   'UseItem',
   'TurnUndead',
-  'SpecialAbility'
+  'SpecialAbility',
+  'Grapple',
+  'TwoWeaponFighting',
 ] as const;
 
-export type ActionType = typeof ActionTypes[number];
+export type ActionType = (typeof ActionTypes)[number];
 
 // Abstracted Action
 export interface Action {
   type: ActionType;
   actor: Character | Monster;
+  offhandItem?: Item; // For two-weapon fighting
   target?: Character | Monster | string;
   item?: Item | Weapon | Armor;
   diceRoll?: DiceRoll;
 }
 
 export const SpellClasses = ['Magic-User', 'Cleric', 'Druid', 'Illusionist'] as const;
-export type SpellClass = typeof SpellClasses[number];
+export type SpellClass = (typeof SpellClasses)[number];
 
 export interface Spell {
   name: string;
@@ -257,6 +264,7 @@ export interface InitiativeResult {
   initiative: number;
   surprise: boolean;
   segmentOrder: number;
+  weaponSpeedFactor: number; // Used for breaking initiative ties
 }
 
 export interface Encounter {
@@ -301,7 +309,7 @@ export interface AbilityScoreModifiers {
   strengthEncumbrance: number | null;
   strengthOpenDoors: number | null;
   strengthBendBars: number | null;
-  
+
   // Dexterity
   dexterityReaction: number | null;
   dexterityMissile: number | null;
@@ -311,24 +319,24 @@ export interface AbilityScoreModifiers {
   dexterityFindTraps: number | null;
   dexterityMoveSilently: number | null;
   dexterityHideInShadows: number | null;
-  
+
   // Constitution
   constitutionHitPoints: number | null;
   constitutionSystemShock: number | null;
   constitutionResurrectionSurvival: number | null;
   constitutionPoisonSave: number | null;
-  
+
   // Intelligence
   intelligenceLanguages: number | null;
   intelligenceLearnSpells: number | null;
   intelligenceMaxSpellLevel: number | null;
   intelligenceIllusionImmunity: boolean;
-  
+
   // Wisdom
   wisdomMentalSave: number | null;
   wisdomBonusSpells: Record<number, number> | null; // Level -> Count
   wisdomSpellFailure: number | null;
-  
+
   // Charisma
   charismaReactionAdj: number | null;
   charismaLoyaltyBase: number | null;
@@ -360,20 +368,13 @@ export interface ClassAbility {
 }
 
 // Weather conditions
-export const WeatherConditions = [
-  'Clear',
-  'Cloudy',
-  'Rain',
-  'Storm',
-  'Snow',
-  'Fog'
-] as const;
+export const WeatherConditions = ['Clear', 'Cloudy', 'Rain', 'Storm', 'Snow', 'Fog'] as const;
 
-export type WeatherCondition = typeof WeatherConditions[number];
+export type WeatherCondition = (typeof WeatherConditions)[number];
 
 // Types of movement
 export const MovementTypes = ['Walk', 'Fly', 'Swim', 'Burrow', 'Climb'] as const;
-export type MovementTypeValue = typeof MovementTypes[number];
+export type MovementTypeValue = (typeof MovementTypes)[number];
 
 export interface MovementType {
   type: MovementTypeValue;
@@ -381,42 +382,23 @@ export interface MovementType {
 }
 
 // Creature sizes
-export const CreatureSizes = [
-  'Tiny',
-  'Small',
-  'Medium',
-  'Large',
-  'Huge',
-  'Gargantuan'
-] as const;
+export const CreatureSizes = ['Tiny', 'Small', 'Medium', 'Large', 'Huge', 'Gargantuan'] as const;
 
-export type CreatureSize = typeof CreatureSizes[number];
+export type CreatureSize = (typeof CreatureSizes)[number];
 
 // Monster frequency
-export const MonsterFrequencies = [
-  'Common',
-  'Uncommon',
-  'Rare',
-  'Very Rare',
-  'Unique'
-] as const;
+export const MonsterFrequencies = ['Common', 'Uncommon', 'Rare', 'Very Rare', 'Unique'] as const;
 
-export type MonsterFrequency = typeof MonsterFrequencies[number];
+export type MonsterFrequency = (typeof MonsterFrequencies)[number];
 
 export interface TurnUndeadTable {
   level: number; // Cleric level
   results: Record<string, number>; // Undead type -> result needed on 2d6
 }
 
-export const AgeCategories = [
-  'Young',
-  'Adult',
-  'Middle-Aged',
-  'Old',
-  'Venerable'
-] as const;
+export const AgeCategories = ['Young', 'Adult', 'Middle-Aged', 'Old', 'Venerable'] as const;
 
-export type AgeCategory = typeof AgeCategories[number];
+export type AgeCategory = (typeof AgeCategories)[number];
 
 export interface WeaponProficiency {
   weapon: string;
@@ -434,30 +416,21 @@ export const Environments = [
   'Desert',
   'Swamp',
   'Plains',
-  'Arctic'
+  'Arctic',
 ] as const;
 
-export type Environment = typeof Environments[number];
+export type Environment = (typeof Environments)[number];
 
-export const LightingConditions = [
-  'Bright',
-  'Dim',
-  'Darkness'
-] as const;
+export const LightingConditions = ['Bright', 'Dim', 'Darkness'] as const;
 
-export type LightingCondition = typeof LightingConditions[number];
+export type LightingCondition = (typeof LightingConditions)[number];
 
-export const TerrainTypes = [
-  'Normal',
-  'Difficult',
-  'Very Difficult',
-  'Impassable'
-] as const;
+export const TerrainTypes = ['Normal', 'Difficult', 'Very Difficult', 'Impassable'] as const;
 
-export type TerrainType = typeof TerrainTypes[number];
+export type TerrainType = (typeof TerrainTypes)[number];
 
 export const EncounterTriggerTypes = ['Time', 'Action', 'Location'] as const;
-export type EncounterTriggerType = typeof EncounterTriggerTypes[number];
+export type EncounterTriggerType = (typeof EncounterTriggerTypes)[number];
 
 export interface EncounterTrigger {
   type: EncounterTriggerType;
@@ -477,4 +450,4 @@ export interface StatusEffect {
   effect: string;
   savingThrow: SavingThrowType | null;
   endCondition: string | null;
-} 
+}

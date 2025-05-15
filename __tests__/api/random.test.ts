@@ -8,26 +8,27 @@ vi.mock('@/app/api/random/name/route', () => ({
       return { error: 'Missing required parameters' };
     }
     return { name: 'Elindra Moonwhisper' };
-  })
+  }),
 }));
 
 vi.mock('@/app/api/random/weather/route', () => ({
   POST: vi.fn().mockImplementation(async () => {
-    return { 
+    return {
       description: 'Cool and clear with a light breeze.',
       temperature: 'Cool',
       precipitation: 'Clear',
-      wind: 'Light breeze'
+      wind: 'Light breeze',
     };
-  })
+  }),
 }));
 
 vi.mock('@/app/api/random/encounter/route', () => ({
   POST: vi.fn().mockImplementation(async () => {
-    return { 
-      encounter: 'A group of 5 goblins hiding behind rocks. They appear to be setting up an ambush.'
+    return {
+      encounter:
+        'A group of 5 goblins hiding behind rocks. They appear to be setting up an ambush.',
     };
-  })
+  }),
 }));
 
 // Import route handlers after mocking
@@ -122,7 +123,10 @@ describe('Random API Endpoints', () => {
       });
 
       const response = await encounterRandomPost(request);
-      expect(response).toHaveProperty('encounter', 'A group of 5 goblins hiding behind rocks. They appear to be setting up an ambush.');
+      expect(response).toHaveProperty(
+        'encounter',
+        'A group of 5 goblins hiding behind rocks. They appear to be setting up an ambush.'
+      );
     });
 
     test('handles optional parameters', async () => {
@@ -144,7 +148,10 @@ describe('Random API Endpoints', () => {
       });
 
       const response = await encounterRandomPost(request);
-      expect(response).toHaveProperty('encounter', 'A group of 5 goblins hiding behind rocks. They appear to be setting up an ambush.');
+      expect(response).toHaveProperty(
+        'encounter',
+        'A group of 5 goblins hiding behind rocks. They appear to be setting up an ambush.'
+      );
     });
   });
-}); 
+});

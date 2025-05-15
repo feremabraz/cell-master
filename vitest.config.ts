@@ -16,7 +16,7 @@ export default defineConfig({
       '@rules': resolve(__dirname, './rules'),
       '@ai': resolve(__dirname, './ai'),
       '@tests': resolve(__dirname, './__tests__'),
-      '@components': resolve(__dirname, './components')
+      '@components': resolve(__dirname, './components'),
     },
   },
-}); 
+});

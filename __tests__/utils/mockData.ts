@@ -1,23 +1,31 @@
-import type { Character, Item, CharacterRace, AbilityScoreModifiers, AbilityScores } from '../../rules/types';
-import type { 
-  SwimmingDifficulty, 
+import type {
+  Character,
+  Item,
+  CharacterRace,
+  AbilityScoreModifiers,
+  AbilityScores,
+} from '../../rules/types';
+import type {
+  SwimmingDifficulty,
   TemperatureRange,
-  SurvivalNeedStatus 
+  SurvivalNeedStatus,
 } from '../../rules/environment/types';
 
 /**
  * Creates a mock character for testing
- * 
+ *
  * @param options Configuration options for the mock character
  * @returns A mock character instance
  */
-export const createMockCharacter = (options: {
-  strength?: number;
-  race?: CharacterRace;
-  inventory?: Item[];
-  equipLightSource?: boolean;
-  customizeCharacter?: Partial<Character>;
-} = {}): Character => {
+export const createMockCharacter = (
+  options: {
+    strength?: number;
+    race?: CharacterRace;
+    inventory?: Item[];
+    equipLightSource?: boolean;
+    customizeCharacter?: Partial<Character>;
+  } = {}
+): Character => {
   const {
     strength = 10,
     race = 'Human',
@@ -28,7 +36,7 @@ export const createMockCharacter = (options: {
 
   // If equipLightSource is true, add a torch to the inventory
   const finalInventory = [...inventory];
-  if (equipLightSource && !inventory.some(item => item.name === 'Torch')) {
+  if (equipLightSource && !inventory.some((item) => item.name === 'Torch')) {
     const lightSource: Item = {
       id: 'torch-1',
       name: 'Torch',
@@ -37,7 +45,7 @@ export const createMockCharacter = (options: {
       value: 1,
       equipped: equipLightSource,
       magicBonus: null,
-      charges: null
+      charges: null,
     };
     finalInventory.push(lightSource);
   }
@@ -49,7 +57,7 @@ export const createMockCharacter = (options: {
     strengthEncumbrance: null,
     strengthOpenDoors: null,
     strengthBendBars: null,
-    
+
     // Dexterity
     dexterityReaction: null,
     dexterityMissile: null,
@@ -59,28 +67,28 @@ export const createMockCharacter = (options: {
     dexterityFindTraps: null,
     dexterityMoveSilently: null,
     dexterityHideInShadows: null,
-    
+
     // Constitution
     constitutionHitPoints: null,
     constitutionSystemShock: null,
     constitutionResurrectionSurvival: null,
     constitutionPoisonSave: null,
-    
+
     // Intelligence
     intelligenceLanguages: null,
     intelligenceLearnSpells: null,
     intelligenceMaxSpellLevel: null,
     intelligenceIllusionImmunity: false,
-    
+
     // Wisdom
     wisdomMentalSave: null,
     wisdomBonusSpells: null,
     wisdomSpellFailure: null,
-    
+
     // Charisma
     charismaReactionAdj: null,
     charismaLoyaltyBase: null,
-    charismaMaxHenchmen: null
+    charismaMaxHenchmen: null,
   };
 
   const baseCharacter: Character = {
@@ -103,15 +111,15 @@ export const createMockCharacter = (options: {
       constitution: 10,
       intelligence: 10,
       wisdom: 10,
-      charisma: 10
+      charisma: 10,
     },
     abilityModifiers,
     savingThrows: {
       'Poison or Death': 14,
-      'Wands': 15,
+      Wands: 15,
       'Paralysis, Polymorph, or Petrification': 16,
       'Breath Weapons': 17,
-      'Spells, Rods, or Staves': 17
+      'Spells, Rods, or Staves': 17,
     },
     spells: [],
     currency: { platinum: 0, gold: 10, electrum: 0, silver: 0, copper: 0 },
@@ -131,7 +139,7 @@ export const createMockCharacter = (options: {
     racialAbilities: [],
     classAbilities: [],
     proficiencies: [],
-    secondarySkills: []
+    secondarySkills: [],
   };
 
   // Apply any custom character properties
@@ -140,7 +148,7 @@ export const createMockCharacter = (options: {
 
 /**
  * Creates a mock item for testing
- * 
+ *
  * @param weight The weight of the item
  * @returns A mock item instance
  */
@@ -152,7 +160,7 @@ export const createMockItem = (weight: number): Item => ({
   value: 1,
   equipped: false,
   magicBonus: null,
-  charges: null
+  charges: null,
 });
 
 // Standard ability scores for testing
@@ -162,7 +170,7 @@ export const standardAbilityScores: AbilityScores = {
   constitution: 15,
   intelligence: 12,
   wisdom: 10,
-  charisma: 13
+  charisma: 13,
 };
 
 // Standard ability modifiers corresponding to standard scores
@@ -173,7 +181,7 @@ export const standardAbilityModifiers: AbilityScoreModifiers = {
   strengthEncumbrance: 35,
   strengthOpenDoors: 1,
   strengthBendBars: 10,
-  
+
   // Dexterity
   dexterityReaction: -1,
   dexterityMissile: 1,
@@ -183,35 +191,35 @@ export const standardAbilityModifiers: AbilityScoreModifiers = {
   dexterityFindTraps: 0,
   dexterityMoveSilently: 0,
   dexterityHideInShadows: 0,
-  
+
   // Constitution
   constitutionHitPoints: 1,
   constitutionSystemShock: 90,
   constitutionResurrectionSurvival: 92,
   constitutionPoisonSave: 0,
-  
+
   // Intelligence
   intelligenceLanguages: 3,
   intelligenceLearnSpells: 55,
   intelligenceMaxSpellLevel: 7,
   intelligenceIllusionImmunity: false,
-  
+
   // Wisdom
   wisdomMentalSave: 0,
   wisdomBonusSpells: null,
   wisdomSpellFailure: 0,
-  
+
   // Charisma
   charismaReactionAdj: 1,
   charismaLoyaltyBase: 55,
-  charismaMaxHenchmen: 5
+  charismaMaxHenchmen: 5,
 };
 
 // Environment testing specific mock data
 export const mockSurvivalStatus: SurvivalNeedStatus = {
   daysSinceLastFood: 0,
   daysSinceLastWater: 0,
-  currentEffects: []
+  currentEffects: [],
 };
 
 export const mockTerrains = [
@@ -221,7 +229,7 @@ export const mockTerrains = [
   'Plains',
   'Swamp',
   'Arctic',
-  'Dungeon'
+  'Dungeon',
 ];
 
 export const mockSwimmingDifficulties: SwimmingDifficulty[] = [
@@ -229,7 +237,7 @@ export const mockSwimmingDifficulties: SwimmingDifficulty[] = [
   'Choppy',
   'Rough',
   'Stormy',
-  'Treacherous'
+  'Treacherous',
 ];
 
 export const mockTemperatures: TemperatureRange[] = [
@@ -239,8 +247,8 @@ export const mockTemperatures: TemperatureRange[] = [
   'Moderate',
   'Warm',
   'Hot',
-  'Extreme'
-]; 
+  'Extreme',
+];
 
 export const mockAdventurer = createMockCharacter({
   strength: 16,
@@ -259,7 +267,7 @@ export const mockAdventurer = createMockCharacter({
     thac0: 18,
     classes: { Ranger: 3 },
     primaryClass: 'Ranger',
-  }
+  },
 });
 
 export const mockWeakAdventurer = createMockCharacter({
@@ -270,16 +278,16 @@ export const mockWeakAdventurer = createMockCharacter({
     hitPoints: { current: 12, maximum: 12 },
     abilities: {
       ...standardAbilityScores,
-      constitution: 6 // Very low constitution
+      constitution: 6, // Very low constitution
     },
     abilityModifiers: {
       ...standardAbilityModifiers,
       constitutionHitPoints: -1,
       constitutionSystemShock: 40,
       constitutionResurrectionSurvival: 50,
-      constitutionPoisonSave: -1
-    }
-  }
+      constitutionPoisonSave: -1,
+    },
+  },
 });
 
 export const mockArmoredAdventurer = createMockCharacter({
@@ -292,6 +300,6 @@ export const mockArmoredAdventurer = createMockCharacter({
     encumbrance: 220, // Heavy encumbrance
     hitPoints: { current: 24, maximum: 24 },
     abilities: standardAbilityScores,
-    abilityModifiers: standardAbilityModifiers
-  }
+    abilityModifiers: standardAbilityModifiers,
+  },
 });

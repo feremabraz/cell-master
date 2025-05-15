@@ -93,7 +93,7 @@ export function calculateXPRewardFactors(
   // Level difference modifier
   // OSRIC rules suggest reduced XP for monsters much weaker than the character
   let levelDifferenceModifier = 1.0;
-  
+
   // Parse hitDice string (format like "3+1") to extract the base number
   const hitDiceBase = Number.parseFloat(monster.hitDice.split('+')[0].split('-')[0]);
   const monsterLevel = Math.ceil(hitDiceBase);

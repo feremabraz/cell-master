@@ -43,14 +43,11 @@ export async function POST(request: Request) {
     if (generatedEncounter) {
       return NextResponse.json({ encounter: generatedEncounter });
     }
-    
+
     throw new Error('No encounter was generated');
   } catch (error) {
     console.error('Error in random encounter API:', error);
-    return NextResponse.json(
-      { error: 'Failed to generate encounter' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Failed to generate encounter' }, { status: 500 });
   }
 }
 
@@ -62,19 +59,19 @@ function generateEncounterPrompt(
   party?: { size: number; level: number }
 ): string {
   let prompt = `Generate a detailed random encounter for level ${level} characters in ${terrain} terrain`;
-  
+
   if (environment) {
     prompt += ` in a ${environment} environment`;
   }
-  
+
   if (time) {
     prompt += ` during ${time}`;
   }
-  
+
   if (party) {
     prompt += ` for a party of ${party.size} characters at level ${party.level}`;
   }
-  
+
   prompt += `.
   
   Format:
@@ -84,6 +81,6 @@ function generateEncounterPrompt(
   - Any notable equipment, treasure, or information they might have.
   
   RESPOND ONLY WITH THE ENCOUNTER DESCRIPTION, NO EXPLANATIONS OR ADDITIONAL TEXT.`;
-  
+
   return prompt;
 }
