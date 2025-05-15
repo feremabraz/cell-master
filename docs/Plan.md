@@ -67,7 +67,7 @@ Ordered by conceptual dependencies:
     - Training requirements
     - Level-up attribute boosts
 
-12. **NPC Interaction Basics**
+12. **NPC Interaction Basics** (implemented)
     - Reaction roll tables
     - Morale systems
     - Basic NPC attitude tracking
