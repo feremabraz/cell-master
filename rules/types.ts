@@ -124,6 +124,7 @@ export interface Monster extends BaseCharacter {
   organization: string;
   diet: string;
   ecology: string;
+  exceptional?: boolean; // Flag for unique or particularly challenging monsters
 }
 
 export interface Item {

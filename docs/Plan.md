@@ -61,7 +61,7 @@ Ordered by conceptual dependencies:
     - Class-specific spell progression
     - Basic spell effects
 
-11. **Experience & Advancement**
+11. **Experience & Advancement** (implemented)
     - XP calculation by monster HD
     - Level progression tables
     - Training requirements
