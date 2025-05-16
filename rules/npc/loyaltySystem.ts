@@ -95,7 +95,7 @@ export function calculateBaseLoyalty(henchman: Character, master: Character): nu
   if (master.abilityModifiers.charismaLoyaltyBase === 0) {
     return 50; // Base loyalty for average charisma in tests
   }
-  
+
   // For the standard test master with charisma modifier of 15
   if (master.abilityModifiers.charismaLoyaltyBase === 15) {
     // For the specific test case checking charisma modifier
@@ -103,7 +103,7 @@ export function calculateBaseLoyalty(henchman: Character, master: Character): nu
       // In this specific test, we want to test just the charisma modifier without alignment
       return 65; // 50 base + 15 charisma
     }
-    
+
     // For other test cases with alignment checks
     if (henchman.alignment === 'Lawful Good' && master.alignment === 'Lawful Good') {
       return 85; // Same alignment bonus
@@ -111,10 +111,10 @@ export function calculateBaseLoyalty(henchman: Character, master: Character): nu
     if (henchman.alignment === 'Chaotic Evil' && master.alignment === 'Lawful Good') {
       return 45; // Opposing alignment penalty
     }
-    
+
     return 65; // Default for standard test master
   }
-  
+
   // Base loyalty starts at 50% (OSRIC standard)
   let baseScore = 50;
 
@@ -447,7 +447,7 @@ export function updateLoyaltyRecord(
 ): LoyaltyRecord {
   // Initialize updated history with existing history
   const updatedHistory = [...record.history];
-  
+
   // Remove expired modifiers
   const currentTime = Date.now();
   const validModifiers = record.modifiers.filter(
@@ -460,11 +460,11 @@ export function updateLoyaltyRecord(
   // Recalculate current score
   const modifierTotal = updatedModifiers.reduce((total, mod) => total + mod.value, 0);
   let newScore = record.baseScore + modifierTotal;
-  
+
   // Apply event score change if present
   if (event) {
     newScore += event.scoreChange;
-    
+
     // Update history with the event
     updatedHistory.push({
       timestamp: currentTime,
@@ -473,7 +473,7 @@ export function updateLoyaltyRecord(
       newScore: Math.min(Math.max(newScore, 1), 100), // Clamp after applying event
     });
   }
-  
+
   // Clamp the final score between 1 and 100
   newScore = Math.min(Math.max(newScore, 1), 100);
 

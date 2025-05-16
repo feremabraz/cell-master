@@ -90,7 +90,7 @@ describe('Search System', () => {
           hideInShadows: 0,
           hearNoise: 0,
           climbWalls: 0,
-          readLanguages: null
+          readLanguages: null,
         },
       };
       const chance = calculateBaseSearchChance(thiefCharacter, 'Thief-Specialized');
@@ -195,7 +195,11 @@ describe('Search System', () => {
 
     it('should find secret doors when roll succeeds', () => {
       // First two rolls succeed (for secret doors), second two fail (for traps)
-      roll.mockReturnValueOnce(10).mockReturnValueOnce(10).mockReturnValueOnce(100).mockReturnValueOnce(100);
+      roll
+        .mockReturnValueOnce(10)
+        .mockReturnValueOnce(10)
+        .mockReturnValueOnce(100)
+        .mockReturnValueOnce(100);
 
       const result = performSearch(testCharacter, testArea, 'Standard');
 
@@ -208,7 +212,11 @@ describe('Search System', () => {
 
     it('should find traps when roll succeeds', () => {
       // First two rolls fail (for secret doors), second two succeed (for traps)
-      roll.mockReturnValueOnce(100).mockReturnValueOnce(100).mockReturnValueOnce(10).mockReturnValueOnce(10);
+      roll
+        .mockReturnValueOnce(100)
+        .mockReturnValueOnce(100)
+        .mockReturnValueOnce(10)
+        .mockReturnValueOnce(10);
 
       const result = performSearch(testCharacter, testArea, 'Standard');
 
@@ -229,7 +237,7 @@ describe('Search System', () => {
 
       // With our mock returning 30 and dwarves getting a trap detection bonus,
       // we expect to find traps but not secret doors (since 30 > 16.67 base chance)
-      expect(result.discoveredItems.filter(item => item.includes('Trap'))).toHaveLength(2);
+      expect(result.discoveredItems.filter((item) => item.includes('Trap'))).toHaveLength(2);
     });
 
     it('should increase monster chance for longer searches', () => {

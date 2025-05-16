@@ -225,7 +225,7 @@ describe('Territory Control System', () => {
   describe('createSteward', () => {
     it('should create a steward with correct properties', () => {
       const steward = createSteward(testSteward, testOwner);
-      
+
       expect(steward).toHaveProperty('character', testSteward);
       expect(steward).toHaveProperty('level', testSteward.level);
       expect(steward).toHaveProperty('monthlyWage', testSteward.level * 100);
@@ -241,15 +241,15 @@ describe('Territory Control System', () => {
         ...testSteward,
         level: 3,
       };
-      
+
       const highLevelSteward = {
         ...testSteward,
         level: 12,
       };
-      
+
       const lowLevelResult = createSteward(lowLevelSteward, testOwner);
       const highLevelResult = createSteward(highLevelSteward, testOwner);
-      
+
       expect(lowLevelResult.monthlyWage).toBe(300); // 3 × 100gp
       expect(highLevelResult.monthlyWage).toBe(1200); // 12 × 100gp
     });
@@ -259,15 +259,15 @@ describe('Territory Control System', () => {
         ...testSteward,
         level: 3,
       };
-      
+
       const highLevelSteward = {
         ...testSteward,
         level: 12,
       };
-      
+
       const lowLevelResult = createSteward(lowLevelSteward, testOwner);
       const highLevelResult = createSteward(highLevelSteward, testOwner);
-      
+
       expect(lowLevelResult.commandLimit).toBe(120); // 3 × 40 men
       expect(highLevelResult.commandLimit).toBe(480); // 12 × 40 men
     });
@@ -276,7 +276,7 @@ describe('Territory Control System', () => {
   describe('createLieutenant', () => {
     it('should create a lieutenant with correct properties', () => {
       const lieutenant = createLieutenant(testLieutenant, testSteward);
-      
+
       expect(lieutenant).toHaveProperty('character', testLieutenant);
       expect(lieutenant).toHaveProperty('level', testLieutenant.level);
       expect(lieutenant).toHaveProperty('monthlyWage', testLieutenant.level * 100);
@@ -291,15 +291,15 @@ describe('Territory Control System', () => {
         ...testLieutenant,
         level: 2,
       };
-      
+
       const highLevelLieutenant = {
         ...testLieutenant,
         level: 8,
       };
-      
+
       const lowLevelResult = createLieutenant(lowLevelLieutenant, testSteward);
       const highLevelResult = createLieutenant(highLevelLieutenant, testSteward);
-      
+
       expect(lowLevelResult.monthlyWage).toBe(200); // 2 × 100gp
       expect(highLevelResult.monthlyWage).toBe(800); // 8 × 100gp
     });
@@ -309,15 +309,15 @@ describe('Territory Control System', () => {
         ...testLieutenant,
         level: 2,
       };
-      
+
       const highLevelLieutenant = {
         ...testLieutenant,
         level: 8,
       };
-      
+
       const lowLevelResult = createLieutenant(lowLevelLieutenant, testSteward);
       const highLevelResult = createLieutenant(highLevelLieutenant, testSteward);
-      
+
       expect(lowLevelResult.commandLimit).toBe(40); // 2 × 20 men
       expect(highLevelResult.commandLimit).toBe(160); // 8 × 20 men
     });
@@ -326,7 +326,7 @@ describe('Territory Control System', () => {
   describe('calculateTerritoryIncome', () => {
     it('should calculate total income correctly', () => {
       const income = calculateTerritoryIncome(sampleTerritory);
-      
+
       // Should sum the various income sources
       expect(income.total).toBe(
         income.taxes + income.resources + income.trade + income.services + income.other
@@ -361,7 +361,7 @@ describe('Territory Control System', () => {
           },
         ],
       };
-      
+
       const income = calculateTerritoryIncome(territory);
       expect(income.taxes).toBe(350); // Sum of monthlyTaxRevenue
     });
@@ -386,7 +386,7 @@ describe('Territory Control System', () => {
           },
         ],
       };
-      
+
       const income = calculateTerritoryIncome(territory);
       // Calculate expected resources based on formula in implementation:
       // resource.monthlyYield * (0.5 + resource.developmentLevel * 0.05) * min(1, resource.workersAssigned / 10)
@@ -400,17 +400,21 @@ describe('Territory Control System', () => {
   describe('calculateTerritoryExpenses', () => {
     it('should calculate total expenses correctly', () => {
       const expenses = calculateTerritoryExpenses(sampleTerritory);
-      
+
       // Should sum the various expense categories
       expect(expenses.total).toBe(
-        expenses.wages + expenses.maintenance + expenses.supplies + expenses.development + expenses.other
+        expenses.wages +
+          expenses.maintenance +
+          expenses.supplies +
+          expenses.development +
+          expenses.other
       );
     });
 
     it('should calculate wage expenses including garrison and steward costs', () => {
       // Create a territory with a steward and garrison
       const steward = createSteward(testSteward, testOwner);
-      
+
       const territory = {
         ...sampleTerritory,
         steward,
@@ -419,9 +423,9 @@ describe('Territory Control System', () => {
           monthlyCost: 300, // Explicit garrison cost
         },
       };
-      
+
       const expenses = calculateTerritoryExpenses(territory);
-      
+
       // Wages should include steward salary and garrison costs
       expect(expenses.wages).toBeGreaterThanOrEqual(steward.monthlyWage + 300);
     });
@@ -448,9 +452,9 @@ describe('Territory Control System', () => {
           },
         ],
       };
-      
+
       const expenses = calculateTerritoryExpenses(territory);
-      
+
       // Maintenance should include fortification costs
       expect(expenses.maintenance).toBeGreaterThanOrEqual(200);
     });
@@ -460,12 +464,12 @@ describe('Territory Control System', () => {
     it('should calculate profit as income minus expenses', () => {
       // The function recalculates income and expenses rather than using stored values
       const profit = calculateTerritoryProfit(sampleTerritory);
-      
+
       // Manually calculate expected value
       const recalculatedIncome = calculateTerritoryIncome(sampleTerritory);
       const recalculatedExpenses = calculateTerritoryExpenses(sampleTerritory);
       const expectedProfit = recalculatedIncome.total - recalculatedExpenses.total;
-      
+
       expect(profit).toBe(expectedProfit);
     });
 
@@ -478,9 +482,9 @@ describe('Territory Control System', () => {
         resources: [],
         // Keep the expensive fortifications and troops (expense sources)
       };
-      
+
       const profit = calculateTerritoryProfit(unprofitableTerritory);
-      
+
       // Verify the profit is negative
       expect(profit).toBeLessThan(0);
     });
@@ -490,9 +494,9 @@ describe('Territory Control System', () => {
     it('should generate a report with the correct structure', () => {
       const startDate = Date.now() - 30 * 24 * 60 * 60 * 1000; // 30 days ago
       const endDate = Date.now();
-      
+
       const report = generateTerritoryReport(sampleTerritory, startDate, endDate);
-      
+
       expect(report).toHaveProperty('territory', sampleTerritory);
       expect(report).toHaveProperty('period');
       expect(report.period).toHaveProperty('startDate', startDate);
@@ -509,15 +513,15 @@ describe('Territory Control System', () => {
     it('should calculate income and expenses for the period', () => {
       const startDate = Date.now() - 30 * 24 * 60 * 60 * 1000; // 30 days ago
       const endDate = Date.now();
-      
+
       const report = generateTerritoryReport(sampleTerritory, startDate, endDate);
-      
+
       // The report recalculates income and expenses rather than using stored values
       // Calculate the expected values
       const expectedIncome = calculateTerritoryIncome(sampleTerritory);
       const expectedExpenses = calculateTerritoryExpenses(sampleTerritory);
       const expectedProfit = expectedIncome.total - expectedExpenses.total;
-      
+
       // Check that the calculated values match
       expect(report.income.total).toBe(expectedIncome.total);
       expect(report.expenses.total).toBe(expectedExpenses.total);
@@ -535,9 +539,9 @@ describe('Territory Control System', () => {
         resources: 100, // Resources needed to address
         description: 'Band of outlaws raiding trade caravans',
       };
-      
+
       const result = checkTerritoryDefense(sampleTerritory, threat);
-      
+
       // Result should be a boolean indicating success or failure
       expect(typeof result).toBe('boolean');
     });
@@ -551,7 +555,7 @@ describe('Territory Control System', () => {
         resources: 150,
         description: 'Band of outlaws raiding trade caravans',
       };
-      
+
       // Territory with weak garrison
       const weakTerritory = {
         ...sampleTerritory,
@@ -562,7 +566,7 @@ describe('Territory Control System', () => {
           morale: 40,
         },
       };
-      
+
       // Territory with strong garrison
       const strongTerritory = {
         ...sampleTerritory,
@@ -573,10 +577,10 @@ describe('Territory Control System', () => {
           morale: 90,
         },
       };
-      
+
       const weakResult = checkTerritoryDefense(weakTerritory, threat);
       const strongResult = checkTerritoryDefense(strongTerritory, threat);
-      
+
       // Strong garrison should have better chance of success
       if (strongResult === true && weakResult === false) {
         expect(true).toBe(true); // Test passes if strong succeeds where weak fails
@@ -597,7 +601,7 @@ describe('Territory Control System', () => {
         'Grassland',
         testOwner
       );
-      
+
       expect(territory).toHaveProperty('id');
       expect(territory).toHaveProperty('name', 'New Barony');
       expect(territory).toHaveProperty('location', 'Southern Plains');
@@ -614,7 +618,7 @@ describe('Territory Control System', () => {
         'Grassland',
         testOwner
       );
-      
+
       expect(territory.resources).toEqual([]);
       expect(territory.settlements).toEqual([]);
       expect(territory.fortifications).toEqual([]);
@@ -630,7 +634,7 @@ describe('Territory Control System', () => {
         'Grassland',
         testOwner
       );
-      
+
       expect(territory.income.total).toBe(0);
       expect(territory.expenses.total).toBe(0);
     });
@@ -643,7 +647,7 @@ describe('Territory Control System', () => {
         'Grassland',
         testOwner
       );
-      
+
       expect(territory.garrison).toBeDefined();
       expect(territory.garrison.troops.length).toBe(0);
       expect(territory.garrison.totalStrength).toBe(0);

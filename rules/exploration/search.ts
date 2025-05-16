@@ -77,7 +77,7 @@ export function calculateSearchTime(area: SearchArea, method: SearchMethod): num
   if (method === 'Thief-Specialized') {
     return Math.max(1, standardTurns * 0.5);
   }
-  
+
   // Minimum 1 turn for other methods
   return Math.max(1, Math.ceil(standardTurns * timeMultiplier));
 }

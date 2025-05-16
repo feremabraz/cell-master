@@ -64,19 +64,39 @@ describe('Mapping System', () => {
     });
 
     it('should apply intelligence bonuses correctly', () => {
-      calculateMappingChance({ ...testCharacter, abilities: { ...testCharacter.abilities, intelligence: 6 } }, simpleArea, true, true);
+      calculateMappingChance(
+        { ...testCharacter, abilities: { ...testCharacter.abilities, intelligence: 6 } },
+        simpleArea,
+        true,
+        true
+      );
       calculateMappingChance(testCharacter, simpleArea, true, true);
-      calculateMappingChance({ ...testCharacter, abilities: { ...testCharacter.abilities, intelligence: 16 } }, simpleArea, true, true);
+      calculateMappingChance(
+        { ...testCharacter, abilities: { ...testCharacter.abilities, intelligence: 16 } },
+        simpleArea,
+        true,
+        true
+      );
 
       // Get the raw values for comparison
-      const highResult = _calculateMappingChanceForTest({ ...testCharacter, abilities: { ...testCharacter.abilities, intelligence: 16 } }, simpleArea, true, true);
+      const highResult = _calculateMappingChanceForTest(
+        { ...testCharacter, abilities: { ...testCharacter.abilities, intelligence: 16 } },
+        simpleArea,
+        true,
+        true
+      );
       const normalResult = _calculateMappingChanceForTest(testCharacter, simpleArea, true, true);
-      const lowResult = _calculateMappingChanceForTest({ ...testCharacter, abilities: { ...testCharacter.abilities, intelligence: 6 } }, simpleArea, true, true);
-      
+      const lowResult = _calculateMappingChanceForTest(
+        { ...testCharacter, abilities: { ...testCharacter.abilities, intelligence: 6 } },
+        simpleArea,
+        true,
+        true
+      );
+
       const highRaw = highResult.rawChance;
       const normalRaw = normalResult.rawChance;
       const lowRaw = lowResult.rawChance;
-      
+
       // Now we can safely compare the numbers
       expect(highRaw).toBeGreaterThan(normalRaw);
       expect(normalRaw).toBeGreaterThan(lowRaw);
@@ -106,12 +126,17 @@ describe('Mapping System', () => {
       calculateMappingChance({ ...testCharacter, race: 'Dwarf' }, simpleArea, true, true);
 
       // Get the raw values for comparison
-      const dwarfResult = _calculateMappingChanceForTest({ ...testCharacter, race: 'Dwarf' }, simpleArea, true, true);
+      const dwarfResult = _calculateMappingChanceForTest(
+        { ...testCharacter, race: 'Dwarf' },
+        simpleArea,
+        true,
+        true
+      );
       const humanResult = _calculateMappingChanceForTest(testCharacter, simpleArea, true, true);
-      
+
       const dwarfRaw = dwarfResult.rawChance;
       const humanRaw = humanResult.rawChance;
-      
+
       // Now we can safely compare the numbers
       expect(dwarfRaw).toBeGreaterThan(humanRaw);
     });
@@ -122,14 +147,24 @@ describe('Mapping System', () => {
       calculateMappingChance({ ...testCharacter, level: 10 }, simpleArea, true, true);
 
       // Get the raw values for comparison
-      const highLevelResult = _calculateMappingChanceForTest({ ...testCharacter, level: 10 }, simpleArea, true, true);
+      const highLevelResult = _calculateMappingChanceForTest(
+        { ...testCharacter, level: 10 },
+        simpleArea,
+        true,
+        true
+      );
       const normalResult = _calculateMappingChanceForTest(testCharacter, simpleArea, true, true);
-      const lowLevelResult = _calculateMappingChanceForTest({ ...testCharacter, level: 1 }, simpleArea, true, true);
-      
+      const lowLevelResult = _calculateMappingChanceForTest(
+        { ...testCharacter, level: 1 },
+        simpleArea,
+        true,
+        true
+      );
+
       const highLevelRaw = highLevelResult.rawChance;
       const normalRaw = normalResult.rawChance;
       const lowLevelRaw = lowLevelResult.rawChance;
-      
+
       // Now we can safely compare the numbers
       expect(highLevelRaw).toBeGreaterThan(normalRaw);
       expect(normalRaw).toBeGreaterThan(lowLevelRaw);

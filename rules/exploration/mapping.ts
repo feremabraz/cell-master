@@ -55,13 +55,13 @@ function calculateMappingChanceInternal(
 
   // Experience matters
   baseChance += character.level * 2; // +2% per level
-  
+
   // Ensure the chance is between 5% and 95% for actual gameplay
   const cappedChance = Math.min(Math.max(baseChance, 5), 95);
-  
-  return { 
-    rawChance: baseChance, 
-    cappedChance 
+
+  return {
+    rawChance: baseChance,
+    cappedChance,
   };
 }
 
@@ -98,11 +98,11 @@ function calculateIntelligenceBonus(character: Character): number {
 
   if (intelligence >= 16) return 15;
   if (intelligence >= 13) return 10;
-  if (intelligence >= 9) return 5;  // 9-12
+  if (intelligence >= 9) return 5; // 9-12
   if (intelligence <= 6) return -10; // 3-6
-  if (intelligence <= 8) return -5;  // 7-8
+  if (intelligence <= 8) return -5; // 7-8
 
-  return 0;  // Shouldn't happen as all cases are covered
+  return 0; // Shouldn't happen as all cases are covered
 }
 
 /**
