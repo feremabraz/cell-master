@@ -114,13 +114,13 @@ Ordered by conceptual dependencies:
 
 ### Phase 8: Advanced World Interaction
 
-19. **Advanced Exploration**
+19. **Advanced Exploration** (implemented)
     - Searching/secret door detection
     - Mapping utilities
     - Disease and poison
     - Extreme temperature effects
 
-20. **Advanced NPC Management**
+20. **Advanced NPC Management** (implemented)
     - Loyalty calculations
     - Henchmen management
     - Territory control
