@@ -92,13 +92,13 @@ Ordered by conceptual dependencies:
 
 ### Phase 6: Advanced Magic
 
-16. **Advanced Spell Features**
+16. **Advanced Spell Features** (implemented)
     - Scroll creation
     - Spell research
     - Counterspell mechanics
     - Spell component tracking
 
-17. **Magic Items**
+17. **Magic Items** (implemented)
     - Magic item identification
     - Cursed item effects
     - Charges tracking
@@ -106,7 +106,7 @@ Ordered by conceptual dependencies:
 
 ### Phase 7: Class Specializations
 
-18. **Advanced Class Features**
+18. **Advanced Class Features** (implemented)
     - Class-specific abilities by level
     - Turning undead mechanics
     - Thief skill percentages
