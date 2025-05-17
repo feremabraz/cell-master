@@ -127,28 +127,28 @@ Ordered by conceptual dependencies:
 
 ### Phase 9: Specialized Systems
 
-21. **Mounted & Special Combat**
+21. **Mounted & Special Combat** (implemented)
     - Mounted combat
     - Aerial combat
     - Underwater combat
 
-22. **Stronghold Management**
+22. **Stronghold Management** (implemented)
     - Construction costs
     - Follower attraction
     - Income generation
 
-23. **Maritime & Naval**
+23. **Maritime & Naval** (implemented)
     - Ship combat
     - Navigation
     - Weather at sea
     - Shipwreck survival
 
-24. **Planar Travel**
+24. **Planar Travel** (implemented)
     - Plane shift mechanics
     - Astral/ethereal effects
     - Outsider summoning
 
-25. **Advanced Magic Items**
+25. **Advanced Magic Items** (implemented)
     - Artifact powers
     - Magic item creation
     - Wild magic effects

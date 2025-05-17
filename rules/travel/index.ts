@@ -2,6 +2,12 @@
 export * from './movement';
 export * from './terrain';
 export * from './lighting';
+export * from './maritime';
+export * from './planar';
+
+// Import and re-export the AerialMovementState type
+import type { AerialMovementState } from './aerial';
+export type { AerialMovementState };
 
 // Combined functions for easy access
 import type { Character, Environment, TerrainType, LightingCondition } from '@rules/types';
@@ -11,9 +17,40 @@ import type { ActiveLightSource } from './lighting';
 import { calculateVisibility } from './lighting';
 
 /**
+ * Maritime travel state
+ */
+export interface MaritimeTravelState {
+  shipType: string;
+  currentCrew: number;
+  currentHull: number;
+  supplies: number; // days of supplies remaining
+  seaCondition: string;
+  currentCourse: {
+    bearing: number; // degrees
+    destination: string;
+    distance: number; // km to destination
+  };
+  navigationBonus: number; // Bonus to navigation checks
+}
+
+/**
+ * Planar travel state
+ */
+export interface PlanarTravelState {
+  currentPlane: string;
+  timeDifference: number; // Multiplier for time passage
+  planarEffects: string[];
+  returnMethod?: {
+    type: 'spell' | 'portal' | 'item';
+    remainingUses: number;
+  };
+}
+
+/**
  * Main exploration data structure to track exploration state
  */
 export interface ExplorationState {
+  // Core state
   character: Character;
   environment: Environment;
   terrain: TerrainType;
@@ -28,6 +65,11 @@ export interface ExplorationState {
     y: number;
     z: number;
   };
+
+  // Travel type specific states
+  maritime?: MaritimeTravelState;
+  planar?: PlanarTravelState;
+  aerial?: AerialMovementState;
 }
 
 /**

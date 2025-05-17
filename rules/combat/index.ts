@@ -17,6 +17,27 @@ import { getSpecializationHitBonus } from '@rules/combat/specialization';
 import { resolveTwoWeaponAttack } from '@rules/combat/twoWeaponFighting';
 import { resolveGrapple } from '@rules/combat/grappling';
 import { applyBleedingEffect } from '@rules/combat/advancedDamage';
+import {
+  canMountedCharge,
+  resolveMountedCharge,
+  dismount,
+  AerialAgilityLevel,
+} from '@rules/combat/mountedCombat';
+import {
+  handleAerialMovement,
+  getDiveAttackBonus,
+  mountFlyingCreature,
+} from '@rules/combat/aerialCombat';
+import {
+  isWeaponEffectiveUnderwater,
+  applyUnderwaterPenalties,
+  canCastSpellUnderwater,
+  handleUnderwaterSpell,
+} from '@rules/combat/underwaterCombat';
+
+// Type imports
+import type { Mount } from '@rules/combat/mountedCombat';
+import type { AerialMovement } from '@rules/combat/aerialCombat';
 
 // Export all combat-related functions for easy importing
 export * from '@rules/combat/attackRoll';
@@ -31,6 +52,23 @@ export * from '@rules/combat/twoWeaponFighting';
 export * from '@rules/combat/grappling';
 export * from '@rules/combat/shields';
 export * from '@rules/combat/advancedDamage';
+
+// Mounted Combat
+export { canMountedCharge, resolveMountedCharge, dismount, AerialAgilityLevel };
+
+// Aerial Combat
+export { handleAerialMovement, getDiveAttackBonus, mountFlyingCreature };
+
+// Underwater Combat
+export {
+  isWeaponEffectiveUnderwater,
+  applyUnderwaterPenalties,
+  canCastSpellUnderwater,
+  handleUnderwaterSpell,
+};
+
+// Export types
+export type { Mount, AerialMovement };
 
 /**
  * Main combat resolution function that combines all aspects of combat

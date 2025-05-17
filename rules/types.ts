@@ -177,12 +177,32 @@ export interface DiceRoll {
   result: number; // Result could be the actual roll + modifier
 }
 
+// Base effect interface
+export interface BaseEffect {
+  type: string;
+  source: string;
+  duration: number;
+}
+
+// Damage multiplier effect
+export interface DamageMultiplierEffect extends BaseEffect {
+  type: 'damageMultiplier';
+  value: number;
+}
+
+export interface FallingEffect extends BaseEffect {
+  type: 'falling';
+  distance: number;
+}
+
+export type Effect = string | BaseEffect | DamageMultiplierEffect | FallingEffect;
+
 // Result of an action that modifies game state
 export interface ActionResult {
   success: boolean;
   message: string;
   damage: number[] | null; // Example: [5, 3] for two rolls of damage
-  effects: string[] | null; // Example: ["stunned", "burning"]
+  effects: Effect[] | null; // Can be strings or complex effect objects
 }
 
 // Action types (from the user input)
